@@ -1,8 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-
-
-gambar besar di atas, bisa pakai hero image atau banner yang menarik untuk menggambarkan tema petualangan gunung. Pastikan gambarnya berkualitas tinggi dan relevan dengan konten situs.
+bagian gambar slide
 <!-- Section -->
 Tentang Kami
 <!-- Trip Cards Section -->
