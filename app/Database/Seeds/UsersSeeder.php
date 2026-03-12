@@ -11,7 +11,7 @@ class UsersSeeder extends Seeder
         $data = [
             [
                 'name' => 'SaharAdmin',
-                'email' => 'admin@gmail.com',
+                'email' => 'admin1234@gmail.com',
                 'password' => password_hash('admin123', PASSWORD_DEFAULT),
                 'role' => 'admin',
                 'points' => 0   
