@@ -1,8 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
-bagian gambar slide
+
 <!-- Section -->
-Tentang Kami
+
 <!-- Trip Cards Section -->
 <h3 class="mb-4">Open Trip Tersedia</h3>
 
