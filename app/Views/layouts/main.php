@@ -178,7 +178,7 @@ dengan pengalaman yang aman dan berkesan.
 
 <p>
 
-<a href="#"><i class="bi bi-instagram"></i> Instagram</a><br>
+<a href="https://www.instagram.com/blntrk.outdoor/"><i class="bi bi-instagram"></i> Instagram</a><br>
 
 <a href="#"><i class="bi bi-facebook"></i> Facebook</a><br>
 
