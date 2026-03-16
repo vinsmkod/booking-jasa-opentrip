@@ -19,88 +19,144 @@ class Trips extends BaseController
         $this->scheduleModel = new ScheduleModel();
     }
 
-    // Halaman semua trip + gallery
+    /*
+    ===============================
+    HALAMAN LIST TRIP
+    ===============================
+    */
+
     public function index()
     {
 
         $trips = $this->tripModel
             ->where('status', 'active')
-            ->orderBy('trip_id', 'DESC')
+            ->orderBy('trip_id','DESC')
             ->findAll();
 
-        // ambil schedule untuk setiap trip
         foreach ($trips as &$trip) {
 
             $schedule = $this->scheduleModel
-                ->where('trip_id', $trip['trip_id'])
-                ->orderBy('departure_date', 'ASC')
+                ->where('trip_id',$trip['trip_id'])
+                ->orderBy('departure_date','ASC')
                 ->first();
 
-            if ($schedule) {
+            if($schedule){
+
                 $trip['schedule_id']   = $schedule['schedule_id'];
-                $trip['departure_date'] = $schedule['departure_date'];
-                $trip['quota']          = $schedule['quota'];
-                $trip['available']      = $schedule['available'];
-            } else {
-                $trip['schedule_id']   = null;
-                $trip['departure_date'] = null;
-                $trip['quota']          = null;
-                $trip['available']      = null;
+                $trip['departure_date']= $schedule['departure_date'];
+                $trip['quota']         = $schedule['quota'];
+                $trip['available']     = $schedule['available'];
+
+            }else{
+
+                $trip['schedule_id']=null;
+
             }
         }
 
         $data = [
-            'trips' => $trips,
 
-            'galleryPhotos' => $this->galleryModel
-                ->orderBy('created_at', 'DESC')
-                ->findAll(),
+            'trips'=>$trips,
+
+            'galleryPhotos'=>$this->galleryModel
+                ->orderBy('created_at','DESC')
+                ->findAll()
+
         ];
 
-        return view('trips/gallery', $data);
+        return view('trips/gallery',$data);
     }
 
+    /*
+    ===============================
+    TRIP BERDASARKAN TYPE
+    ===============================
+    */
 
-    // Menampilkan trip berdasarkan kategori
     public function byType($type)
     {
-        $allowedTypes = ['one_day_trip', 'open_trip', 'private_trip'];
 
-        if (!in_array($type, $allowedTypes)) {
+        $trips = $this->tripModel
+            ->where('type',$type)
+            ->where('status','active')
+            ->findAll();
+
+        foreach ($trips as &$trip) {
+
+            $schedule = $this->scheduleModel
+                ->where('trip_id',$trip['trip_id'])
+                ->orderBy('departure_date','ASC')
+                ->first();
+
+            if($schedule){
+
+                $trip['schedule_id']=$schedule['schedule_id'];
+                $trip['departure_date']=$schedule['departure_date'];
+                $trip['quota']=$schedule['quota'];
+                $trip['available']=$schedule['available'];
+
+            }
+        }
+
+        $data=[
+
+            'trips'=>$trips,
+            'type'=>$type
+
+        ];
+
+        return view('trips/list',$data);
+    }
+
+    /*
+    ===============================
+    DETAIL TRIP
+    ===============================
+    */
+
+    public function detail($schedule_id)
+    {
+
+        $db = \Config\Database::connect();
+
+        $schedule = $db->table('schedules')
+            ->select('
+                schedules.*,
+                trips.trip_id,
+                trips.title,
+                trips.location,
+                trips.description,
+                trips.price,
+                trips.image
+            ')
+            ->join('trips','trips.trip_id = schedules.trip_id')
+            ->where('schedule_id',$schedule_id)
+            ->get()
+            ->getRowArray();
+
+        if(!$schedule){
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $trips = $this->tripModel
-            ->where('type', $type)
-            ->where('status', 'active')
-            ->orderBy('trip_id', 'DESC')
-            ->findAll();
+        $includes = $db->table('trip_includes')
+            ->where('trip_id',$schedule['trip_id'])
+            ->get()
+            ->getResultArray();
 
-        foreach ($trips as &$trip) {
-
-            $schedule = $this->scheduleModel
-                ->where('trip_id', $trip['trip_id'])
-                ->orderBy('departure_date', 'ASC')
-                ->first();
-
-            if ($schedule) {
-                $trip['schedule_id']   = $schedule['schedule_id'];
-                $trip['departure_date'] = $schedule['departure_date'];
-                $trip['quota']          = $schedule['quota'];
-                $trip['available']      = $schedule['available'];
-            } else {
-                $trip['schedule_id']   = null;
-                $trip['departure_date'] = null;
-                $trip['quota']          = null;
-                $trip['available']      = null;
-            }
-        }
+        $itinerary = $db->table('trip_itinerary')
+            ->where('trip_id',$schedule['trip_id'])
+            ->orderBy('time','ASC')
+            ->get()
+            ->getResultArray();
 
         $data = [
-            'trips' => $trips,
-            'type'  => $type
+
+            'schedule'=>$schedule,
+            'includes'=>$includes,
+            'itinerary'=>$itinerary
+
         ];
 
-        return view('trips/list', $data);
+        return view('trips/detail',$data);
     }
 }

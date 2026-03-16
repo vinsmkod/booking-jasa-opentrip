@@ -1,71 +1,121 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
 
-<div class="row mt-4">
+<div class="container mt-5 mb-5">
 
-    <div class="col-md-6">
+<div class="row">
 
-        <?php if(!empty($trip['image'])): ?>
+<div class="col-md-7">
 
-            <img src="<?= base_url('uploads/trips/'.$trip['image']) ?>" 
-                 class="img-fluid rounded"
-                 alt="<?= esc($trip['title']) ?>">
+<?php if($schedule['image']): ?>
 
-        <?php else: ?>
+<img src="<?= base_url('uploads/trips/'.$schedule['image']) ?>"
+class="img-fluid rounded shadow mb-4">
 
-            <img src="<?= base_url('images/no-image.jpg') ?>" 
-                 class="img-fluid rounded"
-                 alt="No Image">
+<?php endif; ?>
 
-        <?php endif; ?>
+<h3><?= esc($schedule['title']) ?></h3>
+<p class="text-muted"><?= esc($schedule['location']) ?></p>
 
-    </div>
+<p>
+<?= esc($schedule['description']) ?>
+</p>
 
-    <div class="col-md-6">
+<hr>
 
-        <h3><?= esc($trip['title']) ?></h3>
+<h5>Paket Include</h5>
 
-        <p><strong>Lokasi:</strong> <?= esc($trip['location']) ?></p>
+<ul>
 
-        <p><?= esc($trip['description']) ?></p>
+<?php if(!empty($includes)): ?>
 
-        <p>
-            <strong>Harga per Peserta:</strong> 
-            Rp <?= number_format($trip['price'],0,',','.') ?>
-        </p>
+<?php foreach($includes as $inc): ?>
 
-        <p><strong>Kuota:</strong> <?= esc($trip['quota']) ?></p>
+<li><?= esc($inc['title']) ?></li>
 
-        <p>
-            <strong>Tanggal Keberangkatan:</strong> 
-            <?= !empty($trip['departure_date']) 
-                ? date('d M Y', strtotime($trip['departure_date'])) 
-                : 'Jadwal belum tersedia'; ?>
-        </p>
+<?php endforeach; ?>
 
-        <?php if($trip['status'] === 'active'): ?>
+<?php else: ?>
 
-            <form method="post" action="<?= base_url('booking/create') ?>">
-                <?= csrf_field() ?>
+<li>Belum ada data</li>
 
-                <input type="hidden" name="trip_id" value="<?= esc($trip['trip_id']) ?>">
+<?php endif; ?>
 
-                <button type="submit" class="btn btn-dark mt-3 w-100">
-                    Booking Sekarang
-                </button>
-            </form>
+</ul>
 
-        <?php else: ?>
+<hr>
 
-            <div class="alert alert-warning mt-3">
-                Trip ini sedang tidak aktif.
-            </div>
+<h5>Itinerary</h5>
 
-        <?php endif; ?>
+<ul>
 
-    </div>
+<?php if(!empty($itinerary)): ?>
 
+<?php foreach($itinerary as $item): ?>
+
+<li>
+<?= esc($item['time']) ?> - <?= esc($item['activity']) ?>
+</li>
+
+<?php endforeach; ?>
+
+<?php else: ?>
+
+<li>Belum ada itinerary</li>
+
+<?php endif; ?>
+
+</ul>
+
+</div>
+
+<div class="col-md-5">
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<h5>Informasi Trip</h5>
+
+<p>
+Tanggal Berangkat<br>
+<strong>
+<?= date('d M Y',strtotime($schedule['departure_date'])) ?>
+</strong>
+</p>
+
+<p>
+Harga<br>
+<strong class="text-success">
+Rp <?= number_format($schedule['price'],0,',','.') ?>
+</strong>
+</p>
+
+<hr>
+
+<?php if(session()->get('isLoggedIn')): ?>
+
+<a href="<?= base_url('booking/create/'.$schedule['schedule_id']) ?>"
+class="btn btn-warning w-100">
+Booking Sekarang
+</a>
+
+<?php else: ?>
+
+<a href="<?= base_url('login') ?>"
+class="btn btn-warning w-100">
+Login untuk Booking
+</a>
+
+<?php endif; ?>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 </div>
 
 <?= $this->endSection() ?>

@@ -1,9 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<!-- Section -->
-
-<!-- Trip Cards Section -->
 <h3 class="mb-4">Open Trip Tersedia</h3>
 
 <div class="row g-4">
@@ -48,26 +45,21 @@ Kuota:
 <?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang
 </p>
 
-
-<!-- Tombol Booking -->
-<?php if(!empty($trip['schedule_id'])): ?>
+<!-- Tombol Detail -->
+<?php if(!empty($trip['trip_id'])): ?>
 
     <?php if(session()->get('isLoggedIn')): ?>
 
-    <form action="<?= base_url('booking/create'); ?>" method="post">
-        <?= csrf_field() ?>
-        <input type="hidden" name="schedule_id" value="<?= esc($trip['schedule_id']); ?>">
-
-        <button type="submit" class="btn btn-warning mt-auto w-100">
-            Booking Sekarang
-        </button>
-    </form>
+    <a href="<?= base_url('trips/detail/'.$trip['schedule_id']) ?>"
+   class="btn btn-warning mt-auto w-100">
+   Lihat Detail
+    </a>
 
     <?php else: ?>
 
     <a href="<?= base_url('login') ?>" 
        class="btn btn-warning mt-auto w-100 text-center d-block">
-        Booking Sekarang
+       Login untuk Booking
     </a>
 
     <?php endif; ?>
@@ -96,7 +88,7 @@ Belum ada trip tersedia.
 </div>
 
 
-<!-- Dokumentasi Gunung Carousel -->
+<!-- Dokumentasi Gunung -->
 <section class="mt-5 py-5 bg-light">
 
 <div class="container">
@@ -145,7 +137,7 @@ Belum ada trip tersedia.
 </section>
 
 
-<!-- Testimoni Pengguna -->
+<!-- Testimoni -->
 <section class="py-5">
 
 <div class="container">
@@ -256,7 +248,6 @@ Silakan <a href="<?= base_url('login') ?>">login</a> untuk memberikan komentar.
 </section>
 
 
-<!-- Kustom CSS -->
 <style>
 
 .card-trip{
@@ -272,7 +263,6 @@ box-shadow:0 10px 20px rgba(0,0,0,.2);
 </style>
 
 
-<!-- AOS Animation -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>

@@ -86,14 +86,24 @@
                 <a href="/admin/gallery" class="btn btn-dark w-100">Kelola Galeri</a>
             </div>
         </div>
-
         <div class="col">
             <div class="card shadow border-0 h-100 text-center p-4">
-                <h5 class="fw-bold mb-2">Kelola About</h5>
-                <p class="text-muted small">Update konten About website: visi, misi, dan keunggulan.</p>
-                <a href="/admin/about" class="btn btn-primary w-100">Kelola About</a>
+                <h5 class="fw-bold mb-2">Kelola Itinerary</h5>
+                <p class="text-muted small">Atur itinerary trip.</p>
+                <a href="/admin/itinerary" class="btn btn-info w-100">
+                Kelola Itinerary
+                </a>
             </div>
         </div>
+<div class="col">
+<div class="card shadow border-0 h-100 text-center p-4">
+<h5 class="fw-bold mb-2">Kelola Include</h5>
+<p class="text-muted small">Atur paket include trip.</p>
+<a href="/admin/includes" class="btn btn-primary w-100">
+Kelola Include
+</a>
+</div>
+</div>
           <div class="col">
             <div class="card shadow border-0 h-100 text-center p-4">
                 <h5 class="fw-bold mb-2">Export Data</h5>
