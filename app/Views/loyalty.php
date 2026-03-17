@@ -24,11 +24,16 @@
                         <strong>Keterangan:</strong>
                     </p>
                     <ul>
-                        <li>Setiap <strong>10 poin</strong> dapat ditukarkan menjadi <strong>Rp 10.000</strong> untuk potongan trip.</li>
-                        <li>Setiap booking trip yang berhasil menambah <strong>10 poin</strong> ke akun Anda.</li>
+                        <li>Setiap <strong>100 poin</strong> dapat potongan harga trip sebesar <strong>Rp 5.000</strong>.</li>
+                        <li>Setiap booking trip yang berhasil menambah <strong>100 poin</strong> ke akun Anda.</li>
                         <li>Poin akan otomatis ditambahkan setelah booking dikonfirmasi.</li>
                         <li>Poin dapat digunakan untuk potongan harga di booking berikutnya sesuai jumlah poin Anda.</li>
-                        <li>Potongan yang tersedia saat ini: <strong>Rp <?= number_format(floor(($points ?? 0)/10)*10000,0,',','.') ?></strong></li>
+                        <li>
+                            Potongan yang tersedia saat ini:
+                            <strong>
+                                Rp <?= number_format(floor(($points ?? 0)/100)*5000,0,',','.') ?>
+                            </strong>
+                        </li>
                     </ul>
 
                     <div class="mt-4">

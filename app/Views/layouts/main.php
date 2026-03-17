@@ -17,7 +17,7 @@
 <!-- Swiper -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
 
-<!-- AOS Animation -->
+<!-- AOS -->
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 
 <!-- Custom CSS -->
@@ -32,8 +32,6 @@ display:flex;
 flex-direction:column;
 min-height:100vh;
 }
-
-/* MAIN CONTENT */
 
 .main-content{
 flex:1;
@@ -53,17 +51,38 @@ font-weight:700;
 letter-spacing:1px;
 }
 
+/* HERO SLIDER */
+
+.hero-img{
+height:85vh;
+object-fit:cover;
+}
+
+.carousel-caption{
+background:rgba(0,0,0,0.45);
+padding:30px;
+border-radius:10px;
+}
+
+.carousel-caption h1{
+font-size:48px;
+}
+
+.carousel-caption p{
+font-size:18px;
+}
+
 /* CARD */
 
 .card{
 border:none;
 border-radius:14px;
-transition:0.3s;
+transition:.3s;
 }
 
 .card:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,0.15);
 }
 
 /* BUTTON */
@@ -74,10 +93,10 @@ padding:8px 20px;
 font-weight:500;
 }
 
-/* TABLE */
+/* OPEN TRIP SCROLL TARGET */
 
-.table-hover tbody tr:hover{
-background:#f1f3f5;
+#openTrip{
+scroll-margin-top:100px;
 }
 
 /* FOOTER */
@@ -104,20 +123,6 @@ footer a:hover{
 color:#fff;
 }
 
-/* RESPONSIVE */
-
-@media (max-width:768px){
-
-.navbar-brand{
-font-size:18px;
-}
-
-.main-content{
-padding-top:20px;
-}
-
-}
-
 </style>
 
 </head>
@@ -127,8 +132,7 @@ padding-top:20px;
 <!-- NAVBAR -->
 <?= $this->include('layouts/navbar') ?>
 
-
-<!-- MAIN CONTENT -->
+<!-- CONTENT -->
 <main class="main-content">
 <div class="container">
 
@@ -136,7 +140,6 @@ padding-top:20px;
 
 </div>
 </main>
-
 
 <!-- FOOTER -->
 <footer>
@@ -157,7 +160,6 @@ dengan pengalaman yang aman dan berkesan.
 
 </div>
 
-
 <div class="col-md-4">
 
 <h5>Navigation</h5>
@@ -171,28 +173,21 @@ dengan pengalaman yang aman dan berkesan.
 
 </div>
 
-
 <div class="col-md-4">
 
 <h5>Follow Us</h5>
 
 <p>
-
 <a href="https://www.instagram.com/blntrk.outdoor/"><i class="bi bi-instagram"></i> Instagram</a><br>
-
 <a href="#"><i class="bi bi-facebook"></i> Facebook</a><br>
-
 <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-
 </p>
 
 </div>
 
 </div>
 
-
 <hr style="border-color:#444">
-
 
 <div class="text-center">
 
@@ -206,42 +201,32 @@ dengan pengalaman yang aman dan berkesan.
 
 </footer>
 
-
 <!-- JS -->
 
-<!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Swiper -->
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
-<!-- AOS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <script>
-
-/* INIT AOS */
 
 AOS.init({
 duration:1000,
 once:true
 });
 
+/* SMOOTH SCROLL */
 
-/* HERO SLIDER */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-new Swiper(".heroSlider", {
+anchor.addEventListener("click", function(e){
 
-loop:true,
+e.preventDefault();
 
-effect:"fade",
+document.querySelector(this.getAttribute("href")).scrollIntoView({
+behavior:"smooth"
+});
 
-speed:1200,
-
-autoplay:{
-delay:4000,
-disableOnInteraction:false
-}
+});
 
 });
 

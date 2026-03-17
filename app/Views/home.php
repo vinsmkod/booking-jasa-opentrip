@@ -1,23 +1,113 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3 class="mb-4">Open Trip Tersedia</h3>
+<!-- HERO SLIDER -->
+<section class="hero-slider mb-5">
+
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+<div class="carousel-indicators">
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+</div>
+
+<div class="carousel-inner">
+
+<div class="carousel-item active">
+<img src="<?= base_url('assets/images/gunung1.jpeg') ?>" class="d-block w-100 hero-img">
+
+<div class="carousel-caption">
+
+<h1 class="fw-bold">Explore The Mountains</h1>
+
+<p>Jelajahi keindahan alam Indonesia bersama open trip pendakian.</p>
+
+<a href="#openTrip" class="btn btn-success btn-lg">
+Lihat Trip
+</a>
+
+</div>
+</div>
+
+
+<div class="carousel-item">
+<img src="<?= base_url('assets/images/gunung2.jpeg') ?>" class="d-block w-100 hero-img">
+
+<div class="carousel-caption">
+
+<h1 class="fw-bold">Adventure Awaits</h1>
+
+<p>Temukan pengalaman pendakian yang aman dan berkesan.</p>
+
+<a href="#openTrip" class="btn btn-success btn-lg">
+Booking Sekarang
+</a>
+
+</div>
+</div>
+
+
+<div class="carousel-item">
+<img src="<?= base_url('assets/images/gunung3.jpeg') ?>" class="d-block w-100 hero-img">
+
+<div class="carousel-caption">
+
+<h1 class="fw-bold">Join Our Open Trip</h1>
+
+<p>Bergabunglah dengan komunitas pendaki dari seluruh Indonesia.</p>
+
+<a href="#openTrip" class="btn btn-success btn-lg">
+Mulai Petualangan
+</a>
+
+</div>
+</div>
+
+</div>
+
+<button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+<span class="carousel-control-prev-icon"></span>
+</button>
+
+<button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+<span class="carousel-control-next-icon"></span>
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- OPEN TRIP -->
+<section id="openTrip" class="container mb-5">
+
+<h3 class="mb-4 text-center" data-aos="fade-up">
+Open Trip Tersedia
+</h3>
 
 <div class="row g-4">
 
 <?php if(!empty($trips)): ?>
-<?php foreach($trips as $trip): ?>
+<?php foreach($trips as $i => $trip): ?>
 
-<div class="col-md-4" data-aos="fade-up">
+<?php
+$quota = $trip['quota'] ?? 0;
+$available = $trip['available'] ?? 0;
+$booked = $quota - $available;
+$percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
+?>
+
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= $i*100 ?>">
 
 <div class="card shadow-sm card-trip h-100">
 
 <?php if(!empty($trip['image'])): ?>
 
-<img src="<?= base_url('uploads/trips/'.$trip['image']) ?>" 
-     class="card-img-top" 
-     alt="<?= esc($trip['title']) ?>" 
-     style="height:200px;object-fit:cover;border-top-left-radius:12px;border-top-right-radius:12px;">
+<img src="<?= base_url('uploads/trips/'.$trip['image']) ?>"
+class="card-img-top"
+style="height:200px;object-fit:cover">
 
 <?php endif; ?>
 
@@ -30,45 +120,52 @@
 </p>
 
 <p class="mb-1">
-📅 
-<?= !empty($trip['departure_date']) 
-    ? date('d M Y', strtotime($trip['departure_date'])) 
-    : 'Jadwal belum tersedia' ?>
+📅
+<?= !empty($trip['departure_date'])
+? date('d M Y', strtotime($trip['departure_date']))
+: 'Jadwal belum tersedia' ?>
 </p>
 
-<p class="fw-bold text-success mb-1">
+<p class="fw-bold text-success">
 Rp <?= number_format($trip['price'],0,',','.') ?>
 </p>
 
-<p class="text-muted mb-3">
-Kuota: 
-<?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang
+<p class="text-muted mb-1">
+Peserta: <?= $booked ?> / <?= $quota ?>
 </p>
 
-<!-- Tombol Detail -->
-<?php if(!empty($trip['trip_id'])): ?>
+<div class="progress mb-2" style="height:8px;">
+<div class="progress-bar bg-success" style="width:<?= $percent ?>%"></div>
+</div>
 
-    <?php if(session()->get('isLoggedIn')): ?>
+<?php if($available == 0): ?>
 
-    <a href="<?= base_url('trips/detail/'.$trip['schedule_id']) ?>"
-   class="btn btn-warning mt-auto w-100">
-   Lihat Detail
-    </a>
-
-    <?php else: ?>
-
-    <a href="<?= base_url('login') ?>" 
-       class="btn btn-warning mt-auto w-100 text-center d-block">
-       Login untuk Booking
-    </a>
-
-    <?php endif; ?>
+<p class="text-danger fw-bold">
+Trip Full
+</p>
 
 <?php else: ?>
 
-<button class="btn btn-secondary mt-auto w-100" disabled>
-Jadwal Belum Tersedia
-</button>
+<p class="text-muted">
+Kuota tersisa: <?= $available ?> orang
+</p>
+
+<?php endif; ?>
+
+
+<?php if(session()->get('isLoggedIn')): ?>
+
+<a href="<?= base_url('trips/detail/'.$trip['schedule_id']) ?>"
+class="btn btn-warning mt-auto w-100">
+Lihat Detail
+</a>
+
+<?php else: ?>
+
+<a href="<?= base_url('login') ?>"
+class="btn btn-warning mt-auto w-100">
+Login untuk Booking
+</a>
 
 <?php endif; ?>
 
@@ -79,23 +176,31 @@ Jadwal Belum Tersedia
 <?php endforeach; ?>
 <?php else: ?>
 
-<div class="col-12 text-center text-muted">
+<p class="text-center text-muted">
 Belum ada trip tersedia.
-</div>
+</p>
 
 <?php endif; ?>
 
 </div>
 
+</section>
 
-<!-- Dokumentasi Gunung -->
-<section class="mt-5 py-5 bg-light">
+
+
+<!-- DOKUMENTASI GUNUNG -->
+<section class="py-5 bg-light">
 
 <div class="container">
 
-<h3 class="text-center mb-4">Dokumentasi Gunung</h3>
+<h3 class="text-center mb-4" data-aos="fade-up">
+Dokumentasi Gunung
+</h3>
 
-<div id="carouselGallery" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselGallery"
+class="carousel slide"
+data-bs-ride="carousel"
+data-aos="zoom-in">
 
 <div class="carousel-inner">
 
@@ -104,18 +209,9 @@ Belum ada trip tersedia.
 
 <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
 
-<img src="<?= base_url('uploads/mountains/'.$photo['image']) ?>" 
-     class="d-block w-100" 
-     alt="<?= esc($photo['title'] ?? 'Gunung') ?>" 
-     style="height:400px;object-fit:cover;">
-
-<?php if(!empty($photo['title'])): ?>
-
-<div class="carousel-caption d-none d-md-block">
-<h5><?= esc($photo['title']) ?></h5>
-</div>
-
-<?php endif; ?>
+<img src="<?= base_url('uploads/mountains/'.$photo['image']) ?>"
+class="d-block w-100"
+style="height:400px;object-fit:cover">
 
 </div>
 
@@ -133,29 +229,33 @@ Belum ada trip tersedia.
 </button>
 
 </div>
+
 </div>
 </section>
 
 
-<!-- Testimoni -->
+
+<!-- TESTIMONI -->
 <section class="py-5">
 
 <div class="container">
 
-<h3 class="text-center mb-4">Testimoni Peserta Trip</h3>
+<h3 class="text-center mb-4" data-aos="fade-up">
+Testimoni Peserta Trip
+</h3>
 
 <div class="row g-4">
 
 <?php if(!empty($comments)): ?>
-<?php foreach($comments as $c): ?>
+<?php foreach($comments as $i => $c): ?>
 
-<div class="col-md-4">
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="<?= $i*100 ?>">
 
 <div class="card shadow-sm border-0 h-100">
 
 <div class="card-body">
 
-<h6 class="fw-bold mb-1">
+<h6 class="fw-bold">
 <?= esc($c['name']) ?>
 </h6>
 
@@ -168,11 +268,11 @@ Belum ada trip tersedia.
 </p>
 
 </div>
+
 </div>
 </div>
 
 <?php endforeach; ?>
-
 <?php else: ?>
 
 <p class="text-center text-muted">
@@ -182,20 +282,24 @@ Belum ada komentar dari peserta trip.
 <?php endif; ?>
 
 </div>
+
 </div>
 </section>
 
 
-<!-- Form Komentar -->
+
+<!-- FORM KOMENTAR -->
 <section class="py-5 bg-light">
 
 <div class="container">
 
-<h4 class="mb-4 text-center">Bagikan Pengalaman Trip Anda</h4>
+<h4 class="text-center mb-4" data-aos="fade-up">
+Bagikan Pengalaman Trip Anda
+</h4>
 
 <?php if(session()->get('isLoggedIn')): ?>
 
-<form action="<?= base_url('comment/create') ?>" method="post">
+<form action="<?= base_url('comment/create') ?>" method="post" data-aos="fade-up">
 
 <div class="row justify-content-center">
 
@@ -245,10 +349,31 @@ Silakan <a href="<?= base_url('login') ?>">login</a> untuk memberikan komentar.
 <?php endif; ?>
 
 </div>
+
 </section>
 
 
+
 <style>
+
+.hero-img{
+height:80vh;
+object-fit:cover;
+}
+
+.carousel-caption{
+background:rgba(0,0,0,0.45);
+padding:30px;
+border-radius:10px;
+}
+
+.carousel-caption h1{
+font-size:48px;
+}
+
+.carousel-caption p{
+font-size:18px;
+}
 
 .card-trip{
 border-radius:12px;
@@ -256,21 +381,22 @@ transition:transform .3s ease, box-shadow .3s ease;
 }
 
 .card-trip:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 20px rgba(0,0,0,.2);
+transform:translateY(-6px);
+box-shadow:0 12px 24px rgba(0,0,0,.2);
 }
 
 </style>
 
-
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-
+<!-- SCRIPT SMOOTH SCROLL -->
 <script>
-AOS.init({
-duration:800,
-once:true
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e){
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
 });
 </script>
 

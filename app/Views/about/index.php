@@ -1,117 +1,52 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<!-- HERO CINEMATIC SLIDER -->
-<section class="hero-about">
+<!-- HERO -->
+<section class="hero-about d-flex align-items-center text-white text-center"
+style="background:url('<?= base_url('assets/images/gunung1.jpeg') ?>') center/cover no-repeat; height:90vh;">
 
-<div class="swiper heroSlider">
+<div class="container" data-aos="fade-up">
 
-<div class="swiper-wrapper">
+<h1 class="display-4 fw-bold">Open Trip Pendakian Gunung</h1>
 
-<!-- SLIDE 1 -->
-<div class="swiper-slide hero-slide"
-style="background-image:url('<?= base_url('assets/images/gunung1.jpeg') ?>')">
+<p class="lead mt-3">
+Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah
+</p>
 
-<div class="overlay">
-
-<div class="container hero-text text-center">
-
-<h1>Explore The Mountains</h1>
-
-<p>Petualangan dimulai dari langkah pertama menuju puncak</p>
-
-<a href="<?= base_url('trip') ?>" class="btn btn-success btn-lg mt-3">
-Explore Trips
+<a href="<?= base_url('trip') ?>" class="btn btn-success btn-lg mt-4">
+Lihat Jadwal Trip
 </a>
 
 </div>
 
-</div>
-
-</div>
-
-<!-- SLIDE 2 -->
-<div class="swiper-slide hero-slide"
-style="background-image:url('<?= base_url('assets/images/gunung2.jpeg') ?>')">
-
-<div class="overlay">
-
-<div class="container hero-text text-center">
-
-<h1>Adventure Awaits</h1>
-
-<p>Nikmati pengalaman pendakian yang aman dan berkesan</p>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- SLIDE 3 -->
-<div class="swiper-slide hero-slide"
-style="background-image:url('<?= base_url('assets/images/gunung3.jpeg') ?>')">
-
-<div class="overlay">
-
-<div class="container hero-text text-center">
-
-<h1>Join Our Open Trip</h1>
-
-<p>Temukan teman baru dan taklukkan puncak bersama</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </section>
-
 
 
 <!-- STATISTICS -->
-<section class="stats bg-light">
+<section class="py-5 bg-light">
 
-<div class="container">
+<div class="container text-center">
 
-<div class="section-title">
-<h2>Our Achievements</h2>
-<p>Kepercayaan para pendaki yang telah bergabung bersama kami</p>
-</div>
+<div class="row">
 
-<div class="row text-center justify-content-center">
-
-<div class="col-lg-3 col-md-6 mb-4">
-<div class="stat-box">
-<h2>1500+</h2>
+<div class="col-md-3" data-aos="fade-up">
+<h2 class="fw-bold text-success">1500+</h2>
 <p>Pendaki Bergabung</p>
 </div>
-</div>
 
-<div class="col-lg-3 col-md-6 mb-4">
-<div class="stat-box">
-<h2>80+</h2>
+<div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+<h2 class="fw-bold text-success">80+</h2>
 <p>Trip Pendakian</p>
 </div>
-</div>
 
-<div class="col-lg-3 col-md-6 mb-4">
-<div class="stat-box">
-<h2>25</h2>
+<div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+<h2 class="fw-bold text-success">25</h2>
 <p>Gunung Dijelajahi</p>
 </div>
-</div>
 
-<div class="col-lg-3 col-md-6 mb-4">
-<div class="stat-box">
-<h2>5</h2>
+<div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+<h2 class="fw-bold text-success">5</h2>
 <p>Tahun Pengalaman</p>
-</div>
 </div>
 
 </div>
@@ -121,45 +56,38 @@ style="background-image:url('<?= base_url('assets/images/gunung3.jpeg') ?>')">
 </section>
 
 
-
-<!-- WHO WE ARE -->
+<!-- ABOUT -->
 <section class="py-5">
 
 <div class="container">
 
 <div class="row align-items-center">
 
-<div class="col-md-6 mb-4 about-img">
+<div class="col-md-6 mb-4" data-aos="fade-right">
 
-<img src="<?= base_url('assets/images/hiking.jpg') ?>" class="img-fluid">
+<img src="<?= base_url('assets/images/hiking.jpg') ?>" class="img-fluid rounded">
 
 </div>
 
-<div class="col-md-6 about-content">
+<div class="col-md-6" data-aos="fade-left">
 
-<h2 class="fw-bold mb-3">Who We Are</h2>
+<h2 class="fw-bold mb-3">Tentang BLNTRK Outdoor</h2>
 
 <p class="text-success fw-semibold">
-Platform open trip pendakian gunung terpercaya
+Platform open trip pendakian gunung berbasis online
 </p>
 
 <p>
-BLNTRK OUTDOOR merupakan platform layanan open trip pendakian gunung
+BLNTRK Outdoor merupakan platform layanan open trip pendakian gunung
 yang dirancang untuk memudahkan para pecinta alam dalam merencanakan
 perjalanan pendakian secara praktis, aman, dan terorganisir.
 </p>
 
 <p>
-Melalui website ini, pengguna dapat melihat berbagai pilihan trip
-pendakian, melakukan reservasi secara online, serta memperoleh
-informasi lengkap mengenai jadwal perjalanan, meeting point,
-dan detail kegiatan selama pendakian.
-</p>
-
-<p>
-Kami percaya bahwa setiap perjalanan pendakian bukan hanya
-tentang mencapai puncak, tetapi juga tentang membangun pengalaman,
-persahabatan, dan kecintaan terhadap alam.
+Melalui website ini pengguna dapat melihat jadwal trip,
+melakukan reservasi online, melakukan pembayaran,
+serta memperoleh informasi lengkap mengenai meeting point,
+itinerary perjalanan, dan detail kegiatan pendakian.
 </p>
 
 </div>
@@ -171,35 +99,44 @@ persahabatan, dan kecintaan terhadap alam.
 </section>
 
 
-
-<!-- VISION MISSION -->
+<!-- HOW IT WORKS -->
 <section class="py-5 bg-light">
 
-<div class="container">
+<div class="container text-center">
 
-<div class="row text-center">
+<h2 class="fw-bold mb-5" data-aos="fade-up">Cara Mengikuti Open Trip</h2>
 
-<div class="col-md-6">
+<div class="row">
 
-<h4 class="fw-bold mb-3">Our Vision</h4>
+<div class="col-md-3" data-aos="zoom-in">
 
-<p>
-Menjadi platform open trip pendakian gunung terpercaya
-yang menghubungkan para pecinta alam untuk menjelajahi
-keindahan alam Indonesia secara aman dan terorganisir.
-</p>
+<i class="bi bi-search display-5 text-success"></i>
+<h5 class="mt-3">Pilih Trip</h5>
+<p>Lihat berbagai pilihan jadwal trip pendakian.</p>
 
 </div>
 
-<div class="col-md-6">
+<div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
 
-<h4 class="fw-bold mb-3">Our Mission</h4>
+<i class="bi bi-calendar-check display-5 text-success"></i>
+<h5 class="mt-3">Booking Trip</h5>
+<p>Lakukan reservasi trip sesuai jadwal.</p>
 
-<p>
-Menyediakan layanan perjalanan pendakian yang profesional,
-membangun komunitas pendaki, serta meningkatkan kesadaran
-untuk menjaga kelestarian alam.
-</p>
+</div>
+
+<div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+
+<i class="bi bi-credit-card display-5 text-success"></i>
+<h5 class="mt-3">Pembayaran</h5>
+<p>Lakukan pembayaran untuk mengamankan slot.</p>
+
+</div>
+
+<div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+
+<i class="bi bi-people display-5 text-success"></i>
+<h5 class="mt-3">Berangkat</h5>
+<p>Bertemu di meeting point dan mulai pendakian.</p>
 
 </div>
 
@@ -208,7 +145,6 @@ untuk menjaga kelestarian alam.
 </div>
 
 </section>
-
 
 
 <!-- WHY CHOOSE US -->
@@ -216,9 +152,9 @@ untuk menjaga kelestarian alam.
 
 <div class="container">
 
-<div class="section-title">
+<div class="text-center mb-5" data-aos="fade-up">
 
-<h2>Why Choose BLNTRK Outdoor</h2>
+<h2 class="fw-bold">Why Choose BLNTRK Outdoor</h2>
 
 <p>Kami menghadirkan pengalaman pendakian yang aman dan profesional</p>
 
@@ -226,56 +162,27 @@ untuk menjaga kelestarian alam.
 
 <div class="row text-center">
 
-<div class="col-md-4 mb-4">
+<div class="col-md-4" data-aos="fade-up">
 
-<div class="feature-box">
-
-<i class="bi bi-map"></i>
-
-<h5>Professional Trip Management</h5>
-
-<p>
-Perjalanan dirancang dengan itinerary yang jelas dan
-dikelola oleh tim yang berpengalaman dalam kegiatan outdoor.
-</p>
+<i class="bi bi-map display-5 text-success"></i>
+<h5 class="mt-3">Trip Terorganisir</h5>
+<p>Perjalanan memiliki itinerary yang jelas.</p>
 
 </div>
 
-</div>
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
 
-
-<div class="col-md-4 mb-4">
-
-<div class="feature-box">
-
-<i class="bi bi-people"></i>
-
-<h5>Hiking Community</h5>
-
-<p>
-Bergabung dengan komunitas pendaki dari berbagai daerah
-dan rasakan pengalaman petualangan bersama.
-</p>
+<i class="bi bi-shield-check display-5 text-success"></i>
+<h5 class="mt-3">Keamanan Terjamin</h5>
+<p>Didampingi oleh guide berpengalaman.</p>
 
 </div>
 
-</div>
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
 
-
-<div class="col-md-4 mb-4">
-
-<div class="feature-box">
-
-<i class="bi bi-phone"></i>
-
-<h5>Easy Online Booking</h5>
-
-<p>
-Sistem pemesanan online memudahkan pengguna untuk memilih trip,
-melakukan pembayaran, dan mendapatkan invoice otomatis.
-</p>
-
-</div>
+<i class="bi bi-globe display-5 text-success"></i>
+<h5 class="mt-3">Booking Online</h5>
+<p>Reservasi trip dapat dilakukan secara online.</p>
 
 </div>
 
@@ -286,23 +193,97 @@ melakukan pembayaran, dan mendapatkan invoice otomatis.
 </section>
 
 
+<!-- GALLERY -->
+<section class="py-5 bg-light">
 
-<!-- CTA -->
-<section class="cta">
+<div class="container">
+
+<div class="text-center mb-4" data-aos="fade-up">
+
+<h2 class="fw-bold">Pengalaman Pendakian</h2>
+
+<p>Beberapa momen perjalanan bersama peserta open trip</p>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-4 mb-4" data-aos="fade-up">
+
+<img src="<?= base_url('assets/images/gunung1.jpeg') ?>" class="img-fluid rounded">
+
+</div>
+
+<div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+
+<img src="<?= base_url('assets/images/gunung2.jpeg') ?>" class="img-fluid rounded">
+
+</div>
+
+<div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+
+<img src="<?= base_url('assets/images/gunung3.jpeg') ?>" class="img-fluid rounded">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TESTIMONIAL -->
+<section class="py-5">
 
 <div class="container text-center">
 
-<h2 class="fw-bold">
-Ready For Your Next Adventure?
-</h2>
+<h2 class="fw-bold mb-5" data-aos="fade-up">Apa Kata Pendaki</h2>
+
+<div class="row">
+
+<div class="col-md-4" data-aos="fade-up">
+
+<p>"Tripnya seru dan sangat terorganisir!"</p>
+<h6 class="fw-bold">Rizky - Jakarta</h6>
+
+</div>
+
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+
+<p>"Guide profesional dan perjalanan aman."</p>
+<h6 class="fw-bold">Dewi - Bandung</h6>
+
+</div>
+
+<div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+
+<p>"Pengalaman pendakian terbaik bersama komunitas baru."</p>
+<h6 class="fw-bold">Andi - Surabaya</h6>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="py-5 text-center text-white"
+style="background:linear-gradient(120deg,#2ecc71,#27ae60);">
+
+<div class="container" data-aos="zoom-in">
+
+<h2 class="fw-bold">Siap Memulai Petualangan?</h2>
 
 <p class="mt-3">
-Temukan pengalaman pendakian terbaik dan jelajahi
-keindahan alam Indonesia bersama BLNTRK OUTDOOR.
+Temukan jadwal open trip pendakian gunung dan bergabunglah bersama kami.
 </p>
 
-<a href="<?= base_url('/') ?>" class="btn btn-light mt-3">
-Explore Trips
+<a href="<?= base_url('trip') ?>" class="btn btn-light btn-lg mt-3">
+Lihat Trip Sekarang
 </a>
 
 </div>

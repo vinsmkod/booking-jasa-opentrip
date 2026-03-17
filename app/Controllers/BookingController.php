@@ -9,6 +9,8 @@ use App\Models\TripModel;
 use App\Models\PaymentModel;
 use App\Models\DocumentModel;
 use App\Models\MeetingPointModel;
+use App\Models\UserModel;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -20,6 +22,7 @@ class BookingController extends BaseController
     protected $paymentModel;
     protected $documentModel;
     protected $meetingPointModel;
+    protected $userModel;
 
     public function __construct()
     {
@@ -29,6 +32,7 @@ class BookingController extends BaseController
         $this->paymentModel      = new PaymentModel();
         $this->documentModel     = new DocumentModel();
         $this->meetingPointModel = new MeetingPointModel();
+        $this->userModel         = new UserModel();
     }
 
     // ==============================
@@ -68,6 +72,7 @@ class BookingController extends BaseController
     public function store()
     {
         $user_id = session()->get('user_id');
+
         if (!$user_id) {
             return redirect()->to('/login');
         }
@@ -77,12 +82,16 @@ class BookingController extends BaseController
         $method           = $this->request->getPost('payment_method');
         $meeting_point_id = $this->request->getPost('meeting_point_id');
 
+        // AMBIL REDEEM POINT
+        $redeemPoints = (int)$this->request->getPost('redeem_point');
+
         if (!$schedule_id || $participantCount <= 0) {
             return redirect()->back()
                 ->with('error', 'Jumlah peserta tidak valid');
         }
 
         $schedule = $this->scheduleModel->find($schedule_id);
+
         if (!$schedule) {
             return redirect()->back()
                 ->with('error', 'Jadwal tidak ditemukan');
@@ -94,38 +103,81 @@ class BookingController extends BaseController
         }
 
         $trip = $this->tripModel->find($schedule['trip_id']);
+
         if (!$trip) {
             return redirect()->back()
                 ->with('error', 'Trip tidak ditemukan');
         }
 
-        $total_price  = $trip['price'] * $participantCount;
+        // ==============================
+        // HITUNG TOTAL + DISKON POINT
+        // ==============================
+
+        $total_price = $trip['price'] * $participantCount;
+
+        $user = $this->userModel->find($user_id);
+        $userPoints = $user['points'] ?? 0;
+
+        // Batasi redeem agar tidak melebihi poin user
+        $maxRedeem = floor($userPoints / 100) * 100;
+
+        if ($redeemPoints > $maxRedeem) {
+            $redeemPoints = 0;
+        }
+
+        $discount = ($redeemPoints / 100) * 5000;
+
+        $final_price = $total_price - $discount;
+
+        if ($final_price < 0) {
+            $final_price = 0;
+        }
+
         $booking_code = 'TRIP-' . date('YmdHis') . rand(100,999);
 
         $db = \Config\Database::connect();
         $db->transStart();
 
+        // ==============================
         // INSERT BOOKING
+        // ==============================
         $this->bookingModel->insert([
             'booking_code'     => $booking_code,
             'user_id'          => $user_id,
             'schedule_id'      => $schedule_id,
             'participant'      => $participantCount,
-            'total_price'      => $total_price,
+            'total_price'      => $final_price,
             'status'           => 'pending',
             'meeting_point_id' => $meeting_point_id
         ]);
 
         $booking_id = $this->bookingModel->insertID();
 
+        // ==============================
+        // KURANGI POINT USER
+        // ==============================
+        if ($redeemPoints > 0) {
+
+            $newPoints = $userPoints - $redeemPoints;
+
+            $this->userModel->update($user_id, [
+                'points' => $newPoints
+            ]);
+
+            session()->set('points', $newPoints);
+        }
+
+        // ==============================
         // UPDATE KUOTA
+        // ==============================
         $this->scheduleModel->update($schedule_id, [
             'available' => $schedule['available'] - $participantCount
         ]);
 
-        // =================
-        // UPLOAD DOKUMEN
-        // =================
+        // ==============================
+        // UPLOAD DOKUMEN PESERTA
+        // ==============================
+
         $participants = $this->request->getPost('participants');
         $files = $this->request->getFiles();
 
@@ -133,9 +185,6 @@ class BookingController extends BaseController
         $healthFiles = $files['health'] ?? [];
 
         foreach ($participants as $i => $p) {
-
-            $ktpName = null;
-            $healthName = null;
 
             if (isset($ktpFiles[$i]) && $ktpFiles[$i]->isValid()) {
 
@@ -164,9 +213,10 @@ class BookingController extends BaseController
             }
         }
 
-        // =================
-        // UPLOAD BUKTI BAYAR
-        // =================
+        // ==============================
+        // UPLOAD BUKTI PEMBAYARAN
+        // ==============================
+
         $proofFile = $this->request->getFile('payment_proof');
         $proofName = null;
 
@@ -175,11 +225,14 @@ class BookingController extends BaseController
             $proofFile->move('uploads/payments', $proofName);
         }
 
+        // ==============================
         // INSERT PAYMENT
+        // ==============================
+
         $this->paymentModel->insert([
             'booking_id' => $booking_id,
             'method'     => $method,
-            'amount'     => $total_price,
+            'amount'     => $final_price,
             'proof'      => $proofName,
             'status'     => 'waiting',
             'paid_at'    => date('Y-m-d H:i:s')
@@ -234,7 +287,7 @@ class BookingController extends BaseController
 
 
     // ==============================
-    // HISTORY BOOKING CUSTOMER
+    // HISTORY BOOKING
     // ==============================
     public function history()
     {
@@ -255,59 +308,5 @@ class BookingController extends BaseController
         return view('booking/history', [
             'bookings' => $bookings
         ]);
-    }
-
-
-    // ==============================
-    // EXPORT BOOKING EXCEL
-    // ==============================
-    public function exportExcel()
-    {
-
-        $bookings = $this->bookingModel
-            ->select('bookings.*, users.name as customer_name, trips.title as trip_title, meeting_points.name as meeting_point_name')
-            ->join('users', 'users.user_id = bookings.user_id')
-            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id')
-            ->join('trips', 'trips.trip_id = schedules.trip_id')
-            ->join('meeting_points', 'meeting_points.meeting_point_id = bookings.meeting_point_id', 'left')
-            ->findAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $sheet->setCellValue('A1','Booking ID')
-              ->setCellValue('B1','Booking Code')
-              ->setCellValue('C1','Customer')
-              ->setCellValue('D1','Trip')
-              ->setCellValue('E1','Participant')
-              ->setCellValue('F1','Total Price')
-              ->setCellValue('G1','Meeting Point')
-              ->setCellValue('H1','Status');
-
-        $row = 2;
-
-        foreach ($bookings as $b) {
-
-            $sheet->setCellValue('A'.$row,$b['booking_id'])
-                  ->setCellValue('B'.$row,$b['booking_code'])
-                  ->setCellValue('C'.$row,$b['customer_name'])
-                  ->setCellValue('D'.$row,$b['trip_title'])
-                  ->setCellValue('E'.$row,$b['participant'])
-                  ->setCellValue('F'.$row,$b['total_price'])
-                  ->setCellValue('G'.$row,$b['meeting_point_name'] ?? '-')
-                  ->setCellValue('H'.$row,$b['status']);
-
-            $row++;
-        }
-
-        $writer = new Xlsx($spreadsheet);
-
-        $fileName = 'bookings_' . date('YmdHis') . '.xlsx';
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'.$fileName.'"');
-
-        $writer->save('php://output');
-        exit;
     }
 }
