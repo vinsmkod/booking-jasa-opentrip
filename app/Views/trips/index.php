@@ -1,75 +1,76 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3 class="mb-4">Open Trip Tersedia</h3>
+<div class="container py-4">
 
-<div class="row g-4">
+    <h2 class="mb-4 text-center"><?= esc($type) ?></h2>
 
-<?php if(!empty($trips)): ?>
+    <div class="row g-4">
 
-<?php foreach($trips as $trip): ?>
+        <?php if (!empty($trips)): ?>
+            <?php foreach ($trips as $trip): ?>
 
-<!-- DEBUG -->
-<div style="background:#f5f5f5;padding:10px;margin-bottom:10px;">
-<b>Debug Data Trip:</b>
-<pre><?php print_r($trip); ?></pre>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
 
-<p><b>Nama File Gambar:</b> <?= $trip['image'] ?? 'KOSONG' ?></p>
+                        <?php if (!empty($trip['image'])): ?>
+                            <img src="<?= base_url('uploads/trips/' . $trip['image']) ?>"
+                                class="card-img-top"
+                                alt="<?= esc($trip['title']) ?>"
+                                style="height:200px;object-fit:cover;">
+                        <?php else: ?>
+                            <img src="<?= base_url('assets/images/no-image.jpg') ?>"
+                                class="card-img-top"
+                                style="height:200px;object-fit:cover;">
+                        <?php endif; ?>
 
-<p><b>URL Gambar:</b> <?= base_url('uploads/trips/'.$trip['image']) ?></p>
-</div>
-<!-- END DEBUG -->
+                        <div class="card-body d-flex flex-column">
 
-<div class="col-md-4">
+                            <h5 class="card-title"><?= esc($trip['title']) ?></h5>
 
-<div class="card card-trip shadow-sm h-100">
+                            <p class="text-muted mb-1">
+                                📍 <?= esc($trip['location']) ?>
+                            </p>
 
-<?php if(!empty($trip['image'])): ?>
-<img src="<?= base_url('uploads/trips/'.$trip['image']) ?>" 
-     class="card-img-top" 
-     alt="<?= esc($trip['title']) ?>">
-<?php else: ?>
-<p style="color:red">Gambar tidak ada</p>
-<?php endif; ?>
+                            <p class="mb-1">
+                                📅 <?= !empty($trip['departure_date'])
+                                        ? date('d M Y', strtotime($trip['departure_date']))
+                                        : 'Jadwal belum tersedia' ?>
+                            </p>
 
-<div class="card-body d-flex flex-column">
+                            <p class="fw-bold text-success mb-1">
+                                Rp <?= number_format($trip['price'], 0, ',', '.') ?>
+                            </p>
 
-<h5 class="card-title"><?= esc($trip['title']) ?></h5>
+                            <p class="text-muted mb-3">
+                                Kuota: <?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang
+                            </p>
 
-<p class="text-muted mb-1">
-📍 <?= esc($trip['location']) ?>
-</p>
+                            <div class="mt-auto">
+                                <?php if (!empty($trip['schedule_id'])): ?>
+                                    <a href="<?= base_url('trips/detail/' . $trip['schedule_id']) ?>"
+                                        class="btn btn-success w-100">
+                                        Lihat Detail
+                                    </a>
+                                <?php else: ?>
+                                    <button class="btn btn-secondary w-100" disabled>
+                                        Jadwal Belum Tersedia
+                                    </button>
+                                <?php endif; ?>
+                            </div>
 
-<p class="mb-1">
-📅 
-<?= !empty($trip['departure_date']) 
-    ? date('d M Y', strtotime($trip['departure_date'])) 
-    : 'Jadwal belum tersedia' ?>
-</p>
+                        </div>
+                    </div>
+                </div>
 
-<p class="fw-bold text-success mb-1">
-Rp <?= number_format($trip['price'],0,',','.') ?>
-</p>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center text-muted">
+                Belum ada trip tersedia.
+            </div>
+        <?php endif; ?>
 
-<p class="text-muted mb-3">
-Kuota: 
-<?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang
-</p>
-
-</div>
-</div>
-</div>
-
-<?php endforeach; ?>
-
-<?php else: ?>
-
-<div class="col-12 text-center text-muted">
-Belum ada trip tersedia.
-</div>
-
-<?php endif; ?>
-
+    </div>
 </div>
 
 <?= $this->endSection() ?>

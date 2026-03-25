@@ -76,7 +76,7 @@ $routes->get('logout', 'AuthController::logout');
 |--------------------------------------------------------------------------
 */
 
-$routes->group('', ['filter' => 'auth'], function($routes){
+$routes->group('', ['filter' => 'auth'], function ($routes) {
 
     $routes->get('dashboard', 'DashboardController::index');
 
@@ -132,7 +132,6 @@ $routes->group('', ['filter' => 'auth'], function($routes){
     */
 
     $routes->get('loyalty', 'LoyaltyController::index');
-
 });
 
 
@@ -145,7 +144,7 @@ $routes->group('', ['filter' => 'auth'], function($routes){
 $routes->group('admin', [
     'namespace' => 'App\Controllers\Admin',
     'filter'    => 'admin'
-], function($routes){
+], function ($routes) {
 
     /*
     |--------------------------------------------------------------------------
@@ -239,21 +238,21 @@ $routes->group('admin', [
 
     $routes->get('includes/delete/(:num)', 'Includes::delete/$1');
 
-/*
+    /*
 |--------------------------------------------------------------------------
 | ITINERARY MANAGEMENT
 |--------------------------------------------------------------------------
 */
 
-$routes->get('itinerary', 'ItineraryController::index');
+    $routes->get('itinerary', 'ItineraryController::index');
 
-$routes->get('itinerary/create', 'ItineraryController::create');
-$routes->post('itinerary/store', 'ItineraryController::store');
+    $routes->get('itinerary/create', 'ItineraryController::create');
+    $routes->post('itinerary/store', 'ItineraryController::store');
 
-$routes->get('itinerary/edit/(:num)', 'ItineraryController::edit/$1');
-$routes->post('itinerary/update/(:num)', 'ItineraryController::update/$1');
+    $routes->get('itinerary/edit/(:num)', 'ItineraryController::edit/$1');
+    $routes->post('itinerary/update/(:num)', 'ItineraryController::update/$1');
 
-$routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
+    $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
     /*
     |--------------------------------------------------------------------------
     | GALLERY MANAGEMENT
@@ -310,7 +309,6 @@ $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
     $routes->get('about', 'AboutController::index');
 
     $routes->post('about/update', 'AboutController::update');
-
 });
 
 
@@ -320,12 +318,11 @@ $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
 |--------------------------------------------------------------------------
 */
 
-$routes->group('api', function($routes){
+$routes->group('api', function ($routes) {
 
     $routes->post('login', 'Api\AuthController::login');
 
     $routes->get('trips', 'Api\TripController::index');
-
 });
 
 

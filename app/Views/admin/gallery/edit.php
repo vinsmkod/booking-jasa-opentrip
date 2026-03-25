@@ -5,8 +5,8 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold">Tambah Foto Baru</h3>
-            <p class="text-muted mb-0">Upload satu atau beberapa foto sekaligus ke galeri</p>
+            <h3 class="fw-bold">Edit Foto</h3>
+            <p class="text-muted mb-0">Ubah informasi foto galeri</p>
         </div>
         <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Kembali
@@ -34,10 +34,11 @@
     <div class="card shadow-sm border-0">
         <div class="card-body">
 
-            <form action="<?= base_url('admin/gallery/store') ?>"
+            <form action="<?= base_url('admin/gallery/update/' . $gallery['gallery_id']) ?>"
                 method="post"
                 enctype="multipart/form-data">
                 <?= csrf_field() ?>
+                <input type="hidden" name="_method" value="PUT">
 
                 <!-- Album -->
                 <div class="mb-4">
@@ -48,8 +49,8 @@
                         name="album"
                         class="form-control"
                         list="album-list"
-                        placeholder="Contoh: Dokumentasi Gunung Merbabu, Trip Rinjani 2025"
-                        value="<?= old('album') ?>"
+                        value="<?= esc($gallery['album']) ?>"
+                        placeholder="Contoh: Dokumentasi Gunung Merbabu"
                         required>
                     <div class="form-text">
                         <i class="fas fa-info-circle"></i> Ketik nama baru atau pilih dari album yang sudah ada
@@ -70,46 +71,49 @@
                     <input type="text"
                         name="title"
                         class="form-control"
+                        value="<?= esc($gallery['title']) ?>"
                         placeholder="Masukkan judul foto"
-                        value="<?= old('title') ?>"
                         required>
-                    <div class="form-text">
-                        <i class="fas fa-info-circle"></i> Satu judul akan berlaku untuk semua foto yang diupload
+                </div>
+
+                <!-- Foto Saat Ini -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Foto Saat Ini</label>
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <img src="<?= base_url('uploads/gallery/' . $gallery['image']) ?>"
+                            alt="<?= esc($gallery['title']) ?>"
+                            style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px;">
+                        <p class="text-muted mt-2 mb-0">
+                            <i class="fas fa-info-circle"></i> Biarkan kosong jika tidak ingin mengganti foto
+                        </p>
                     </div>
                 </div>
 
-                <hr class="my-4">
-
-                <!-- Upload Foto -->
+                <!-- Ganti Foto -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">
-                        Pilih Foto <span class="text-danger">*</span>
-                    </label>
-                    <div class="drop-zone border rounded-3 p-5 text-center bg-light"
+                    <label class="form-label fw-semibold">Ganti Foto (Opsional)</label>
+                    <div class="drop-zone border rounded-3 p-4 text-center bg-light"
                         style="cursor: pointer; transition: all 0.3s; border: 2px dashed #dee2e6;"
-                        id="mainDrop">
-                        <input type="file" name="images[]" accept="image/*" multiple
-                            onchange="previewMultiple(this)"
+                        id="editDrop">
+                        <input type="file" name="image" accept="image/*"
+                            onchange="previewSingle(this)"
                             style="display: none;">
                         <div class="drop-zone-content">
-                            <i class="fas fa-cloud-upload-alt fa-3x text-secondary mb-3 d-block"></i>
-                            <h5 class="mb-2">Klik atau drag & drop foto di sini</h5>
-                            <p class="text-muted mb-0">JPG, PNG, WEBP · dapat memilih beberapa foto sekaligus</p>
-                            <p class="text-muted small mb-0">Maksimal ukuran per file 10 MB</p>
-                            <button type="button" class="btn btn-primary mt-3"
-                                onclick="document.querySelector('#mainDrop input').click()">
+                            <i class="fas fa-exchange-alt fa-2x text-secondary mb-2 d-block"></i>
+                            <p class="mb-0"><strong>Klik atau drag & drop</strong> foto baru di sini</p>
+                            <small class="text-muted">JPG, PNG, WEBP · maks 10 MB</small>
+                            <button type="button" class="btn btn-outline-primary btn-sm mt-2"
+                                onclick="document.querySelector('#editDrop input').click()">
                                 <i class="fas fa-folder-open"></i> Pilih Foto
                             </button>
                         </div>
                     </div>
-                    <div id="preview-grid" class="mt-3"
-                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">
-                    </div>
+                    <div id="edit-preview" class="mt-3"></div>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary px-4">
-                        <i class="fas fa-upload"></i> Upload Foto
+                        <i class="fas fa-save"></i> Simpan Perubahan
                     </button>
                     <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary px-4">
                         Batal
@@ -142,6 +146,7 @@
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        max-width: 200px;
     }
 
     .preview-item img {
@@ -150,79 +155,67 @@
         object-fit: cover;
         display: block;
     }
-
-    .preview-item .file-info {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 4px;
-        font-size: 11px;
-        text-align: center;
-    }
 </style>
 
 <script>
-    function previewMultiple(input) {
-        const grid = document.getElementById('preview-grid');
-        grid.innerHTML = '';
+    function previewSingle(input) {
+        const container = document.getElementById('edit-preview');
+        container.innerHTML = '';
 
-        if (input.files && input.files.length > 0) {
-            Array.from(input.files).forEach((file, i) => {
-                // Validate file size
-                if (file.size > 10485760) { // 10 MB
-                    alert(`File "${file.name}" terlalu besar! Maksimal 10 MB.`);
-                    return;
-                }
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
 
-                // Validate file type
-                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-                if (!allowedTypes.includes(file.type)) {
-                    alert(`File "${file.name}" format tidak didukung! Gunakan JPG, PNG, atau WEBP.`);
-                    return;
-                }
+            // Validate file size
+            if (file.size > 10485760) { // 10 MB
+                alert('Ukuran file terlalu besar! Maksimal 10 MB.');
+                input.value = '';
+                return;
+            }
 
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const item = document.createElement('div');
-                    item.className = 'preview-item';
-                    item.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview ${i+1}">
-                    <div class="file-info">
-                        ${file.name.substring(0, 20)}${file.name.length > 20 ? '...' : ''} | 
-                        ${(file.size / 1024).toFixed(1)} KB
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Format file tidak didukung! Gunakan JPG, PNG, atau WEBP.');
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                container.innerHTML = `
+                <div class="preview-item">
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="position-absolute top-0 end-0 p-2">
+                        <span class="badge bg-primary">Preview</span>
                     </div>
-                `;
-                    grid.appendChild(item);
-                };
-                reader.readAsDataURL(file);
-            });
+                </div>
+            `;
+            };
+            reader.readAsDataURL(file);
         }
     }
 
     // Drag & Drop functionality
-    const dropZone = document.getElementById('mainDrop');
-    const fileInput = dropZone.querySelector('input');
+    const editDrop = document.getElementById('editDrop');
+    const editFileInput = editDrop.querySelector('input');
 
-    dropZone.addEventListener('click', () => fileInput.click());
+    editDrop.addEventListener('click', () => editFileInput.click());
 
-    dropZone.addEventListener('dragover', (e) => {
+    editDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
-        dropZone.classList.add('dragging');
+        editDrop.classList.add('dragging');
     });
 
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('dragging');
+    editDrop.addEventListener('dragleave', () => {
+        editDrop.classList.remove('dragging');
     });
 
-    dropZone.addEventListener('drop', (e) => {
+    editDrop.addEventListener('drop', (e) => {
         e.preventDefault();
-        dropZone.classList.remove('dragging');
+        editDrop.classList.remove('dragging');
         const files = e.dataTransfer.files;
-        fileInput.files = files;
-        previewMultiple(fileInput);
+        editFileInput.files = files;
+        previewSingle(editFileInput);
     });
 </script>
 
