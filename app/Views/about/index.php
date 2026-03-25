@@ -3,7 +3,7 @@
 
 <!-- HERO -->
 <section class="hero-about d-flex align-items-center text-white text-center"
-style="background:url('<?= base_url('assets/images/gunung1.jpeg') ?>') center/cover no-repeat; height:90vh;">
+style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat; height:90vh;">
 
 <div class="container" data-aos="fade-up">
 

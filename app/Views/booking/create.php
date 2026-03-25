@@ -21,6 +21,11 @@ enctype="multipart/form-data">
 name="schedule_id"
 value="<?= esc($schedule['schedule_id']) ?>">
 
+<input type="hidden"
+name="final_price"
+id="finalPriceInput"
+value="<?= esc($schedule['price']) ?>">
+
 <!-- MEETING POINT -->
 <div class="mb-4">
 <label class="form-label">Meeting Point</label>
@@ -87,12 +92,13 @@ required>
 </p>
 
 <p>Total Harga<br>
-<strong id="totalPrice">Rp <?= number_format($schedule['price'],0,',','.') ?></strong>
+<strong id="totalPrice">
+Rp <?= number_format($schedule['price'],0,',','.') ?>
+</strong>
 </p>
 
 <hr>
 
-<!-- LOYALTY POINT -->
 <?php
 $userPoints = session()->get('points') ?? 0;
 $maxRedeem = floor($userPoints / 100);
@@ -102,16 +108,21 @@ $maxRedeem = floor($userPoints / 100);
 
 <div class="mb-3">
 
-<label class="form-label fw-semibold">Gunakan Loyalty Point</label>
+<label class="form-label fw-semibold">
+Gunakan Loyalty Point
+</label>
 
-<select id="redeemPoint" name="redeem_point" class="form-control">
+<select id="redeemPoint"
+name="redeem_point"
+class="form-control">
 
 <option value="0">Tidak digunakan</option>
 
 <?php for($i=1;$i<=$maxRedeem;$i++): ?>
 
 <option value="<?= $i*100 ?>">
-<?= $i*100 ?> poin (Potongan Rp <?= number_format($i*5000,0,',','.') ?>)
+<?= $i*100 ?> poin
+(Potongan Rp <?= number_format($i*5000,0,',','.') ?>)
 </option>
 
 <?php endfor; ?>
@@ -130,7 +141,8 @@ $maxRedeem = floor($userPoints / 100);
 <hr>
 
 <p>Total Bayar<br>
-<strong id="finalPrice" class="text-success">
+<strong id="finalPrice"
+class="text-success">
 Rp <?= number_format($schedule['price'],0,',','.') ?>
 </strong>
 </p>
@@ -141,7 +153,9 @@ Rp <?= number_format($schedule['price'],0,',','.') ?>
 <!-- METODE PEMBAYARAN -->
 <div class="mb-3">
 
-<label class="form-label">Metode Pembayaran</label>
+<label class="form-label">
+Metode Pembayaran
+</label>
 
 <select name="payment_method"
 id="paymentMethod"
@@ -157,12 +171,15 @@ required>
 </div>
 
 <div id="paymentDetail"
-class="alert alert-light d-none"></div>
+class="alert alert-light d-none">
+</div>
 
 <div id="proofUpload"
 class="mb-3 d-none">
 
-<label class="form-label">Upload Bukti Pembayaran</label>
+<label class="form-label">
+Upload Bukti Pembayaran
+</label>
 
 <input type="file"
 name="payment_proof"
@@ -201,17 +218,22 @@ Konfirmasi Pesanan
 
 <div class="col-md-6 mb-3">
 <label>Nama Lengkap</label>
-<input type="text" class="form-control name-input" required>
+<input type="text"
+class="form-control name-input"
+required>
 </div>
 
 <div class="col-md-6 mb-3">
 <label>Email</label>
-<input type="email" class="form-control email-input" required>
+<input type="email"
+class="form-control email-input"
+required>
 </div>
 
 <div class="col-md-6 mb-3">
 <label>Tanggal Lahir</label>
-<input type="date" class="form-control birthdate-input">
+<input type="date"
+class="form-control birthdate-input">
 </div>
 
 <div class="col-md-6 mb-3">
@@ -247,32 +269,61 @@ required>
 
 
 <style>
-.card{border-radius:12px;}
-.card input,.card select{border-radius:8px;}
+
+.card{
+border-radius:12px;
+}
+
+.card input,
+.card select{
+border-radius:8px;
+}
+
 </style>
 
 
 <script>
 
-const participantInput = document.getElementById("participantCount");
-const container = document.getElementById("participantsContainer");
-const template = document.getElementById("participantTemplate");
+const participantInput =
+document.getElementById("participantCount");
 
-const pricePerPerson = <?= $schedule['price'] ?>;
+const container =
+document.getElementById("participantsContainer");
 
-const totalPriceEl = document.getElementById("totalPrice");
-const discountEl = document.getElementById("discountPrice");
-const finalPriceEl = document.getElementById("finalPrice");
+const template =
+document.getElementById("participantTemplate");
 
-const redeemSelect = document.getElementById("redeemPoint");
+const pricePerPerson =
+<?= $schedule['price'] ?>;
 
-const paymentSelect = document.getElementById("paymentMethod");
-const paymentDetail = document.getElementById("paymentDetail");
-const proofUpload = document.getElementById("proofUpload");
+const totalPriceEl =
+document.getElementById("totalPrice");
+
+const discountEl =
+document.getElementById("discountPrice");
+
+const finalPriceEl =
+document.getElementById("finalPrice");
+
+const finalPriceInput =
+document.getElementById("finalPriceInput");
+
+const redeemSelect =
+document.getElementById("redeemPoint");
+
+const paymentSelect =
+document.getElementById("paymentMethod");
+
+const paymentDetail =
+document.getElementById("paymentDetail");
+
+const proofUpload =
+document.getElementById("proofUpload");
 
 
 function formatRupiah(number){
-return "Rp " + number.toLocaleString("id-ID");
+return "Rp " +
+number.toLocaleString("id-ID");
 }
 
 
@@ -282,16 +333,29 @@ container.innerHTML="";
 
 for(let i=0;i<count;i++){
 
-const clone = template.content.cloneNode(true);
+const clone =
+template.content.cloneNode(true);
 
-clone.querySelector(".peserta-title").innerText="Peserta "+(i+1);
+clone.querySelector(".peserta-title")
+.innerText="Peserta "+(i+1);
 
-clone.querySelector(".name-input").setAttribute("name",`participants[${i}][name]`);
-clone.querySelector(".email-input").setAttribute("name",`participants[${i}][email]`);
-clone.querySelector(".birthdate-input").setAttribute("name",`participants[${i}][birthdate]`);
-clone.querySelector(".gender-input").setAttribute("name",`participants[${i}][gender]`);
-clone.querySelector(".ktp-input").setAttribute("name","ktp[]");
-clone.querySelector(".health-input").setAttribute("name","health[]");
+clone.querySelector(".name-input")
+.setAttribute("name",`participants[${i}][name]`);
+
+clone.querySelector(".email-input")
+.setAttribute("name",`participants[${i}][email]`);
+
+clone.querySelector(".birthdate-input")
+.setAttribute("name",`participants[${i}][birthdate]`);
+
+clone.querySelector(".gender-input")
+.setAttribute("name",`participants[${i}][gender]`);
+
+clone.querySelector(".ktp-input")
+.setAttribute("name","ktp[]");
+
+clone.querySelector(".health-input")
+.setAttribute("name","health[]");
 
 container.appendChild(clone);
 
@@ -304,46 +368,61 @@ updatePrice();
 
 function updatePrice(){
 
-let participants = participantInput.value;
+let participants =
+parseInt(participantInput.value) || 1;
 
-let total = pricePerPerson * participants;
+let total =
+pricePerPerson * participants;
 
 let redeem = 0;
 
 if(redeemSelect){
-redeem = parseInt(redeemSelect.value) || 0;
+redeem =
+parseInt(redeemSelect.value) || 0;
 }
 
-let discount = (redeem/100) * 5000;
+let discount =
+(redeem/100) * 5000;
 
-let final = total - discount;
+let final =
+total - discount;
 
 if(final < 0){
 final = 0;
 }
 
-totalPriceEl.innerText = formatRupiah(total);
-discountEl.innerText = formatRupiah(discount);
-finalPriceEl.innerText = formatRupiah(final);
+totalPriceEl.innerText =
+formatRupiah(total);
+
+discountEl.innerText =
+formatRupiah(discount);
+
+finalPriceEl.innerText =
+formatRupiah(final);
+
+finalPriceInput.value = final;
 
 }
 
 
-participantInput.addEventListener("input",function(){
+participantInput
+.addEventListener("input",function(){
 generateForms(this.value);
 });
 
 
 if(redeemSelect){
 
-redeemSelect.addEventListener("change",function(){
+redeemSelect
+.addEventListener("change",function(){
 updatePrice();
 });
 
 }
 
 
-paymentSelect.addEventListener("change",function(){
+paymentSelect
+.addEventListener("change",function(){
 
 let content="";
 

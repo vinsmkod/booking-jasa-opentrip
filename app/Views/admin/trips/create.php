@@ -56,6 +56,22 @@
                         <input type="number" name="quota" class="form-control" required>
                     </div>
 
+
+                    <!-- ===============================
+                         LINK WHATSAPP GROUP (BARU)
+                         =============================== -->
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-semibold">Link Grup WhatsApp</label>
+                        <input type="text"
+                               name="whatsapp_group"
+                               class="form-control"
+                               placeholder="https://chat.whatsapp.com/xxxxx">
+                        <small class="text-muted">
+                            Link grup akan muncul setelah admin mengkonfirmasi booking
+                        </small>
+                    </div>
+
+
                     <!-- Status -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">Status</label>
@@ -115,6 +131,7 @@
 </template>
 
 <script>
+
 // Tambah titik meeting point
 document.getElementById('addMeetingPoint').addEventListener('click', function() {
     const container = document.getElementById('meetingPointsContainer');
@@ -129,6 +146,7 @@ document.getElementById('meetingPointsContainer').addEventListener('click', func
         e.target.closest('.input-group').remove();
     }
 });
+
 </script>
 
 <?= $this->endSection() ?>

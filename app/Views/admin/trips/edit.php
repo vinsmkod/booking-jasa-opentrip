@@ -52,6 +52,24 @@
                            value="<?= esc($schedule['quota'] ?? ''); ?>">
                 </div>
 
+
+                <!-- ===============================
+                     LINK WHATSAPP GROUP (BARU)
+                     =============================== -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Link Grup WhatsApp</label>
+                    <input type="text"
+                           name="whatsapp_group"
+                           class="form-control"
+                           value="<?= esc($trip['whatsapp_group'] ?? '') ?>"
+                           placeholder="https://chat.whatsapp.com/xxxxx">
+
+                    <div class="small text-muted">
+                        Link grup akan muncul setelah booking dikonfirmasi
+                    </div>
+                </div>
+
+
                 <!-- Kategori Trip -->
                 <div class="mb-4">
                     <label class="form-label fw-semibold">Kategori Trip</label>
@@ -115,17 +133,12 @@
                                     <button type="button" class="btn btn-danger btn-remove">Hapus</button>
                                 </div>
                             <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="input-group mb-2">
-                                <input type="text"
-                                       name="meeting_points[]"
-                                       class="form-control"
-                                       placeholder="Nama Titik Meeting">
-                                <button type="button" class="btn btn-danger btn-remove">Hapus</button>
-                            </div>
                         <?php endif; ?>
                     </div>
-                    <button type="button" id="addMeetingPoint" class="btn btn-dark btn-sm mt-2">+ Tambah Titik Meeting</button>
+
+                    <button type="button" id="addMeetingPoint" class="btn btn-dark btn-sm mt-2">
+                        + Tambah Titik Meeting
+                    </button>
                 </div>
 
                 <!-- Tombol -->
@@ -133,6 +146,7 @@
                     <a href="/admin/trips" class="btn btn-secondary px-4">← Kembali</a>
                     <button type="submit" class="btn btn-dark px-4">💾 Update Trip</button>
                 </div>
+
             </form>
         </div>
     </div>
@@ -141,16 +155,13 @@
 <!-- Template -->
 <template id="meetingPointTemplate">
     <div class="input-group mb-2">
-        <input type="text" name="meeting_points[]" class="form-control" placeholder="Nama Titik Meeting" required>
+        <input type="text" name="meeting_points[]" class="form-control" placeholder="Nama Titik Meeting">
         <button type="button" class="btn btn-danger btn-remove">Hapus</button>
     </div>
 </template>
 
-<style>
-.btn-remove { margin-left:5px; }
-</style>
-
 <script>
+
 document.getElementById('addMeetingPoint').addEventListener('click', function() {
     const container = document.getElementById('meetingPointsContainer');
     const template = document.getElementById('meetingPointTemplate');
@@ -158,12 +169,12 @@ document.getElementById('addMeetingPoint').addEventListener('click', function() 
     container.appendChild(clone);
 });
 
-// Hapus input meeting point
 document.getElementById('meetingPointsContainer').addEventListener('click', function(e){
     if(e.target && e.target.classList.contains('btn-remove')){
         e.target.closest('.input-group').remove();
     }
 });
+
 </script>
 
 <?= $this->endSection() ?>

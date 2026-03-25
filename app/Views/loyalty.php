@@ -25,7 +25,7 @@
                     </p>
                     <ul>
                         <li>Setiap <strong>100 poin</strong> dapat potongan harga trip sebesar <strong>Rp 5.000</strong>.</li>
-                        <li>Setiap booking trip yang berhasil menambah <strong>100 poin</strong> ke akun Anda.</li>
+                        <li>Setiap booking trip yang berhasil menambah <strong>10 poin</strong> ke akun Anda.</li>
                         <li>Poin akan otomatis ditambahkan setelah booking dikonfirmasi.</li>
                         <li>Poin dapat digunakan untuk potongan harga di booking berikutnya sesuai jumlah poin Anda.</li>
                         <li>

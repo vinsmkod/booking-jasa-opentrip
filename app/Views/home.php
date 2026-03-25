@@ -15,7 +15,7 @@
 <div class="carousel-inner">
 
 <div class="carousel-item active">
-<img src="<?= base_url('assets/images/gunung1.jpeg') ?>" class="d-block w-100 hero-img">
+<img src="<?= base_url('assets/images/gunung1.jpg') ?>" class="d-block w-100 hero-img">
 
 <div class="carousel-caption">
 
@@ -32,7 +32,7 @@ Lihat Trip
 
 
 <div class="carousel-item">
-<img src="<?= base_url('assets/images/gunung2.jpeg') ?>" class="d-block w-100 hero-img">
+<img src="<?= base_url('assets/images/gunung2.jpg') ?>" class="d-block w-100 hero-img">
 
 <div class="carousel-caption">
 

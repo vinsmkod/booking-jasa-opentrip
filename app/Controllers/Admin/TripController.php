@@ -34,6 +34,13 @@ class TripController extends BaseController
         return view('admin/trips/create');
     }
 
+
+    /*
+    =====================================
+    STORE TRIP
+    =====================================
+    */
+
     public function store()
     {
         // Upload Gambar
@@ -47,18 +54,20 @@ class TripController extends BaseController
 
         // Simpan Trip
         $tripData = [
-            'title'       => $this->request->getPost('title'),
-            'image'       => $imageName,
-            'type'        => $this->request->getPost('type'),
-            'location'    => $this->request->getPost('location'),
-            'description' => $this->request->getPost('description'),
-            'price'       => (int)$this->request->getPost('price'),
-            'status'      => $this->request->getPost('status'),
-            'quota'       => $this->request->getPost('quota')
+            'title'           => $this->request->getPost('title'),
+            'image'           => $imageName,
+            'type'            => $this->request->getPost('type'),
+            'location'        => $this->request->getPost('location'),
+            'description'     => $this->request->getPost('description'),
+            'price'           => (int)$this->request->getPost('price'),
+            'status'          => $this->request->getPost('status'),
+            'quota'           => $this->request->getPost('quota'),
+            'whatsapp_group'  => $this->request->getPost('whatsapp_group') // 🔥 TAMBAHAN
         ];
 
         $this->tripModel->insert($tripData);
         $trip_id = $this->tripModel->getInsertID();
+
 
         // Simpan Schedule
         $scheduleData = [
@@ -67,7 +76,9 @@ class TripController extends BaseController
             'quota'          => $this->request->getPost('quota'),
             'available'      => $this->request->getPost('quota')
         ];
+
         $this->scheduleModel->insert($scheduleData);
+
 
         // Simpan Meeting Points
         $meetingPoints = $this->request->getPost('meeting_points');
@@ -75,7 +86,9 @@ class TripController extends BaseController
 
         if (!empty($meetingPoints)) {
             foreach ($meetingPoints as $key => $name) {
+
                 $address = $meetingAddresses[$key] ?? '';
+
                 if ($name) {
                     $this->meetingPointModel->insert([
                         'trip_id' => $trip_id,
@@ -87,8 +100,16 @@ class TripController extends BaseController
         }
 
         return redirect()->to('/admin/trips')
-            ->with('success','Trip, schedule, dan meeting points berhasil ditambahkan');
+            ->with('success','Trip, schedule, meeting points & WhatsApp berhasil ditambahkan');
     }
+
+
+
+    /*
+    =====================================
+    EDIT TRIP
+    =====================================
+    */
 
     public function edit($id)
     {
@@ -108,18 +129,28 @@ class TripController extends BaseController
         ]);
     }
 
+
+
+    /*
+    =====================================
+    UPDATE TRIP
+    =====================================
+    */
+
     public function update($id)
     {
         // Upload Gambar
         $image = $this->request->getFile('image');
+
         $data = [
-            'title'       => $this->request->getPost('title'),
-            'type'        => $this->request->getPost('type'),
-            'location'    => $this->request->getPost('location'),
-            'description' => $this->request->getPost('description'),
-            'price'       => (int)$this->request->getPost('price'),
-            'status'      => $this->request->getPost('status'),
-            'quota'       => $this->request->getPost('quota')
+            'title'          => $this->request->getPost('title'),
+            'type'           => $this->request->getPost('type'),
+            'location'       => $this->request->getPost('location'),
+            'description'    => $this->request->getPost('description'),
+            'price'          => (int)$this->request->getPost('price'),
+            'status'         => $this->request->getPost('status'),
+            'quota'          => $this->request->getPost('quota'),
+            'whatsapp_group' => $this->request->getPost('whatsapp_group') // 🔥 TAMBAHAN
         ];
 
         if ($image && $image->isValid() && !$image->hasMoved()) {
@@ -130,15 +161,22 @@ class TripController extends BaseController
 
         $this->tripModel->update($id, $data);
 
+
+
         // Update Schedule
         $schedule = $this->scheduleModel->where('trip_id', $id)->first();
+
         if ($schedule) {
+
             $this->scheduleModel->update($schedule['schedule_id'], [
                 'departure_date' => $this->request->getPost('departure_date'),
                 'quota'          => $this->request->getPost('quota'),
                 'available'      => $this->request->getPost('quota')
             ]);
+
         }
+
+
 
         // Update Meeting Points
         $this->meetingPointModel->where('trip_id', $id)->delete();
@@ -147,8 +185,11 @@ class TripController extends BaseController
         $meetingAddresses = $this->request->getPost('meeting_addresses');
 
         if (!empty($meetingPoints)) {
+
             foreach ($meetingPoints as $key => $name) {
+
                 $address = $meetingAddresses[$key] ?? '';
+
                 if ($name) {
                     $this->meetingPointModel->insert([
                         'trip_id' => $id,
@@ -156,19 +197,30 @@ class TripController extends BaseController
                         'address' => $address
                     ]);
                 }
+
             }
+
         }
 
+
         return redirect()->to('/admin/trips')
-            ->with('success','Trip berhasil diperbarui beserta meeting points');
+            ->with('success','Trip berhasil diperbarui beserta WhatsApp & meeting points');
     }
+
+
+
+    /*
+    =====================================
+    DELETE TRIP
+    =====================================
+    */
 
     public function delete($id)
     {
         $this->tripModel->delete($id);
-        // Meeting points dan schedule otomatis ikut terhapus karena foreign key cascade
 
         return redirect()->to('/admin/trips')
             ->with('success','Trip berhasil dihapus beserta schedule & meeting points');
     }
+
 }

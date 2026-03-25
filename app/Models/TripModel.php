@@ -8,15 +8,18 @@ class TripModel extends Model
 {
     protected $table      = 'trips';
     protected $primaryKey = 'trip_id';
-    protected $returnType = 'array';
 
     protected $allowedFields = [
         'title',
+        'image',
+        'type',
         'location',
         'description',
         'price',
-        'image',
         'status',
-        'type'
+        'quota',
+        'whatsapp_group'
     ];
+
+    protected $useTimestamps = false;
 }

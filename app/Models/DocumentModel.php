@@ -7,12 +7,21 @@ use CodeIgniter\Model;
 class DocumentModel extends Model
 {
     protected $table      = 'documents';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'document_id';
+    protected $returnType = 'array';
 
     protected $allowedFields = [
         'booking_id',
-        'user_id',
-        'file_path',
+        'name',
+        'email',
+        'birthdate',
+        'gender',
+        'ktp',
+        'health',
+        'type',
+        'file',
         'status'
     ];
+
+    protected $useTimestamps = false;
 }

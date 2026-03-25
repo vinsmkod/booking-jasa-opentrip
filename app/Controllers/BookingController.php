@@ -11,9 +11,6 @@ use App\Models\DocumentModel;
 use App\Models\MeetingPointModel;
 use App\Models\UserModel;
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 class BookingController extends BaseController
 {
     protected $bookingModel;
@@ -26,49 +23,52 @@ class BookingController extends BaseController
 
     public function __construct()
     {
-        $this->bookingModel      = new BookingModel();
-        $this->scheduleModel     = new ScheduleModel();
-        $this->tripModel         = new TripModel();
-        $this->paymentModel      = new PaymentModel();
-        $this->documentModel     = new DocumentModel();
+        $this->bookingModel = new BookingModel();
+        $this->scheduleModel = new ScheduleModel();
+        $this->tripModel = new TripModel();
+        $this->paymentModel = new PaymentModel();
+        $this->documentModel = new DocumentModel();
         $this->meetingPointModel = new MeetingPointModel();
-        $this->userModel         = new UserModel();
+        $this->userModel = new UserModel();
     }
 
-    // ==============================
-    // HALAMAN BOOKING
-    // ==============================
+
+    /*
+    =====================================
+    CREATE BOOKING
+    =====================================
+    */
+
     public function create($schedule_id)
     {
-        if (!session()->get('user_id')) {
-            return redirect()->to('/login');
-        }
-
         $schedule = $this->scheduleModel
-            ->select('schedules.*, trips.trip_id, trips.title, trips.location, trips.price')
+            ->select('schedules.*, trips.title, trips.location, trips.price')
             ->join('trips','trips.trip_id = schedules.trip_id')
-            ->where('schedule_id', $schedule_id)
+            ->where('schedule_id',$schedule_id)
             ->first();
 
-        if (!$schedule) {
-            return redirect()->to('/')
-                ->with('error','Jadwal tidak ditemukan');
+        if(!$schedule){
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         $meetingPoints = $this->meetingPointModel
-            ->where('trip_id', $schedule['trip_id'])
+            ->where('trip_id',$schedule['trip_id'])
             ->findAll();
 
-        return view('booking/create', [
+        return view('booking/create',[
             'schedule' => $schedule,
             'meetingPoints' => $meetingPoints
         ]);
     }
 
 
-    // ==============================
-    // SIMPAN BOOKING
-    // ==============================
+
+    /*
+    =====================================
+    STORE BOOKING
+    =====================================
+    */
+
     public function store()
     {
         $user_id = session()->get('user_id');
@@ -77,236 +77,242 @@ class BookingController extends BaseController
             return redirect()->to('/login');
         }
 
-        $schedule_id      = $this->request->getPost('schedule_id');
-        $participantCount = (int)$this->request->getPost('participant');
-        $method           = $this->request->getPost('payment_method');
+        $schedule_id = $this->request->getPost('schedule_id');
+        $participant = $this->request->getPost('participant');
         $meeting_point_id = $this->request->getPost('meeting_point_id');
+        $redeem_point = $this->request->getPost('redeem_point') ?? 0;
+        $payment_method = $this->request->getPost('payment_method');
 
-        // AMBIL REDEEM POINT
-        $redeemPoints = (int)$this->request->getPost('redeem_point');
 
-        if (!$schedule_id || $participantCount <= 0) {
-            return redirect()->back()
-                ->with('error', 'Jumlah peserta tidak valid');
-        }
+        /*
+        ==============================
+        AMBIL DATA
+        ==============================
+        */
 
         $schedule = $this->scheduleModel->find($schedule_id);
 
         if (!$schedule) {
-            return redirect()->back()
-                ->with('error', 'Jadwal tidak ditemukan');
-        }
-
-        if ($schedule['available'] < $participantCount) {
-            return redirect()->back()
-                ->with('error', 'Kuota tidak cukup');
+            return redirect()->back()->with('error', 'Schedule tidak ditemukan');
         }
 
         $trip = $this->tripModel->find($schedule['trip_id']);
 
         if (!$trip) {
-            return redirect()->back()
-                ->with('error', 'Trip tidak ditemukan');
+            return redirect()->back()->with('error', 'Trip tidak ditemukan');
         }
 
-        // ==============================
-        // HITUNG TOTAL + DISKON POINT
-        // ==============================
 
-        $total_price = $trip['price'] * $participantCount;
+        /*
+        ==============================
+        HITUNG HARGA
+        ==============================
+        */
 
-        $user = $this->userModel->find($user_id);
-        $userPoints = $user['points'] ?? 0;
+        $price = ($trip['price'] ?? 0) * ($participant ?? 1);
 
-        // Batasi redeem agar tidak melebihi poin user
-        $maxRedeem = floor($userPoints / 100) * 100;
+        $discount = ($redeem_point / 100) * 5000;
 
-        if ($redeemPoints > $maxRedeem) {
-            $redeemPoints = 0;
-        }
+        $final_price = $price - $discount;
 
-        $discount = ($redeemPoints / 100) * 5000;
-
-        $final_price = $total_price - $discount;
-
-        if ($final_price < 0) {
+        if($final_price < 0){
             $final_price = 0;
         }
 
-        $booking_code = 'TRIP-' . date('YmdHis') . rand(100,999);
 
-        $db = \Config\Database::connect();
-        $db->transStart();
+        /*
+        ==============================
+        INSERT BOOKING
+        ==============================
+        */
 
-        // ==============================
-        // INSERT BOOKING
-        // ==============================
-        $this->bookingModel->insert([
-            'booking_code'     => $booking_code,
-            'user_id'          => $user_id,
-            'schedule_id'      => $schedule_id,
-            'participant'      => $participantCount,
-            'total_price'      => $final_price,
-            'status'           => 'pending',
-            'meeting_point_id' => $meeting_point_id
+        $booking_id = $this->bookingModel->insert([
+            'user_id' => $user_id,
+            'schedule_id' => $schedule_id,
+            'meeting_point_id' => $meeting_point_id,
+            'participant' => $participant,
+            'total_price' => $final_price,
+            'status' => 'pending'
         ]);
 
-        $booking_id = $this->bookingModel->insertID();
 
-        // ==============================
-        // KURANGI POINT USER
-        // ==============================
-        if ($redeemPoints > 0) {
-
-            $newPoints = $userPoints - $redeemPoints;
-
-            $this->userModel->update($user_id, [
-                'points' => $newPoints
-            ]);
-
-            session()->set('points', $newPoints);
-        }
-
-        // ==============================
-        // UPDATE KUOTA
-        // ==============================
-        $this->scheduleModel->update($schedule_id, [
-            'available' => $schedule['available'] - $participantCount
-        ]);
-
-        // ==============================
-        // UPLOAD DOKUMEN PESERTA
-        // ==============================
+        /*
+        ==============================
+        UPLOAD DOKUMEN PESERTA
+        ==============================
+        */
 
         $participants = $this->request->getPost('participants');
-        $files = $this->request->getFiles();
+        $ktpFiles = $this->request->getFiles()['ktp'] ?? [];
+        $healthFiles = $this->request->getFiles()['health'] ?? [];
 
-        $ktpFiles    = $files['ktp'] ?? [];
-        $healthFiles = $files['health'] ?? [];
+        if(!is_dir('uploads/documents')){
+            mkdir('uploads/documents',0777,true);
+        }
 
-        foreach ($participants as $i => $p) {
 
-            if (isset($ktpFiles[$i]) && $ktpFiles[$i]->isValid()) {
+        if($participants){
+        foreach($participants as $i => $p){
 
+            $ktpName = null;
+            $healthName = null;
+
+            if(isset($ktpFiles[$i]) && $ktpFiles[$i]->isValid()){
                 $ktpName = $ktpFiles[$i]->getRandomName();
-                $ktpFiles[$i]->move('uploads/documents', $ktpName);
-
-                $this->documentModel->insert([
-                    'booking_id' => $booking_id,
-                    'type' => 'ktp',
-                    'file' => $ktpName,
-                    'status' => 'pending'
-                ]);
+                $ktpFiles[$i]->move('uploads/documents',$ktpName);
             }
 
-            if (isset($healthFiles[$i]) && $healthFiles[$i]->isValid()) {
 
+            if(isset($healthFiles[$i]) && $healthFiles[$i]->isValid()){
                 $healthName = $healthFiles[$i]->getRandomName();
-                $healthFiles[$i]->move('uploads/documents', $healthName);
-
-                $this->documentModel->insert([
-                    'booking_id' => $booking_id,
-                    'type' => 'health',
-                    'file' => $healthName,
-                    'status' => 'pending'
-                ]);
+                $healthFiles[$i]->move('uploads/documents',$healthName);
             }
+
+
+            $this->documentModel->insert([
+                'booking_id' => $booking_id,
+                'name' => $p['name'] ?? null,
+                'email' => $p['email'] ?? null,
+                'birthdate' => $p['birthdate'] ?? null,
+                'gender' => $p['gender'] ?? null,
+                'ktp' => $ktpName,
+                'health' => $healthName
+            ]);
+        }
         }
 
-        // ==============================
-        // UPLOAD BUKTI PEMBAYARAN
-        // ==============================
 
-        $proofFile = $this->request->getFile('payment_proof');
-        $proofName = null;
+        /*
+        ==============================
+        PAYMENT
+        ==============================
+        */
 
-        if ($proofFile && $proofFile->isValid()) {
-            $proofName = $proofFile->getRandomName();
-            $proofFile->move('uploads/payments', $proofName);
+        $payment = $this->request->getFile('payment_proof');
+
+        if($payment && $payment->isValid()){
+
+            if(!is_dir('uploads/payment')){
+                mkdir('uploads/payment',0777,true);
+            }
+
+            $paymentName = $payment->getRandomName();
+            $payment->move('uploads/payment',$paymentName);
+
+            $this->paymentModel->insert([
+                'booking_id' => $booking_id,
+                'method' => $payment_method,
+                'file' => $paymentName,
+                'status' => 'pending'
+            ]);
         }
 
-        // ==============================
-        // INSERT PAYMENT
-        // ==============================
 
-        $this->paymentModel->insert([
-            'booking_id' => $booking_id,
-            'method'     => $method,
-            'amount'     => $final_price,
-            'proof'      => $proofName,
-            'status'     => 'waiting',
-            'paid_at'    => date('Y-m-d H:i:s')
+        /*
+        ==============================
+        KURANGI KUOTA
+        ==============================
+        */
+
+        $available = ($schedule['available'] ?? 0) - $participant;
+
+        $this->scheduleModel->update($schedule_id,[
+            'available' => $available
         ]);
 
-        $db->transComplete();
 
-        return redirect()->to('/booking/detail/' . $booking_id)
-            ->with('success', 'Booking berhasil dibuat');
+        /*
+        ==============================
+        POTONG POINT
+        ==============================
+        */
+
+        if($redeem_point > 0){
+
+            $user = $this->userModel->find($user_id);
+
+            $this->userModel->update($user_id,[
+                'points' => ($user['points'] ?? 0) - $redeem_point
+            ]);
+        }
+
+
+        return redirect()->to('/booking/detail/'.$booking_id)
+            ->with('success','Booking berhasil dibuat');
     }
 
 
-    // ==============================
-    // DETAIL BOOKING
-    // ==============================
+
+    /*
+    =====================================
+    DETAIL BOOKING
+    =====================================
+    */
+
     public function detail($booking_id)
     {
         $user_id = session()->get('user_id');
 
-        if (!$user_id) {
+        if(!$user_id){
             return redirect()->to('/login');
         }
 
         $booking = $this->bookingModel
-            ->where('booking_id', $booking_id)
-            ->where('user_id', $user_id)
+            ->where('booking_id',$booking_id)
+            ->where('user_id',$user_id)
             ->first();
 
-        if (!$booking) {
-            return redirect()->to('/dashboard')
-                ->with('error', 'Booking tidak ditemukan');
+        if(!$booking){
+            return redirect()->to('/dashboard');
         }
 
-        $schedule  = $this->scheduleModel->find($booking['schedule_id']);
-        $trip      = $this->tripModel->find($schedule['trip_id']);
-        $payment   = $this->paymentModel
-            ->where('booking_id', $booking_id)
+        $schedule = $this->scheduleModel->find($booking['schedule_id']);
+        $trip = $this->tripModel->find($schedule['trip_id']);
+
+        $payment = $this->paymentModel
+            ->where('booking_id',$booking_id)
             ->first();
 
         $documents = $this->documentModel
-            ->where('booking_id', $booking_id)
+            ->where('booking_id',$booking_id)
             ->findAll();
 
-        return view('booking/detail', [
-            'booking'   => $booking,
-            'schedule'  => $schedule,
-            'trip'      => $trip,
-            'payment'   => $payment,
-            'documents' => $documents
+        return view('booking/detail',[
+            'booking'=>$booking,
+            'schedule'=>$schedule,
+            'trip'=>$trip,
+            'payment'=>$payment,
+            'documents'=>$documents
         ]);
     }
 
 
-    // ==============================
-    // HISTORY BOOKING
-    // ==============================
+
+    /*
+    =====================================
+    HISTORY BOOKING
+    =====================================
+    */
+
     public function history()
     {
         $user_id = session()->get('user_id');
 
-        if (!$user_id) {
-            return redirect()->to('/login');
-        }
-
         $bookings = $this->bookingModel
-            ->select('bookings.*, schedules.departure_date, trips.title as trip_title')
-            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id')
-            ->join('trips', 'trips.trip_id = schedules.trip_id')
-            ->where('bookings.user_id', $user_id)
-            ->orderBy('bookings.created_at', 'DESC')
+            ->select('
+                bookings.*,
+                trips.title as trip_title,
+                schedules.departure_date
+            ')
+            ->join('schedules','schedules.schedule_id = bookings.schedule_id')
+            ->join('trips','trips.trip_id = schedules.trip_id')
+            ->where('bookings.user_id',$user_id)
+            ->orderBy('booking_id','DESC')
             ->findAll();
 
-        return view('booking/history', [
-            'bookings' => $bookings
+        return view('booking/history',[
+            'bookings'=>$bookings
         ]);
     }
+
 }
