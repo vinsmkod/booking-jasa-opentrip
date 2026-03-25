@@ -11,15 +11,13 @@ class TripModel extends Model
 
     protected $allowedFields = [
         'title',
-        'image',
-        'type',
         'location',
         'description',
         'price',
+        'image',
         'status',
+        'type',
         'quota',
-        'whatsapp_group'
+        'whatsapp_group', // FIX: pastikan ini ada
     ];
-
-    protected $useTimestamps = false;
 }

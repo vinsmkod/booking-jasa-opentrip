@@ -119,17 +119,6 @@ class="btn btn-primary">
 Download Invoice
 </a>
 
-
-<?php if(($booking['status'] ?? '') == 'confirmed'): ?>
-
-<a href="<?= base_url('booking/ticket/'.$booking['booking_id']) ?>"
-class="btn btn-dark">
-QR Ticket
-</a>
-
-<?php endif; ?>
-
-
 <?php if (($booking['status'] ?? '') === 'confirmed' && !empty($trip['whatsapp_group'])): ?>
 
 <a href="<?= esc($trip['whatsapp_group']) ?>"

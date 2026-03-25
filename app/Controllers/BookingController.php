@@ -35,6 +35,23 @@ class BookingController extends BaseController
 
     /*
     =====================================
+    GENERATE BOOKING CODE
+    =====================================
+    */
+
+    private function generateBookingCode()
+    {
+        $prefix = "TRIP";
+        $date = date('Ymd');
+        $random = strtoupper(substr(md5(uniqid()),0,5));
+
+        return $prefix.'-'.$date.'-'.$random;
+    }
+
+
+
+    /*
+    =====================================
     CREATE BOOKING
     =====================================
     */
@@ -122,11 +139,21 @@ class BookingController extends BaseController
 
         /*
         ==============================
+        GENERATE BOOKING CODE
+        ==============================
+        */
+
+        $bookingCode = $this->generateBookingCode();
+
+
+        /*
+        ==============================
         INSERT BOOKING
         ==============================
         */
 
         $booking_id = $this->bookingModel->insert([
+            'booking_code' => $bookingCode,
             'user_id' => $user_id,
             'schedule_id' => $schedule_id,
             'meeting_point_id' => $meeting_point_id,
@@ -150,7 +177,6 @@ class BookingController extends BaseController
             mkdir('uploads/documents',0777,true);
         }
 
-
         if($participants){
         foreach($participants as $i => $p){
 
@@ -162,12 +188,10 @@ class BookingController extends BaseController
                 $ktpFiles[$i]->move('uploads/documents',$ktpName);
             }
 
-
             if(isset($healthFiles[$i]) && $healthFiles[$i]->isValid()){
                 $healthName = $healthFiles[$i]->getRandomName();
                 $healthFiles[$i]->move('uploads/documents',$healthName);
             }
-
 
             $this->documentModel->insert([
                 'booking_id' => $booking_id,
@@ -202,7 +226,7 @@ class BookingController extends BaseController
             $this->paymentModel->insert([
                 'booking_id' => $booking_id,
                 'method' => $payment_method,
-                'file' => $paymentName,
+                'proof' => $paymentName,
                 'status' => 'pending'
             ]);
         }
@@ -215,6 +239,10 @@ class BookingController extends BaseController
         */
 
         $available = ($schedule['available'] ?? 0) - $participant;
+
+        if($available < 0){
+            $available = 0;
+        }
 
         $this->scheduleModel->update($schedule_id,[
             'available' => $available

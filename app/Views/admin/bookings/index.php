@@ -51,7 +51,7 @@ Rp <?= number_format($booking['total_price'] ?? 0,0,',','.') ?>
 
 <?php if(!empty($booking['proof'])): ?>
 
-<a href="<?= base_url('uploads/payments/'.$booking['proof']) ?>" 
+<a href="<?= base_url('uploads/payment/'.$booking['proof']) ?>" 
 target="_blank"
 class="btn btn-sm btn-info">
 Lihat Bukti

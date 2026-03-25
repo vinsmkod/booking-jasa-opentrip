@@ -21,7 +21,9 @@ class InvoiceController extends BaseController
             ->select('
                 bookings.*,
                 users.name,
+                users.email,
                 trips.title,
+                trips.location,
                 schedules.departure_date
             ')
             ->join('users','users.user_id = bookings.user_id')
@@ -39,6 +41,7 @@ class InvoiceController extends BaseController
         ]);
 
         $dompdf = new Dompdf();
+
         $dompdf->loadHtml($html);
 
         $dompdf->setPaper('A4','portrait');

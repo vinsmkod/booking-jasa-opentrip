@@ -113,7 +113,7 @@ $routes->group('', ['filter' => 'auth'], function($routes){
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('invoice/(:num)', 'InvoiceController::generate/$1');
+    $routes->get('booking/invoice/(:num)', 'InvoiceController::generate/$1');
 
 
     /*
