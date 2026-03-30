@@ -6,11 +6,11 @@
 
     :root {
         --ink: #0f0e0d;
-        --paper: #f5f2ed;
+        --paper: #bcccb9;
         --sand: #e8e2d9;
         --rust: #c4603a;
         --rust-light: #e8886a;
-        --muted: #8c8780;
+        --muted: #000000ff;
         --card-radius: 12px;
         --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
         --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -25,74 +25,61 @@
         background: var(--paper);
     }
 
-    /* ── HERO HEADER with Mountain Background ── */
-    .gallery-hero {
+    /* Hero Section */
+    .hero-gallery {
         position: relative;
         padding: 60px 0 80px;
-        background: linear-gradient(135deg, #2c3e2f 0%, #1a2a1c 100%);
-        border-radius: 0 0 30px 30px;
-        margin-bottom: 40px;
+        border-radius: 10px 10px 50px 50px;
+        margin-bottom: 50px;
         overflow: hidden;
     }
 
-    .gallery-hero::before {
+    .hero-gallery::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3') center/cover no-repeat;
-        opacity: 0.2;
-        pointer-events: none;
+        background: linear-gradient(135deg, rgba(26, 158, 90, 0.54) 0%, rgba(0, 0, 0, 0.4) 100%);
     }
 
-    .gallery-hero::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-        background: linear-gradient(to top, var(--paper), transparent);
-        pointer-events: none;
-    }
-
-    .gallery-hero .container {
+    .hero-gallery .container {
         position: relative;
         z-index: 2;
     }
 
-    .gallery-hero .label {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: .3em;
-        text-transform: uppercase;
-        color: var(--rust-light);
-        margin-bottom: 16px;
-    }
+    .hero-gallery h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: var(--rust);
 
-    .gallery-hero h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2.8rem, 6vw, 4rem);
-        font-weight: 700;
-        line-height: 1.1;
-        color: white;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    .gallery-hero h1 em {
-        font-style: italic;
-        color: var(--rust-light);
+    .hero-gallery p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.95;
     }
 
-    .gallery-hero .sub {
-        margin-top: 20px;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1rem;
-        font-weight: 300;
-        max-width: 500px;
+    .btn-hero {
+        background: linear-gradient(135deg, #c4603a, #b5532c);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+        margin-top: 30px;
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(196, 96, 58, 0.3);
+        color: white;
     }
 
     /* ── FILTER SECTION ── */
@@ -485,6 +472,19 @@
         margin: 0 0 30px;
     }
 </style>
+<!-- HERO SECTION -->
+<section class="hero-gallery"
+    style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat;">
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+        <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
+        <p class="lead mt-3">
+            Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah
+        </p>
+        <a href="<?= base_url('trips') ?>" class="btn btn-hero" data-aos="zoom-in" data-aos-delay="300">
+            <i class="fas fa-mountain me-2"></i> Lihat Jadwal Trip
+        </a>
+    </div>
+</section>
 
 <!-- LIGHTBOX BACKDROP -->
 <div class="lightbox-backdrop" id="lightbox" onclick="closeLightbox(event)">
@@ -500,134 +500,124 @@
     </div>
 </div>
 
-<div class="gallery-hero">
-    <div class="container">
-        <div class="label">EXPLORE THE MOMENTS</div>
-        <h1>Galeri <em>Petualangan</em></h1>
-        <p class="sub">Jejak langkah dan cerita dari setiap pendakian. Dokumentasi perjalanan bersama BLNTRK OUTDOOR.</p>
+<!-- TRIP FILTER SECTION -->
+<?php if (!empty($trips)): ?>
+    <div class="filter-section">
+        <div class="filter-title">
+            <i class="fas fa-mountain"></i> Filter Berdasarkan Trip
+        </div>
+        <div class="trip-filters">
+            <a href="<?= base_url('gallery') ?>"
+                class="trip-filter-btn <?= empty($activeTrip) ? 'active' : '' ?>">
+                <i class="fas fa-globe"></i> Semua Trip
+            </a>
+            <?php foreach ($trips as $trip): ?>
+                <a href="<?= base_url('gallery/trip/' . $trip['trip_id']) ?>"
+                    class="trip-filter-btn <?= ($activeTrip == $trip['trip_id']) ? 'active' : '' ?>">
+                    <i class="fas fa-hiking"></i> <?= esc($trip['title']) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
     </div>
+<?php endif; ?>
+
+<!-- ACTIVE TRIP INFO -->
+<?php if (!empty($selectedTrip)): ?>
+    <div class="trip-info-card">
+        <div>
+            <h3><i class="fas fa-flag-checkered"></i> <?= esc($selectedTrip['title']) ?></h3>
+            <p><i class="fas fa-map-marker-alt"></i> <?= esc($selectedTrip['location']) ?> |
+                <i class="fas fa-calendar"></i> Dokumentasi Perjalanan
+            </p>
+        </div>
+        <a href="<?= base_url('gallery') ?>" class="btn-clear">
+            <i class="fas fa-times"></i> Tampilkan Semua
+        </a>
+    </div>
+<?php endif; ?>
+
+<!-- ALBUM TABS -->
+<?php if (!empty($albums)): ?>
+    <div class="album-tabs">
+        <a href="<?= base_url('gallery') . ($activeTrip ? '?trip=' . $activeTrip : '') ?>"
+            class="album-tab <?= !isset($activeAlbum) ? 'active' : '' ?>">
+            <i class="fas fa-th-large"></i> Semua Album
+        </a>
+        <?php foreach ($albums as $album): ?>
+            <?php if (!empty($album['album'])): ?>
+                <a href="<?= base_url('gallery?album=' . urlencode($album['album'])) . ($activeTrip ? '&trip=' . $activeTrip : '') ?>"
+                    class="album-tab <?= (isset($activeAlbum) && $activeAlbum === $album['album']) ? 'active' : '' ?>">
+                    <i class="fas fa-folder"></i> <?= esc($album['album']) ?>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<!-- STATS INFO -->
+<div class="stats-info">
+    <small>
+        <i class="fas fa-images"></i>
+        <?= count($galleryPhotos) ?> foto ditemukan
+        <?php if (!empty($selectedTrip)): ?>
+            dalam perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>
+        <?php elseif (!empty($activeAlbum)): ?>
+            dalam album <strong><?= esc($activeAlbum) ?></strong>
+        <?php else: ?>
+            dalam galeri
+        <?php endif; ?>
+    </small>
 </div>
 
-<div class="container">
-
-    <!-- TRIP FILTER SECTION -->
-    <?php if (!empty($trips)): ?>
-        <div class="filter-section">
-            <div class="filter-title">
-                <i class="fas fa-mountain"></i> Filter Berdasarkan Trip
-            </div>
-            <div class="trip-filters">
-                <a href="<?= base_url('gallery') ?>"
-                    class="trip-filter-btn <?= empty($activeTrip) ? 'active' : '' ?>">
-                    <i class="fas fa-globe"></i> Semua Trip
-                </a>
-                <?php foreach ($trips as $trip): ?>
-                    <a href="<?= base_url('gallery/trip/' . $trip['trip_id']) ?>"
-                        class="trip-filter-btn <?= ($activeTrip == $trip['trip_id']) ? 'active' : '' ?>">
-                        <i class="fas fa-hiking"></i> <?= esc($trip['title']) ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <!-- ACTIVE TRIP INFO -->
-    <?php if (!empty($selectedTrip)): ?>
-        <div class="trip-info-card">
-            <div>
-                <h3><i class="fas fa-flag-checkered"></i> <?= esc($selectedTrip['title']) ?></h3>
-                <p><i class="fas fa-map-marker-alt"></i> <?= esc($selectedTrip['location']) ?> |
-                    <i class="fas fa-calendar"></i> Dokumentasi Perjalanan
-                </p>
-            </div>
-            <a href="<?= base_url('gallery') ?>" class="btn-clear">
-                <i class="fas fa-times"></i> Tampilkan Semua
-            </a>
-        </div>
-    <?php endif; ?>
-
-    <!-- ALBUM TABS -->
-    <?php if (!empty($albums)): ?>
-        <div class="album-tabs">
-            <a href="<?= base_url('gallery') . ($activeTrip ? '?trip=' . $activeTrip : '') ?>"
-                class="album-tab <?= !isset($activeAlbum) ? 'active' : '' ?>">
-                <i class="fas fa-th-large"></i> Semua Album
-            </a>
-            <?php foreach ($albums as $album): ?>
-                <?php if (!empty($album['album'])): ?>
-                    <a href="<?= base_url('gallery?album=' . urlencode($album['album'])) . ($activeTrip ? '&trip=' . $activeTrip : '') ?>"
-                        class="album-tab <?= (isset($activeAlbum) && $activeAlbum === $album['album']) ? 'active' : '' ?>">
-                        <i class="fas fa-folder"></i> <?= esc($album['album']) ?>
-                    </a>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-
-    <!-- STATS INFO -->
-    <div class="stats-info">
-        <small>
-            <i class="fas fa-images"></i>
-            <?= count($galleryPhotos) ?> foto ditemukan
-            <?php if (!empty($selectedTrip)): ?>
-                dalam perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>
-            <?php elseif (!empty($activeAlbum)): ?>
-                dalam album <strong><?= esc($activeAlbum) ?></strong>
-            <?php else: ?>
-                dalam galeri
-            <?php endif; ?>
-        </small>
-    </div>
-
-    <!-- MASONRY GRID -->
-    <?php if (!empty($galleryPhotos)): ?>
-        <div class="masonry-grid" id="photoGrid">
-            <?php foreach ($galleryPhotos as $i => $photo): ?>
-                <div class="photo-card"
-                    data-index="<?= $i ?>"
-                    data-src="<?= base_url('uploads/gallery/' . $photo['image']) ?>"
-                    data-title="<?= esc($photo['title']) ?>"
-                    data-album="<?= esc($photo['album'] ?? 'Tanpa Album') ?>"
-                    onclick="openLightbox(this)">
-                    <img src="<?= base_url('uploads/gallery/' . $photo['image']) ?>"
-                        alt="<?= esc($photo['title']) ?>"
-                        loading="lazy">
-                    <div class="overlay">
-                        <div class="overlay-text">
-                            <div class="title"><?= esc($photo['title']) ?></div>
-                            <div class="album-tag"><?= esc($photo['album'] ?? 'Tanpa Album') ?></div>
-                        </div>
+<!-- MASONRY GRID -->
+<?php if (!empty($galleryPhotos)): ?>
+    <div class="masonry-grid" id="photoGrid">
+        <?php foreach ($galleryPhotos as $i => $photo): ?>
+            <div class="photo-card"
+                data-index="<?= $i ?>"
+                data-src="<?= base_url('uploads/gallery/' . $photo['image']) ?>"
+                data-title="<?= esc($photo['title']) ?>"
+                data-album="<?= esc($photo['album'] ?? 'Tanpa Album') ?>"
+                onclick="openLightbox(this)">
+                <img src="<?= base_url('uploads/gallery/' . $photo['image']) ?>"
+                    alt="<?= esc($photo['title']) ?>"
+                    loading="lazy">
+                <div class="overlay">
+                    <div class="overlay-text">
+                        <div class="title"><?= esc($photo['title']) ?></div>
+                        <div class="album-tag"><?= esc($photo['album'] ?? 'Tanpa Album') ?></div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-        <!-- Additional Info -->
-        <div class="text-center mt-5 mb-4">
-            <small class="text-muted">
-                <i class="fas fa-camera"></i> Klik foto untuk melihat lebih detail
-            </small>
-        </div>
-    <?php else: ?>
-        <div class="empty-state">
-            <div class="icon">🏔️</div>
-            <h4>Belum Ada Dokumentasi</h4>
-            <p>
-                <?php if (!empty($selectedTrip)): ?>
-                    Belum ada foto untuk perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>.
-                <?php elseif (!empty($activeAlbum)): ?>
-                    Belum ada foto dalam album <strong><?= esc($activeAlbum) ?></strong>.
-                <?php else: ?>
-                    Belum ada foto dalam galeri. Ikuti perjalanan kami untuk melihat dokumentasi petualangan!
-                <?php endif; ?>
-            </p>
-            <a href="<?= base_url('trips') ?>" class="btn btn-outline-primary mt-2">
-                <i class="fas fa-hiking"></i> Lihat Trip Tersedia
-            </a>
-        </div>
-    <?php endif; ?>
+    <!-- Additional Info -->
+    <div class="text-center mt-5 mb-4">
+        <small class="text-muted">
+            <i class="fas fa-camera"></i> Klik foto untuk melihat lebih detail
+        </small>
+    </div>
+<?php else: ?>
+    <div class="empty-state">
+        <div class="icon">🏔️</div>
+        <h4>Belum Ada Dokumentasi</h4>
+        <p>
+            <?php if (!empty($selectedTrip)): ?>
+                Belum ada foto untuk perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>.
+            <?php elseif (!empty($activeAlbum)): ?>
+                Belum ada foto dalam album <strong><?= esc($activeAlbum) ?></strong>.
+            <?php else: ?>
+                Belum ada foto dalam galeri. Ikuti perjalanan kami untuk melihat dokumentasi petualangan!
+            <?php endif; ?>
+        </p>
+        <a href="<?= base_url('trips') ?>" class="btn btn-outline-primary mt-2">
+            <i class="fas fa-hiking"></i> Lihat Trip Tersedia
+        </a>
+    </div>
+<?php endif; ?>
 
-    <div style="height: 40px"></div>
+<div style="height: 40px"></div>
 </div>
 
 <script>

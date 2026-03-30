@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
+<link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" rel="stylesheet">
+
 <div class="container py-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -8,117 +10,96 @@
             <h3 class="fw-bold">Edit Foto</h3>
             <p class="text-muted mb-0">Ubah informasi foto galeri</p>
         </div>
+
         <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
     </div>
 
-    <!-- Notifikasi Error -->
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>
-            <?php
-            $error = session()->getFlashdata('error');
-            if (is_array($error)) {
-                foreach ($error as $err) {
-                    echo $err . '<br>';
-                }
-            } else {
-                echo $error;
-            }
-            ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
-
     <div class="card shadow-sm border-0">
         <div class="card-body">
+
+            <!-- Informasi Optimasi Gambar -->
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle"></i>
+                <strong>Optimasi Gambar:</strong> Foto akan dioptimalkan secara otomatis menjadi ukuran maksimal 1200x1200px untuk tampilan galeri yang rapi dan cepat loading.
+            </div>
 
             <form action="<?= base_url('admin/gallery/update/' . $gallery['gallery_id']) ?>"
                 method="post"
                 enctype="multipart/form-data">
-                <?= csrf_field() ?>
-                <input type="hidden" name="_method" value="PUT">
 
-                <!-- Album -->
+                <?= csrf_field() ?>
+
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">
-                        Nama Album <span class="text-danger">*</span>
-                    </label>
+                    <label class="form-label fw-semibold">Nama Album</label>
                     <input type="text"
                         name="album"
                         class="form-control"
-                        list="album-list"
                         value="<?= esc($gallery['album']) ?>"
-                        placeholder="Contoh: Dokumentasi Gunung Merbabu"
                         required>
-                    <div class="form-text">
-                        <i class="fas fa-info-circle"></i> Ketik nama baru atau pilih dari album yang sudah ada
-                    </div>
-                    <datalist id="album-list">
-                        <?php if (!empty($albums)): foreach ($albums as $a): ?>
-                                <option value="<?= esc($a['album']) ?>">
-                            <?php endforeach;
-                        endif; ?>
-                    </datalist>
                 </div>
 
-                <!-- Judul -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">
-                        Judul Foto <span class="text-danger">*</span>
-                    </label>
+                    <label class="form-label fw-semibold">Judul Foto</label>
                     <input type="text"
                         name="title"
                         class="form-control"
                         value="<?= esc($gallery['title']) ?>"
-                        placeholder="Masukkan judul foto"
                         required>
                 </div>
 
-                <!-- Foto Saat Ini -->
                 <div class="mb-4">
                     <label class="form-label fw-semibold">Foto Saat Ini</label>
-                    <div class="border rounded-3 p-3 bg-light text-center">
+                    <div class="text-center">
                         <img src="<?= base_url('uploads/gallery/' . $gallery['image']) ?>"
-                            alt="<?= esc($gallery['title']) ?>"
-                            style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px;">
-                        <p class="text-muted mt-2 mb-0">
-                            <i class="fas fa-info-circle"></i> Biarkan kosong jika tidak ingin mengganti foto
-                        </p>
+                            class="img-preview-current"
+                            alt="Current Photo">
                     </div>
                 </div>
 
-                <!-- Ganti Foto -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold">Ganti Foto (Opsional)</label>
-                    <div class="drop-zone border rounded-3 p-4 text-center bg-light"
-                        style="cursor: pointer; transition: all 0.3s; border: 2px dashed #dee2e6;"
-                        id="editDrop">
-                        <input type="file" name="image" accept="image/*"
-                            onchange="previewSingle(this)"
-                            style="display: none;">
-                        <div class="drop-zone-content">
-                            <i class="fas fa-exchange-alt fa-2x text-secondary mb-2 d-block"></i>
-                            <p class="mb-0"><strong>Klik atau drag & drop</strong> foto baru di sini</p>
-                            <small class="text-muted">JPG, PNG, WEBP · maks 10 MB</small>
-                            <button type="button" class="btn btn-outline-primary btn-sm mt-2"
-                                onclick="document.querySelector('#editDrop input').click()">
-                                <i class="fas fa-folder-open"></i> Pilih Foto
-                            </button>
+                    <label class="form-label fw-semibold">Ganti Foto</label>
+                    <input type="file"
+                        id="imageInput"
+                        class="form-control"
+                        accept="image/*">
+                    <small class="text-muted">Format: JPG, PNG, WEBP | Maksimal 10 MB</small>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="crop-container">
+                            <img id="cropImage">
                         </div>
                     </div>
-                    <div id="edit-preview" class="mt-3"></div>
+
+                    <div class="col-md-4">
+                        <div class="preview-box">
+                            <h6>Preview</h6>
+                            <div class="img-preview"></div>
+                            <small class="text-muted d-block mt-2">Hasil crop akan dioptimalkan ke ukuran 1200x1200px</small>
+                        </div>
+
+                        <button type="button"
+                            class="btn btn-success w-100 mt-3"
+                            onclick="cropImage()">
+                            <i class="fas fa-crop"></i> Crop & Optimasi Foto
+                        </button>
+                    </div>
                 </div>
 
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary px-4">
+                <input type="hidden" name="cropped_image" id="cropped_image">
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary px-4" id="submitBtn">
                         <i class="fas fa-save"></i> Simpan Perubahan
                     </button>
-                    <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary px-4">
+                    <a href="<?= base_url('admin/gallery') ?>" class="btn btn-outline-secondary px-4 ms-2">
                         Batal
                     </a>
                 </div>
+
             </form>
 
         </div>
@@ -127,95 +108,164 @@
 </div>
 
 <style>
-    .drop-zone {
-        transition: all 0.3s;
-    }
-
-    .drop-zone:hover {
-        background: #f8f9fa !important;
-        border-color: #0d6efd !important;
-    }
-
-    .drop-zone.dragging {
-        background: #e7f1ff !important;
-        border-color: #0d6efd !important;
-    }
-
-    .preview-item {
-        position: relative;
-        border-radius: 8px;
-        overflow: hidden;
+    .img-preview-current {
+        max-width: 100%;
+        height: 300px;
+        object-fit: contain;
+        border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        max-width: 200px;
     }
 
-    .preview-item img {
+    .crop-container {
         width: 100%;
-        height: 150px;
+        max-height: 450px;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #f8f9fa;
+    }
+
+    .crop-container img {
+        max-width: 100%;
+    }
+
+    .preview-box {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+    }
+
+    .preview-box h6 {
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .img-preview {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    .img-preview img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        display: block;
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdef5 100%);
+        border: none;
+        border-radius: 12px;
     }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+
 <script>
-    function previewSingle(input) {
-        const container = document.getElementById('edit-preview');
-        container.innerHTML = '';
+    let cropper;
+    const image = document.getElementById('cropImage');
 
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const files = e.target.files;
 
-            // Validate file size
-            if (file.size > 10485760) { // 10 MB
+        if (files && files.length > 0) {
+            const file = files[0];
+
+            // Validasi ukuran file
+            if (file.size > 10485760) {
                 alert('Ukuran file terlalu besar! Maksimal 10 MB.');
-                input.value = '';
+                this.value = '';
                 return;
             }
 
-            // Validate file type
+            // Validasi tipe file
             const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
             if (!allowedTypes.includes(file.type)) {
                 alert('Format file tidak didukung! Gunakan JPG, PNG, atau WEBP.');
-                input.value = '';
+                this.value = '';
                 return;
             }
 
             const reader = new FileReader();
-            reader.onload = e => {
-                container.innerHTML = `
-                <div class="preview-item">
-                    <img src="${e.target.result}" alt="Preview">
-                    <div class="position-absolute top-0 end-0 p-2">
-                        <span class="badge bg-primary">Preview</span>
-                    </div>
-                </div>
-            `;
-            };
+
+            reader.onload = function(e) {
+                image.src = e.target.result;
+
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(image, {
+                    aspectRatio: 4 / 3,
+                    viewMode: 1,
+                    preview: '.img-preview',
+                    autoCropArea: 1,
+                    responsive: true,
+                    minCropBoxWidth: 300,
+                    minCropBoxHeight: 300,
+                    guides: true,
+                    center: true,
+                    highlight: true,
+                    background: false,
+                });
+            }
+
             reader.readAsDataURL(file);
         }
+    });
+
+    function cropImage() {
+        if (!cropper) {
+            alert('Pilih gambar terlebih dahulu');
+            return;
+        }
+
+        // Tampilkan loading
+        const cropBtn = document.querySelector('.btn-success');
+        const originalText = cropBtn.innerHTML;
+        cropBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        cropBtn.disabled = true;
+
+        setTimeout(() => {
+            try {
+                // Mendapatkan hasil crop dengan ukuran optimal untuk galeri
+                const canvas = cropper.getCroppedCanvas({
+                    width: 1200,
+                    height: 900
+                });
+
+                // Konversi ke base64 dengan kualitas 85%
+                const croppedImageData = canvas.toDataURL('image/jpeg', 0.85);
+                document.getElementById('cropped_image').value = croppedImageData;
+
+                // Preview hasil crop
+                const previewDiv = document.querySelector('.img-preview');
+                previewDiv.innerHTML = `<img src="${croppedImageData}" style="width:100%; height:100%; object-fit:cover;">`;
+
+                alert('Foto berhasil di-crop dan akan dioptimalkan!');
+            } catch (error) {
+                alert('Terjadi kesalahan saat memproses gambar');
+                console.error(error);
+            } finally {
+                cropBtn.innerHTML = originalText;
+                cropBtn.disabled = false;
+            }
+        }, 100);
     }
 
-    // Drag & Drop functionality
-    const editDrop = document.getElementById('editDrop');
-    const editFileInput = editDrop.querySelector('input');
+    // Loading saat submit form
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+        submitBtn.disabled = true;
 
-    editDrop.addEventListener('click', () => editFileInput.click());
-
-    editDrop.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        editDrop.classList.add('dragging');
-    });
-
-    editDrop.addEventListener('dragleave', () => {
-        editDrop.classList.remove('dragging');
-    });
-
-    editDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        editDrop.classList.remove('dragging');
-        const files = e.dataTransfer.files;
-        editFileInput.files = files;
-        previewSingle(editFileInput);
+        // Form akan submit, loading hanya untuk feedback
+        setTimeout(() => {
+            // Ini hanya fallback jika submit terlalu lama
+        }, 1000);
     });
 </script>
 

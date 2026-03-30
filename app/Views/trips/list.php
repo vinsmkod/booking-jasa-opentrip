@@ -347,7 +347,7 @@
 
                               <div class="price">
                                    Rp <?= number_format($trip['price'], 0, ',', '.') ?>
-                              </div>
+                              </div>                                                                                                                                                                                                                                                                                                                                                                                                     
 
                               <div class="quota">
                                    <i class="fas fa-users"></i> Kuota: <?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang

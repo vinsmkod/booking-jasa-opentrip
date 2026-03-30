@@ -1,236 +1,238 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<title><?= esc($title ?? 'BLNTRK OUTDOOR') ?></title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title><?= esc($title ?? 'BLNTRK OUTDOOR') ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-<!-- Swiper -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 
-<!-- AOS -->
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
-<!-- Custom CSS -->
-<link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 
-<style>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-body{
-font-family:'Poppins', sans-serif;
-background:#f8f9fa;
-display:flex;
-flex-direction:column;
-min-height:100vh;
-}
+        .custom-wrapper {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 50px;
+        }
 
-.main-content{
-flex:1;
-padding-top:30px;
-}
 
-/* NAVBAR */
+        /* NAVBAR */
 
-.navbar{
-background:#ffffff;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-padding:12px 0;
-}
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 12px 0;
+        }
 
-.navbar-brand{
-font-weight:700;
-letter-spacing:1px;
-}
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
-/* HERO SLIDER */
+        /* HERO SLIDER */
 
-.hero-img{
-height:85vh;
-object-fit:cover;
-}
+        .hero-img {
+            height: 85vh;
+            object-fit: cover;
+        }
 
-.carousel-caption{
-background:rgba(0,0,0,0.45);
-padding:30px;
-border-radius:10px;
-}
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.45);
+            padding: 30px;
+            border-radius: 10px;
+        }
 
-.carousel-caption h1{
-font-size:48px;
-}
+        .carousel-caption h1 {
+            font-size: 48px;
+        }
 
-.carousel-caption p{
-font-size:18px;
-}
+        .carousel-caption p {
+            font-size: 18px;
+        }
 
-/* CARD */
+        /* CARD */
 
-.card{
-border:none;
-border-radius:14px;
-transition:.3s;
-}
+        .card {
+            border: none;
+            border-radius: 14px;
+            transition: .3s;
+        }
 
-.card:hover{
-transform:translateY(-6px);
-box-shadow:0 12px 25px rgba(0,0,0,0.15);
-}
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
 
-/* BUTTON */
+        /* BUTTON */
 
-.btn{
-border-radius:8px;
-padding:8px 20px;
-font-weight:500;
-}
+        .btn {
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
 
-/* OPEN TRIP SCROLL TARGET */
+        /* OPEN TRIP SCROLL TARGET */
 
-#openTrip{
-scroll-margin-top:100px;
-}
+        #openTrip {
+            scroll-margin-top: 100px;
+        }
 
-/* FOOTER */
+        /* FOOTER */
 
-footer{
-background:#212529;
-color:#ccc;
-padding:40px 0;
-margin-top:auto;
-}
+        footer {
+            background: #212529;
+            color: #ccc;
+            padding: 40px 0;
+            margin-top: auto;
+        }
 
-footer h5{
-font-weight:600;
-margin-bottom:15px;
-}
+        footer h5 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
 
-footer a{
-color:#ccc;
-text-decoration:none;
-margin:0 8px;
-}
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 8px;
+        }
 
-footer a:hover{
-color:#fff;
-}
-
-</style>
+        footer a:hover {
+            color: #fff;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<?= $this->include('layouts/navbar') ?>
+    <!-- NAVBAR -->
+    <?= $this->include('layouts/navbar') ?>
 
-<!-- CONTENT -->
-<main class="main-content">
-<div class="container">
+    <!-- CONTENT -->
+    <main class="main-content">
 
-<?= $this->renderSection('content') ?>
+        <div class="custom-wrapper">
 
-</div>
-</main>
+            <?= $this->renderSection('content') ?>
 
-<!-- FOOTER -->
-<footer>
+        </div>
+    </main>
 
-<div class="container">
+    <!-- FOOTER -->
+    <footer>
 
-<div class="row">
+        <div class="container">
 
-<div class="col-md-4">
+            <div class="row">
 
-<h5>BLNTRK OUTDOOR</h5>
+                <div class="col-md-4">
 
-<p>
-Platform open trip pendakian gunung untuk para pecinta alam
-yang ingin menjelajahi keindahan gunung di Indonesia
-dengan pengalaman yang aman dan berkesan.
-</p>
+                    <h5>BLNTRK OUTDOOR</h5>
 
-</div>
+                    <p>
+                        Platform open trip pendakian gunung untuk para pecinta alam
+                        yang ingin menjelajahi keindahan gunung di Indonesia
+                        dengan pengalaman yang aman dan berkesan.
+                    </p>
 
-<div class="col-md-4">
+                </div>
 
-<h5>Navigation</h5>
+                <div class="col-md-4">
 
-<p>
-<a href="<?= base_url('/') ?>">Home</a><br>
-<a href="<?= base_url('trip') ?>">Trip</a><br>
-<a href="<?= base_url('about') ?>">About</a><br>
-<a href="<?= base_url('contact') ?>">Contact</a>
-</p>
+                    <h5>Navigation</h5>
 
-</div>
+                    <p>
+                        <a href="<?= base_url('/') ?>">Home</a><br>
+                        <a href="<?= base_url('trip') ?>">Trip</a><br>
+                        <a href="<?= base_url('about') ?>">About</a><br>
+                        <a href="<?= base_url('contact') ?>">Contact</a>
+                    </p>
 
-<div class="col-md-4">
+                </div>
 
-<h5>Follow Us</h5>
+                <div class="col-md-4">
 
-<p>
-<a href="https://www.instagram.com/blntrk.outdoor/"><i class="bi bi-instagram"></i> Instagram</a><br>
-<a href="#"><i class="bi bi-facebook"></i> Facebook</a><br>
-<a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-</p>
+                    <h5>Follow Us</h5>
 
-</div>
+                    <p>
+                        <a href="https://www.instagram.com/blntrk.outdoor/"><i class="bi bi-instagram"></i> Instagram</a><br>
+                        <a href="#"><i class="bi bi-facebook"></i> Facebook</a><br>
+                        <a href="#"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                    </p>
 
-</div>
+                </div>
 
-<hr style="border-color:#444">
+            </div>
 
-<div class="text-center">
+            <hr style="border-color:#444">
 
-<p class="mb-0">
-© <?= date('Y') ?> BLNTRK OUTDOOR. All rights reserved.
-</p>
+            <div class="text-center">
 
-</div>
+                <p class="mb-0">
+                    © <?= date('Y') ?> BLNTRK OUTDOOR. All rights reserved.
+                </p>
 
-</div>
+            </div>
 
-</footer>
+        </div>
 
-<!-- JS -->
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS -->
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-AOS.init({
-duration:1000,
-once:true
-});
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
 
-/* SMOOTH SCROLL */
+        /* SMOOTH SCROLL */
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-anchor.addEventListener("click", function(e){
+            anchor.addEventListener("click", function(e) {
 
-e.preventDefault();
+                e.preventDefault();
 
-document.querySelector(this.getAttribute("href")).scrollIntoView({
-behavior:"smooth"
-});
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth"
+                });
 
-});
+            });
 
-});
-
-</script>
+        });
+    </script>
 
 </body>
+
 </html>

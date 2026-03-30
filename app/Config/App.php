@@ -461,4 +461,7 @@ class App extends BaseConfig
      * @var bool
      */
     public $CSPEnabled = false;
+    public $imageMaxWidth = 1200;
+    public $imageMaxHeight = 1200;
+    public $imageQuality = 85;
 }

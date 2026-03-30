@@ -33,6 +33,8 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 
 $routes->get('gallery', 'GalleryController::index');
+$routes->get('gallery/trip/(:num)', 'GalleryController::filterByTrip/$1');
+$routes->get('gallery/album/(:any)', 'GalleryController::filterByAlbum/$1');
 
 $routes->get('about', 'AboutController::index');
 
@@ -224,7 +226,7 @@ $routes->group('admin', [
 
     /*
     |--------------------------------------------------------------------------
-    | INCLUDE MANAGEMENT (BARU)
+    | INCLUDE MANAGEMENT
     |--------------------------------------------------------------------------
     */
 
@@ -239,10 +241,10 @@ $routes->group('admin', [
     $routes->get('includes/delete/(:num)', 'Includes::delete/$1');
 
     /*
-|--------------------------------------------------------------------------
-| ITINERARY MANAGEMENT
-|--------------------------------------------------------------------------
-*/
+    |--------------------------------------------------------------------------
+    | ITINERARY MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
 
     $routes->get('itinerary', 'ItineraryController::index');
 
@@ -253,11 +255,12 @@ $routes->group('admin', [
     $routes->post('itinerary/update/(:num)', 'ItineraryController::update/$1');
 
     $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
+
     /*
-    |--------------------------------------------------------------------------
-    | GALLERY MANAGEMENT
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| GALLERY MANAGEMENT (ADMIN)
+|--------------------------------------------------------------------------
+*/
 
     $routes->get('gallery', 'GalleryController::index');
 
@@ -265,14 +268,18 @@ $routes->group('admin', [
     $routes->post('gallery/store', 'GalleryController::store');
 
     $routes->get('gallery/edit/(:num)', 'GalleryController::edit/$1');
+
+    /* FIX UPDATE */
     $routes->post('gallery/update/(:num)', 'GalleryController::update/$1');
 
     $routes->get('gallery/delete/(:num)', 'GalleryController::delete/$1');
 
     $routes->get('gallery/albums', 'GalleryController::albums');
-
     $routes->get('gallery/album/(:any)', 'GalleryController::album/$1');
 
+    $routes->post('gallery/bulk-delete', 'GalleryController::bulkDelete');
+
+    $routes->get('gallery/export', 'GalleryController::export');
 
     /*
     |--------------------------------------------------------------------------

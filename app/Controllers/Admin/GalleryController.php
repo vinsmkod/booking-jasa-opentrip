@@ -14,20 +14,25 @@ class GalleryController extends BaseController
         $this->galleryModel = new GalleryModel();
     }
 
-    // ── INDEX: daftar foto + search + pagination ──
+    /*
+    ================================
+    INDEX
+    ================================
+    */
+
     public function index()
     {
         $keyword = $this->request->getGet('keyword');
-        $query = $this->galleryModel->orderBy('created_at', 'DESC');
+
+        $query = $this->galleryModel
+            ->orderBy('created_at', 'DESC');
 
         if ($keyword) {
             $query->like('title', $keyword);
         }
 
-        // Hitung total foto
         $totalPhotos = $this->galleryModel->countAll();
 
-        // Hitung total album unik
         $totalAlbums = $this->galleryModel
             ->select('album')
             ->where('album IS NOT NULL')
@@ -35,21 +40,23 @@ class GalleryController extends BaseController
             ->groupBy('album')
             ->countAllResults();
 
-        $data = [
+        return view('admin/gallery/index', [
             'galleries'   => $query->paginate(12),
             'pager'       => $this->galleryModel->pager,
             'keyword'     => $keyword,
             'totalPhotos' => $totalPhotos,
             'totalAlbums' => $totalAlbums
-        ];
-
-        return view('admin/gallery/index', $data);
+        ]);
     }
 
-    // ── CREATE: form upload ──
+    /*
+    ================================
+    CREATE
+    ================================
+    */
+
     public function create()
     {
-        // Pass existing albums for datalist autocomplete
         $albums = $this->galleryModel
             ->select('album')
             ->where('album IS NOT NULL')
@@ -58,54 +65,38 @@ class GalleryController extends BaseController
             ->orderBy('album', 'ASC')
             ->findAll();
 
-        return view('admin/gallery/create', ['albums' => $albums]);
+        return view('admin/gallery/create', [
+            'albums' => $albums
+        ]);
     }
 
-    // ── STORE: multiple file upload ──
+    /*
+    ================================
+    STORE (UPLOAD + RESIZE)
+    ================================
+    */
+
     public function store()
     {
-        // Validation rules
-        $rules = [
-            'album' => 'required|min_length[2]',
-            'title' => 'required|min_length[3]',
-            'images' => 'uploaded[images]|max_size[images,10240]|is_image[images]'
-        ];
-
-        $messages = [
-            'album' => [
-                'required' => 'Nama album harus diisi',
-                'min_length' => 'Nama album minimal 2 karakter'
-            ],
-            'title' => [
-                'required' => 'Judul foto harus diisi',
-                'min_length' => 'Judul foto minimal 3 karakter'
-            ],
-            'images' => [
-                'uploaded' => 'Pilih minimal satu foto',
-                'max_size' => 'Ukuran file maksimal 10 MB',
-                'is_image' => 'File harus berupa gambar (JPG, PNG, WEBP)'
-            ]
-        ];
-
-        if (!$this->validate($rules, $messages)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', $this->validator->getErrors());
-        }
-
-        $files = $this->request->getFiles();
-        $album = trim($this->request->getPost('album'));
-        $title = trim($this->request->getPost('title'));
-
-        if (empty($files['images'])) {
-            return redirect()->back()->with('error', 'Pilih minimal satu foto.');
-        }
+        $album = $this->request->getPost('album');
+        $title = $this->request->getPost('title');
 
         $uploadPath = FCPATH . 'uploads/gallery/';
 
-        // Create directory if not exists
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
+        }
+
+        /*
+        ====================
+        MULTIPLE UPLOAD WITH RESIZE
+        ====================
+        */
+        $files = $this->request->getFiles();
+
+        if (!$files['images']) {
+            return redirect()->back()
+                ->with('error', 'Pilih foto terlebih dahulu');
         }
 
         $uploaded = 0;
@@ -113,165 +104,227 @@ class GalleryController extends BaseController
 
         foreach ($files['images'] as $file) {
             if ($file->isValid() && !$file->hasMoved()) {
-                // Validate file size and type again
-                if ($file->getSize() > 10485760) { // 10 MB
-                    $errors[] = "File {$file->getName()} melebihi ukuran maksimal 10 MB";
+                // Validate file size (10 MB)
+                if ($file->getSize() > 10485760) {
+                    $errors[] = 'File ' . $file->getName() . ' terlalu besar! Maksimal 10 MB.';
                     continue;
                 }
 
+                // Validate file type
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!in_array($file->getMimeType(), $allowedTypes)) {
-                    $errors[] = "File {$file->getName()} bukan format gambar yang diizinkan (JPG, PNG, WEBP)";
+                    $errors[] = 'File ' . $file->getName() . ' format tidak didukung! Gunakan JPG, PNG, atau WEBP.';
                     continue;
                 }
 
-                $fileName = $file->getRandomName();
-                $file->move($uploadPath, $fileName);
+                $tempPath = $uploadPath . 'temp_' . $file->getName();
 
-                $this->galleryModel->save([
-                    'title' => $title,
-                    'album' => $album,
-                    'image' => $fileName,
-                    'trip_id' => null,
-                    'created_at' => date('Y-m-d H:i:s')
-                ]);
-                $uploaded++;
+                // Move file to temp location
+                $file->move($uploadPath, 'temp_' . $file->getName());
+
+                // Resize and optimize image
+                $finalName = time() . '_' . uniqid() . '.jpg';
+                $success = $this->resizeImage($tempPath, $uploadPath . $finalName, 1200, 1200, 85);
+
+                if ($success) {
+                    // Delete temp file
+                    if (file_exists($tempPath)) {
+                        unlink($tempPath);
+                    }
+
+                    $this->galleryModel->save([
+                        'title' => $title,
+                        'album' => $album,
+                        'image' => $finalName,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]);
+
+                    $uploaded++;
+                } else {
+                    $errors[] = 'Gagal memproses file: ' . $file->getName();
+                }
             }
         }
 
         if ($uploaded > 0) {
-            $message = $uploaded . ' foto berhasil diupload ke album "' . $album . '".';
-            if (!empty($errors)) {
-                $message .= ' Namun ada ' . count($errors) . ' file yang gagal diupload.';
-            }
-            return redirect()->to('/admin/gallery')->with('success', $message);
+            return redirect()->to('/admin/gallery')
+                ->with('success', $uploaded . ' foto berhasil diupload');
         } else {
-            $errorMessage = 'Gagal mengupload foto.';
-            if (!empty($errors)) {
-                $errorMessage .= ' ' . implode(', ', $errors);
-            }
-            return redirect()->back()->with('error', $errorMessage);
+            return redirect()->back()
+                ->with('error', $errors ?: 'Gagal mengupload foto');
         }
     }
 
-    // ── EDIT: form ──
+    /*
+    ================================
+    EDIT
+    ================================
+    */
+
     public function edit($id)
     {
         $gallery = $this->galleryModel->find($id);
+
         if (!$gallery) {
-            return redirect()->to('/admin/gallery')->with('error', 'Foto tidak ditemukan.');
+            return redirect()
+                ->to('/admin/gallery')
+                ->with('error', 'Foto tidak ditemukan');
         }
 
-        $albums = $this->galleryModel
-            ->select('album')
-            ->where('album IS NOT NULL')
-            ->where('album !=', '')
-            ->groupBy('album')
-            ->orderBy('album', 'ASC')
-            ->findAll();
-
         return view('admin/gallery/edit', [
-            'gallery' => $gallery,
-            'albums'  => $albums,
+            'gallery' => $gallery
         ]);
     }
 
-    // ── UPDATE: save edit ──
+    /*
+    ================================
+    UPDATE
+    ================================
+    */
+
     public function update($id)
     {
         $gallery = $this->galleryModel->find($id);
+
         if (!$gallery) {
-            return redirect()->to('/admin/gallery')->with('error', 'Foto tidak ditemukan.');
+            return redirect()
+                ->to('/admin/gallery')
+                ->with('error', 'Foto tidak ditemukan');
         }
 
-        // Validation rules
-        $rules = [
-            'album' => 'required|min_length[2]',
-            'title' => 'required|min_length[3]',
-            'image' => 'if_exist|max_size[image,10240]|is_image[image]'
-        ];
-
-        $messages = [
-            'album' => [
-                'required' => 'Nama album harus diisi',
-                'min_length' => 'Nama album minimal 2 karakter'
-            ],
-            'title' => [
-                'required' => 'Judul foto harus diisi',
-                'min_length' => 'Judul foto minimal 3 karakter'
-            ],
-            'image' => [
-                'max_size' => 'Ukuran file maksimal 10 MB',
-                'is_image' => 'File harus berupa gambar (JPG, PNG, WEBP)'
-            ]
-        ];
-
-        if (!$this->validate($rules, $messages)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', $this->validator->getErrors());
-        }
-
-        $file = $this->request->getFile('image');
-        $fileName = $gallery['image'];
         $uploadPath = FCPATH . 'uploads/gallery/';
 
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            // Validate new file
-            if ($file->getSize() > 10485760) { // 10 MB
-                return redirect()->back()->with('error', 'Ukuran file maksimal 10 MB');
-            }
+        $data = [
+            'title' => $this->request->getPost('title'),
+            'album' => $this->request->getPost('album'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
 
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-            if (!in_array($file->getMimeType(), $allowedTypes)) {
-                return redirect()->back()->with('error', 'Format file harus JPG, PNG, atau WEBP');
-            }
+        /*
+        ====================
+        CROP IMAGE
+        ====================
+        */
+        $crop = $this->request->getPost('cropped_image');
 
-            $fileName = $file->getRandomName();
-            $file->move($uploadPath, $fileName);
+        if ($crop) {
+            $image = str_replace('data:image/jpeg;base64,', '', $crop);
+            $image = base64_decode($image);
+
+            $fileName = time() . '.jpg';
+            $tempPath = $uploadPath . 'temp_' . $fileName;
+
+            file_put_contents($tempPath, $image);
+
+            // Resize image
+            $this->resizeImage($tempPath, $uploadPath . $fileName, 1200, 1200);
+
+            // Delete temp file
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
 
             // Delete old file
-            $oldPath = $uploadPath . $gallery['image'];
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
+            if (file_exists($uploadPath . $gallery['image'])) {
+                unlink($uploadPath . $gallery['image']);
+            }
+
+            $data['image'] = $fileName;
+        }
+
+        /*
+        ====================
+        NORMAL UPLOAD WITH RESIZE
+        ====================
+        */
+        $file = $this->request->getFile('image');
+
+        if ($file && $file->isValid()) {
+            // Validate file size
+            if ($file->getSize() > 10485760) {
+                return redirect()->back()
+                    ->with('error', 'Ukuran file terlalu besar! Maksimal 10 MB.');
+            }
+
+            // Validate file type
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!in_array($file->getMimeType(), $allowedTypes)) {
+                return redirect()->back()
+                    ->with('error', 'Format file tidak didukung! Gunakan JPG, PNG, atau WEBP.');
+            }
+
+            $tempPath = $uploadPath . 'temp_' . $file->getName();
+
+            // Move to temp
+            $file->move($uploadPath, 'temp_' . $file->getName());
+
+            // Resize and optimize
+            $fileName = time() . '_' . uniqid() . '.jpg';
+            $success = $this->resizeImage($tempPath, $uploadPath . $fileName, 1200, 1200, 85);
+
+            if ($success) {
+                // Delete temp
+                if (file_exists($tempPath)) {
+                    unlink($tempPath);
+                }
+
+                // Delete old file
+                if (file_exists($uploadPath . $gallery['image'])) {
+                    unlink($uploadPath . $gallery['image']);
+                }
+
+                $data['image'] = $fileName;
             }
         }
 
-        $this->galleryModel->update($id, [
-            'title' => trim($this->request->getPost('title')),
-            'album' => trim($this->request->getPost('album')),
-            'image' => $fileName,
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
+        $this->galleryModel->update($id, $data);
 
-        return redirect()->to('/admin/gallery')->with('success', 'Foto berhasil diperbarui.');
+        return redirect()
+            ->to('/admin/gallery')
+            ->with('success', 'Foto berhasil diperbarui');
     }
 
-    // ── DELETE ──
+    /*
+    ================================
+    DELETE
+    ================================
+    */
+
     public function delete($id)
     {
         $gallery = $this->galleryModel->find($id);
 
         if ($gallery) {
-            $filePath = FCPATH . 'uploads/gallery/' . $gallery['image'];
-            if (file_exists($filePath)) {
-                unlink($filePath);
+            $file = FCPATH . 'uploads/gallery/' . $gallery['image'];
+
+            if (file_exists($file)) {
+                unlink($file);
             }
+
             $this->galleryModel->delete($id);
-            return redirect()->to('/admin/gallery')->with('success', 'Foto berhasil dihapus.');
+
+            return redirect()
+                ->to('/admin/gallery')
+                ->with('success', 'Foto berhasil dihapus');
         }
 
-        return redirect()->to('/admin/gallery')->with('error', 'Foto tidak ditemukan.');
+        return redirect()
+            ->to('/admin/gallery')
+            ->with('error', 'Foto tidak ditemukan');
     }
 
-    // ── ALBUMS: daftar album unik + cover + jumlah foto ──
+    /*
+    ================================
+    ALBUMS
+    ================================
+    */
+
     public function albums()
     {
         $db = \Config\Database::connect();
 
-        // Get album name, photo count, latest image as cover, and latest created date
         $albums = $db->table('galleries')
-            ->select('album, COUNT(*) as total, MAX(image) as cover, MAX(created_at) as created_at')
+            ->select('album, COUNT(*) as total, MAX(image) as cover')
             ->where('album IS NOT NULL')
             ->where('album !=', '')
             ->groupBy('album')
@@ -279,87 +332,212 @@ class GalleryController extends BaseController
             ->get()
             ->getResultArray();
 
-        return view('admin/gallery/albums', ['albums' => $albums]);
-    }
-
-    // ── ALBUM PHOTOS: foto dalam album ──
-    public function album($albumName)
-    {
-        $albumName = urldecode($albumName);
-
-        $photos = $this->galleryModel
-            ->where('album', $albumName)
-            ->orderBy('created_at', 'DESC')
-            ->paginate(12);
-
-        $pager = $this->galleryModel->pager;
-
-        if (empty($photos) && !empty($albumName)) {
-            return redirect()->to('/admin/gallery/albums')->with('error', 'Album tidak ditemukan.');
-        }
-
-        return view('admin/gallery/album_photos', [
-            'albumName' => $albumName,
-            'photos'    => $photos,
-            'pager'     => $pager,
+        return view('admin/gallery/albums', [
+            'albums' => $albums
         ]);
     }
 
-    // ── BULK DELETE: hapus multiple foto ──
+    /*
+    ================================
+    ALBUM DETAIL
+    ================================
+    */
+
+    public function album($album)
+    {
+        $photos = $this->galleryModel
+            ->where('album', urldecode($album))
+            ->paginate(12);
+
+        return view('admin/gallery/album_photos', [
+            'photos' => $photos,
+            'pager'  => $this->galleryModel->pager,
+            'albumName' => urldecode($album)
+        ]);
+    }
+
+    /*
+    ================================
+    BULK DELETE
+    ================================
+    */
+
     public function bulkDelete()
     {
-        $ids = $this->request->getPost('ids');
-
-        if (empty($ids)) {
-            return redirect()->back()->with('error', 'Tidak ada foto yang dipilih.');
-        }
-
-        $ids = explode(',', $ids);
-        $deleted = 0;
+        $ids = explode(',', $this->request->getPost('ids'));
 
         foreach ($ids as $id) {
             $gallery = $this->galleryModel->find($id);
+
             if ($gallery) {
-                $filePath = FCPATH . 'uploads/gallery/' . $gallery['image'];
-                if (file_exists($filePath)) {
-                    unlink($filePath);
+                $file = FCPATH . 'uploads/gallery/' . $gallery['image'];
+
+                if (file_exists($file)) {
+                    unlink($file);
                 }
+
                 $this->galleryModel->delete($id);
-                $deleted++;
             }
         }
 
-        return redirect()->to('/admin/gallery')->with('success', $deleted . ' foto berhasil dihapus.');
+        return redirect()
+            ->to('/admin/gallery')
+            ->with('success', 'Foto berhasil dihapus');
     }
 
-    // ── EXPORT DATA: export daftar foto ke CSV ──
+    /*
+    ================================
+    EXPORT CSV
+    ================================
+    */
+
     public function export()
     {
-        $galleries = $this->galleryModel->orderBy('created_at', 'DESC')->findAll();
-
-        $filename = 'gallery_export_' . date('Y-m-d_His') . '.csv';
+        $data = $this->galleryModel->findAll();
 
         header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Disposition: attachment; filename=gallery_' . date('Y-m-d') . '.csv');
 
         $output = fopen('php://output', 'w');
 
-        // Add CSV headers
-        fputcsv($output, ['ID', 'Judul', 'Album', 'File Name', 'Created At', 'Updated At']);
+        // Add BOM for UTF-8
+        fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-        // Add data rows
-        foreach ($galleries as $gallery) {
+        fputcsv($output, [
+            'ID',
+            'Judul',
+            'Album',
+            'Nama File',
+            'Tanggal Upload'
+        ]);
+
+        foreach ($data as $row) {
             fputcsv($output, [
-                $gallery['gallery_id'],
-                $gallery['title'],
-                $gallery['album'],
-                $gallery['image'],
-                $gallery['created_at'],
-                $gallery['updated_at'] ?? ''
+                $row['gallery_id'],
+                $row['title'],
+                $row['album'],
+                $row['image'],
+                date('d-m-Y H:i:s', strtotime($row['created_at']))
             ]);
         }
 
         fclose($output);
-        exit();
+        exit;
+    }
+
+    /**
+     * Resize and optimize image
+     * 
+     * @param string $source Source image path
+     * @param string $destination Destination image path
+     * @param int $maxWidth Maximum width
+     * @param int $maxHeight Maximum height
+     * @param int $quality JPEG quality (0-100)
+     * @return bool Success or failure
+     */
+    private function resizeImage($source, $destination, $maxWidth = 1200, $maxHeight = 1200, $quality = 85)
+    {
+        try {
+            // Check if source file exists
+            if (!file_exists($source)) {
+                return false;
+            }
+
+            // Check if GD library is installed
+            if (!extension_loaded('gd')) {
+                // If GD not available, just copy the file
+                copy($source, $destination);
+                return true;
+            }
+
+            // Get image info
+            $imageInfo = getimagesize($source);
+            if (!$imageInfo) {
+                return false;
+            }
+
+            list($width, $height, $type) = $imageInfo;
+
+            // Calculate new dimensions
+            $ratio = min($maxWidth / $width, $maxHeight / $height);
+
+            if ($ratio < 1) {
+                $newWidth = round($width * $ratio);
+                $newHeight = round($height * $ratio);
+            } else {
+                $newWidth = $width;
+                $newHeight = $height;
+            }
+
+            // Create image resource based on type
+            switch ($type) {
+                case IMAGETYPE_JPEG:
+                    $src = @imagecreatefromjpeg($source);
+                    break;
+                case IMAGETYPE_PNG:
+                    $src = @imagecreatefrompng($source);
+                    break;
+                case IMAGETYPE_WEBP:
+                    if (function_exists('imagecreatefromwebp')) {
+                        $src = @imagecreatefromwebp($source);
+                    } else {
+                        copy($source, $destination);
+                        return true;
+                    }
+                    break;
+                default:
+                    // Unsupported format, just copy original
+                    copy($source, $destination);
+                    return true;
+            }
+
+            if (!$src) {
+                return false;
+            }
+
+            // Create new image
+            $dst = imagecreatetruecolor($newWidth, $newHeight);
+
+            // Handle PNG transparency
+            if ($type == IMAGETYPE_PNG) {
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                imagefilledrectangle($dst, 0, 0, $newWidth, $newHeight, $transparent);
+            }
+
+            // Resize
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+            // Save image
+            switch ($type) {
+                case IMAGETYPE_JPEG:
+                    imagejpeg($dst, $destination, $quality);
+                    break;
+                case IMAGETYPE_PNG:
+                    imagepng($dst, $destination, 8);
+                    break;
+                case IMAGETYPE_WEBP:
+                    if (function_exists('imagewebp')) {
+                        imagewebp($dst, $destination, $quality);
+                    } else {
+                        imagejpeg($dst, $destination, $quality);
+                    }
+                    break;
+                default:
+                    imagejpeg($dst, $destination, $quality);
+            }
+
+            // Free memory
+            imagedestroy($src);
+            imagedestroy($dst);
+
+            return true;
+        } catch (\Exception $e) {
+            log_message('error', 'Image resize failed: ' . $e->getMessage());
+            // If resize fails, just copy original file
+            copy($source, $destination);
+            return true;
+        }
     }
 }

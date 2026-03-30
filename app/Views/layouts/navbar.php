@@ -1,167 +1,203 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<title>BLNTRK OUTDOOR</title>
+    <meta charset="UTF-8">
+    <title>BLNTRK OUTDOOR</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<style>
+    <style>
+        @media (min-width: 992px) {
+            .navbar-nav .dropdown:hover .dropdown-menu {
+                display: block;
+                margin-top: 0;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-@media (min-width: 992px) {
-.navbar-nav .dropdown:hover .dropdown-menu{
-display:block;
-margin-top:0;
-opacity:1;
-transform:translateY(0);
-}
-}
+        .navbar-nav .dropdown .dropdown-menu {
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
 
-.navbar-nav .dropdown .dropdown-menu{
-transition:all 0.3s ease;
-opacity:0;
-transform:translateY(10px);
-}
+        .navbar-dark .dropdown-menu .dropdown-item:hover {
+            background: #198754;
+            color: #fff;
+        }
 
-.navbar-dark .dropdown-menu .dropdown-item:hover{
-background:#495057;
-color:#fff;
-}
+        .badge-status {
+            font-size: 10px;
+        }
 
-.badge-status{
-font-size:10px;
-}
+        /* NAVBAR BLUR TRANSPARAN */
+        .navbar-custom {
+            background-color: rgba(66, 112, 79, 0.57);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
 
-</style>
+        .navbar-custom .nav-link,
+        .navbar-custom .navbar-brand {
+            color: white;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #146c43;
+        }
+
+        .navbar-custom .nav-link.active {
+            font-weight: 600;
+            color: #198754;
+            border-bottom: 2px solid #198754;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm sticky-top">
 
-<div class="container">
+        <div class="container">
 
-<a class="navbar-brand fw-bold" href="/">
-BLNTRK OUTDOOR
-</a>
-
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="navbarNav">
-
-<!-- LEFT MENU -->
-<ul class="navbar-nav me-auto">
-
-<li class="nav-item">
-<a class="nav-link <?= uri_string()==''?'active':'' ?>" href="/">
-Home
-</a>
-</li>
-
-<!-- TRIP DROPDOWN -->
-
-<li class="nav-item dropdown">
-
-<a class="nav-link dropdown-toggle <?= strpos(uri_string(),'trips')!==false?'active':'' ?>"
-href="#" data-bs-toggle="dropdown">
-
-Trip
-
-</a>
-
-<ul class="dropdown-menu">
-
-<li>
-<a class="dropdown-item" href="/trips/one_day_trip">
-One Day Trip
-</a>
-</li>
-
-<li>
-<a class="dropdown-item" href="/trips/open_trip">
-Open Trip
-</a>
-</li>
-
-<li>
-<a class="dropdown-item" href="/trips/private_trip">
-Private Trip
-</a>
-</li>
-
-</ul>
-
-</li>
-
-<li class="nav-item">
-<a class="nav-link <?= uri_string()=='gallery'?'active':'' ?>" href="/gallery">
-Gallery
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link <?= uri_string()=='about'?'active':'' ?>" href="/about">
-About
-</a>
-</li>
-
-</ul>
-
-
-<!-- RIGHT MENU -->
-
-<ul class="navbar-nav ms-auto align-items-center">
-
-<?php if(session()->get('isLoggedIn')): ?>
-
-    <?php if(session()->get('role')=='customer'): ?>
-        <!-- MENU PELANGGAN -->
-        <li class="nav-item me-3 text-light">
-            ⭐ Points
-            <span class="badge bg-warning text-dark">
-                <?= session()->get('points') ?? 0 ?>
-            </span>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light" href="#" data-bs-toggle="dropdown">
-                <?= esc(session()->get('name')) ?>
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-tree-fill me-1"></i> BLNTRK OUTDOOR
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/booking/history">My Booking</a></li>
-                <li><a class="dropdown-item" href="/loyalty">Loyalty Points</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
-            </ul>
-        </li>
 
-    <?php elseif(session()->get('role')=='admin'): ?>
-        <!-- NAVBAR ADMIN POLos -->
-        <li class="nav-item text-light">
-            <?= esc(session()->get('name')) ?> 
-        </li>
-        <li class="nav-item ms-3">
-            <a href="/logout" class="btn btn-danger btn-sm px-3">Logout</a>
-        </li>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-4 text-success"></i>
+            </button>
 
-    <?php endif; ?>
+            <div class="collapse navbar-collapse" id="navbarNav">
 
-<?php else: ?>
-    <!-- MENU TIDAK LOGIN -->
-    <li class="nav-item me-2">
-        <a href="/login" class="btn btn-warning btn-sm px-3 fw-semibold">Login</a>
-    </li>
-<?php endif; ?>
+                <!-- LEFT MENU -->
+                <ul class="navbar-nav me-auto">
 
-</ul>
-</div>
-</div>
-</nav>
+                    <li class="nav-item">
+                        <a class="nav-link <?= uri_string() == '' ? 'active' : '' ?>" href="/">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- TRIP DROPDOWN -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle <?= strpos(uri_string(), 'trips') !== false ? 'active' : '' ?>"
+                            href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-map me-1"></i> Trip
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/trips/one_day_trip">
+                                    <i class="bi bi-sun me-2"></i> One Day Trip
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/trips/open_trip">
+                                    <i class="bi bi-people me-2"></i> Open Trip
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/trips/private_trip">
+                                    <i class="bi bi-person me-2"></i> Private Trip
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?= uri_string() == 'gallery' ? 'active' : '' ?>" href="/gallery">
+                            <i class="bi bi-images me-1"></i> Gallery
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?= uri_string() == 'about' ? 'active' : '' ?>" href="/about">
+                            <i class="bi bi-info-circle me-1"></i> About
+                        </a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center">
+
+                    <?php if (session()->get('isLoggedIn')): ?>
+
+                        <?php if (session()->get('role') == 'customer'): ?>
+
+                            <li class="nav-item me-3" style="color:#198754;">
+                                ⭐ Points
+                                <span class="badge bg-warning text-dark">
+                                    <?= session()->get('points') ?? 0 ?>
+                                </span>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    <?= esc(session()->get('name')) ?>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="/booking/history">
+                                            <i class="bi bi-receipt me-2"></i> My Booking
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/loyalty">
+                                            <i class="bi bi-gift me-2"></i> Loyalty Points
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="/logout">
+                                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        <?php elseif (session()->get('role') == 'admin'): ?>
+
+                            <li class="nav-item" style="color:#198754;">
+                                <i class="bi bi-person-badge me-1"></i>
+                                <?= esc(session()->get('name')) ?>
+                            </li>
+                            <li class="nav-item ms-3">
+                                <a href="/logout" class="btn btn-danger btn-sm px-3">
+                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                </a>
+                            </li>
+
+                        <?php endif; ?>
+
+                    <?php else: ?>
+
+                        <li class="nav-item me-2">
+                            <a href="/login" class="btn btn-success btn-sm px-3 fw-semibold">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                            </a>
+                        </li>
+
+                    <?php endif; ?>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

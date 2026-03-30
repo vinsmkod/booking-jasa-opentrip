@@ -6,7 +6,7 @@
 
     :root {
         --ink: #0f0e0d;
-        --paper: #f5f2ed;
+        --paper: #bcccb9;
         --sand: #e8e2d9;
         --rust: #c4603a;
         --rust-light: #e8886a;
@@ -24,14 +24,17 @@
     /* ── HERO SLIDER ── */
     .hero-slider {
         position: relative;
-        height: 90vh;
-        min-height: 600px;
+        height: 70vh;
+        min-height: auto;
         overflow: hidden;
+        border-radius: 20px 20px 70px 70px;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
 
     .hero-slide {
-        height: 90vh;
-        min-height: 600px;
+        height: 70vh;
+        min-height: auto;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -45,7 +48,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
+        background: linear-gradient(135deg, rgba(26, 158, 90, 0.54) 0%, rgba(0, 0, 0, 0.7) 100%);
     }
 
     .hero-content {
@@ -124,6 +127,144 @@
         opacity: 1;
         background-color: var(--rust);
         transform: scale(1.2);
+    }
+
+    /* How It Works */
+    .howitworks-section {
+        padding: 80px 0;
+    }
+
+    .step-card {
+        text-align: center;
+        padding: 30px 20px;
+        background: white;
+        border-radius: 20px;
+        transition: all 0.3s;
+        height: 100%;
+    }
+
+    .step-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #198754, #198754);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .step-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .step-number {
+        width: 30px;
+        height: 30px;
+        background: #198754;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px auto 0;
+        font-weight: 700;
+        font-size: 0.8rem;
+    }
+
+    .step-card h5 {
+        font-weight: 700;
+        margin: 15px 0 10px;
+        color: #0f172a;
+    }
+
+    .step-card p {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* ── SEARCH FORM IN TRIP SECTION ── */
+    .search-form {
+        margin-bottom: 0;
+    }
+
+    .search-form .input-group {
+        background: white;
+        border-radius: 50px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        border: 2px solid transparent;
+    }
+
+    .search-form .input-group:focus-within {
+        border-color: var(--rust);
+        box-shadow: 0 0 0 3px rgba(196, 96, 58, 0.1);
+    }
+
+    .search-form .input-group-text {
+        background: white;
+        border: none;
+        padding-right: 0;
+    }
+
+    .search-form .form-control {
+        background: white;
+        border: none;
+        padding: 12px 0;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.95rem;
+    }
+
+    .search-form .form-control:focus {
+        box-shadow: none;
+        background: white;
+    }
+
+    .search-form .form-control::placeholder {
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .search-form .btn-search {
+        background: var(--rust);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: var(--transition);
+        border-radius: 0 50px 50px 0;
+    }
+
+    .search-form .btn-search:hover {
+        background: #b5532c;
+        transform: scale(1.02);
+    }
+
+    .search-info {
+        padding: 8px 15px;
+        background: rgba(196, 96, 58, 0.1);
+        border-radius: 50px;
+        display: inline-block;
+        margin-top: 12px;
+    }
+
+    .clear-search {
+        color: var(--rust);
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: var(--transition);
+    }
+
+    .clear-search:hover {
+        color: #b5532c;
+        text-decoration: underline;
     }
 
     /* ── SECTION HEADER ── */
@@ -219,7 +360,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
         padding: 20px;
     }
 
@@ -269,6 +409,7 @@
     .gallery-carousel-section {
         background: var(--sand);
         padding: 60px 0;
+        border-radius: 20px;
     }
 
     .gallery-slide {
@@ -279,6 +420,13 @@
         position: relative;
         border-radius: var(--card-radius);
         overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-slide:hover {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-md);
     }
 
     .gallery-slide::before {
@@ -286,6 +434,11 @@
         position: absolute;
         inset: 0;
         background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+        transition: background 0.3s ease;
+    }
+
+    .gallery-slide:hover::before {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 40%);
     }
 
     .gallery-caption {
@@ -297,6 +450,12 @@
         color: white;
         text-align: center;
         z-index: 2;
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-slide:hover .gallery-caption {
+        transform: translateY(-10px);
     }
 
     .gallery-caption h4 {
@@ -304,6 +463,7 @@
         font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .gallery-caption p {
@@ -361,6 +521,13 @@
         font-weight: 700;
         font-size: 1.1rem;
         color: white;
+        overflow: hidden;
+    }
+
+    .testimonial-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .testimonial-info h6 {
@@ -404,6 +571,148 @@
         border-color: var(--rust);
         box-shadow: 0 0 0 3px rgba(196, 96, 58, 0.1);
         background: white;
+    }
+
+    /* ── LIGHTBOX STYLES  ── */
+    .home-lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, .95);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .3s ease;
+    }
+
+    .home-lightbox.open {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .home-lightbox-inner {
+        position: relative;
+        max-width: min(90vw, 900px);
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: scale(.96);
+        transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .home-lightbox.open .home-lightbox-inner {
+        transform: scale(1);
+    }
+
+    .home-lightbox-inner img {
+        max-width: 100%;
+        max-height: 78vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+    }
+
+    .home-lb-close {
+        position: absolute;
+        top: -50px;
+        right: 0;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, .6);
+        font-size: 2rem;
+        cursor: pointer;
+        transition: color .2s;
+        z-index: 1;
+    }
+
+    .home-lb-close:hover {
+        color: #fff;
+    }
+
+    .home-lb-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, .1);
+        border: none;
+        color: #fff;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background .2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+
+    .home-lb-nav:hover {
+        background: rgba(255, 255, 255, .2);
+    }
+
+    .home-lb-prev {
+        left: -70px;
+    }
+
+    .home-lb-next {
+        right: -70px;
+    }
+
+    .lightbox-meta {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .lightbox-meta .lt {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .lightbox-meta .la {
+        font-size: .85rem;
+        color: rgba(255, 255, 255, .6);
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        margin-top: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .home-lb-prev {
+            left: 10px;
+        }
+
+        .home-lb-next {
+            right: 10px;
+        }
+
+        .home-lb-nav {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+
+        .search-form .btn-search {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+        }
+
+        .search-form .form-control {
+            font-size: 0.85rem;
+            padding: 10px 0;
+        }
+
+        .search-info {
+            font-size: 0.75rem;
+            padding: 6px 12px;
+        }
     }
 
     /* ── ANIMATIONS ── */
@@ -476,79 +785,114 @@
     }
 </style>
 
-<!-- HERO SLIDER -->
 <section class="hero-slider">
-    <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-        </div>
-
-        <div class="carousel-inner h-100">
-            <div class="carousel-item active h-100">
-                <div class="hero-slide" style="background-image: url('<?= base_url('assets/images/gunung1.jpg') ?>');">
-                    <div class="container h-100 d-flex align-items-center">
-                        <div class="hero-content text-white">
-                            <div class="hero-badge">OPEN TRIP 2025</div>
-                            <h1>Explore The Mountains</h1>
-                            <p class="lead">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
-                            <div class="hero-buttons">
-                                <a href="#Trip" class="btn btn-success btn-lg me-3">
-                                    <i class="fas fa-hiking me-2"></i> Lihat Trip
-                                </a>
-                                <a href="#about" class="btn btn-outline-light btn-lg">
-                                    <i class="fas fa-info-circle me-2"></i> Tentang Kami
-                                </a>
-                            </div>
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner" style="height: 70vh;">
+            <div class="carousel-item active hero-slide" style="background-image: url('<?= base_url('assets/images/gunung1.jpg') ?>');">
+                <div class="container h-100 d-flex align-items-center">
+                    <div class="hero-content text-white">
+                        <div class="hero-badge">OPEN TRIP 2025</div>
+                        <h1>Explore The Mountains</h1>
+                        <p class="lead">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
+                        <div class="hero-buttons">
+                            <a href="#Trip" class="btn btn-success btn-lg me-3"><i class="fas fa-hiking me-2"></i> Lihat Trip</a>
+                            <a href="#about" class="btn btn-outline-light btn-lg"><i class="fas fa-info-circle me-2"></i> Tentang Kami</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="carousel-item h-100">
-                <div class="hero-slide" style="background-image: url('<?= base_url('assets/images/gunung2.jpg') ?>');">
-                    <div class="container h-100 d-flex align-items-center">
-                        <div class="hero-content text-white">
-                            <div class="hero-badge">ADVENTURE AWAITS</div>
-                            <h1>Adventure Awaits</h1>
-                            <p class="lead">Temukan pengalaman pendakian yang aman, nyaman, dan berkesan bersama kami.</p>
-                            <div class="hero-buttons">
-                                <a href="#Trip" class="btn btn-success btn-lg me-3">
-                                    <i class="fas fa-calendar-check me-2"></i> Booking Sekarang
-                                </a>
-                            </div>
+            <div class="carousel-item hero-slide" style="background-image: url('<?= base_url('assets/images/gunung2.jpg') ?>');">
+                <div class="container h-100 d-flex align-items-center">
+                    <div class="hero-content text-white">
+                        <div class="hero-badge">OPEN TRIP 2025</div>
+                        <h1>Taklukkan Puncak Tertinggi</h1>
+                        <p class="lead">Rasakan pengalaman mendaki bersama guide berpengalaman dan tim yang solid.</p>
+                        <div class="hero-buttons">
+                            <a href="#Trip" class="btn btn-success btn-lg me-3"><i class="fas fa-hiking me-2"></i> Lihat Trip</a>
+                            <a href="#about" class="btn btn-outline-light btn-lg"><i class="fas fa-info-circle me-2"></i> Tentang Kami</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="carousel-item h-100">
-                <div class="hero-slide" style="background-image: url('<?= base_url('assets/images/gunung3.jpeg') ?>');">
-                    <div class="container h-100 d-flex align-items-center">
-                        <div class="hero-content text-white">
-                            <div class="hero-badge">JOIN THE COMMUNITY</div>
-                            <h1>Join Our Open Trip</h1>
-                            <p class="lead">Bergabunglah dengan komunitas pendaki dari seluruh Indonesia.</p>
-                            <div class="hero-buttons">
-                                <a href="#Trip" class="btn btn-success btn-lg me-3">
-                                    <i class="fas fa-users me-2"></i> Mulai Petualangan
-                                </a>
-                            </div>
+            <div class="carousel-item hero-slide" style="background-image: url('<?= base_url('assets/images/gunung2.jpg') ?>');">
+                <div class="container h-100 d-flex align-items-center">
+                    <div class="hero-content text-white">
+                        <div class="hero-badge">OPEN TRIP 2025</div>
+                        <h1>Alam Liar Menanti Kamu</h1>
+                        <p class="lead">Bergabunglah bersama ratusan pendaki yang telah mempercayai perjalanan mereka kepada kami.</p>
+                        <div class="hero-buttons">
+                            <a href="#Trip" class="btn btn-success btn-lg me-3"><i class="fas fa-hiking me-2"></i> Lihat Trip</a>
+                            <a href="#about" class="btn btn-outline-light btn-lg"><i class="fas fa-info-circle me-2"></i> Tentang Kami</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+
+<!-- HOW IT WORKS SECTION -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<section class="howitworks-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
+            <h2 class="fw-bold mt-3">Cara Melakukan Pendaftaran Open Trip</h2>
+            <p class="text-muted">Dengan Mengikuti langkah berikut untuk memulai petualangan Anda</p>
+        </div>
+        <div class="row g-4">
+
+            <!-- STEP 1 -->
+            <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h5>Pilih Trip</h5>
+                    <p>Lihat berbagai pilihan jadwal trip pendakian</p>
+                    <div class="step-number">1</div>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="100">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h5>Booking Trip</h5>
+                    <p>Lakukan reservasi trip sesuai jadwal</p>
+                    <div class="step-number">2</div>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="200">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h5>Pembayaran</h5>
+                    <p>Lakukan pembayaran untuk mengamankan slot</p>
+                    <div class="step-number">3</div>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="300">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-hiking"></i>
+                    </div>
+                    <h5>Berangkat</h5>
+                    <p>Bertemu di meeting point dan mulai pendakian</p>
+                    <div class="step-number">4</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -556,9 +900,43 @@
 <section id="Trip" class="py-5">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <div class="section-badge">OPEN TRIP</div>
+            <div class="section-badge">TRIP</div>
             <h2>Trip Tersedia</h2>
             <p>Pilih destinasi pendakian favorit Anda dan mulai petualangan</p>
+        </div>
+
+        <!-- SEARCH FORM - Ditempatkan di dalam section trip -->
+        <div class="row justify-content-center mb-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-md-8 col-lg-6">
+                <form action="<?= base_url('/#Trip') ?>" method="get" class="search-form">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-0 ps-3">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input
+                            type="text"
+                            class="form-control border-0 py-3"
+                            name="search"
+                            placeholder="Cari trip berdasarkan nama atau lokasi..."
+                            value="<?= esc($keyword ?? '') ?>"
+                            autocomplete="off">
+                        <button class="btn btn-search" type="submit">
+                            <i class="fas fa-search me-2"></i> Cari
+                        </button>
+                    </div>
+                    <?php if (!empty($keyword)): ?>
+                        <div class="search-info mt-2 text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-search me-1"></i>
+                                Menampilkan hasil untuk: <strong>"<?= esc($keyword) ?>"</strong>
+                                <a href="<?= base_url('/#Trip') ?>" class="clear-search ms-2">
+                                    <i class="fas fa-times-circle"></i> Hapus filter
+                                </a>
+                            </small>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
         </div>
 
         <div class="row g-4">
@@ -569,6 +947,33 @@
                     $available = $trip['available'] ?? 0;
                     $booked = $quota - $available;
                     $percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
+
+                    // Format tanggal untuk ditampilkan
+                    $formattedDate = '';
+                    $day = '';
+                    $month = '';
+                    $monthName = '';
+                    if (!empty($trip['departure_date'])) {
+                        $dateObj = new DateTime($trip['departure_date']);
+                        $monthNames = [
+                            1 => 'Jan',
+                            2 => 'Feb',
+                            3 => 'Mar',
+                            4 => 'Apr',
+                            5 => 'Mei',
+                            6 => 'Jun',
+                            7 => 'Jul',
+                            8 => 'Ags',
+                            9 => 'Sep',
+                            10 => 'Okt',
+                            11 => 'Nov',
+                            12 => 'Des'
+                        ];
+                        $month = (int)$dateObj->format('n');
+                        $monthName = $monthNames[$month];
+                        $day = $dateObj->format('d');
+                        $formattedDate = $dateObj->format('d M Y');
+                    }
                     ?>
                     <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<?= $i * 100 ?>">
                         <div class="trip-card">
@@ -593,7 +998,14 @@
                                 </div>
                                 <div class="trip-info">
                                     <i class="fas fa-calendar-alt"></i>
-                                    <?= !empty($trip['departure_date']) ? date('d M Y', strtotime($trip['departure_date'])) : 'Jadwal belum tersedia' ?>
+                                    <?php if (!empty($trip['departure_date'])): ?>
+                                        <span class="badge bg-success bg-opacity-10 text-success me-2">
+                                            <i class="fas fa-calendar-week me-1"></i> <?= $day . ' ' . $monthName ?>
+                                        </span>
+                                        <span class="text-muted"><?= $formattedDate ?></span>
+                                    <?php else: ?>
+                                        <span class="text-muted">Jadwal belum tersedia</span>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="mb-3 mt-3">
@@ -630,14 +1042,21 @@
             <?php else: ?>
                 <div class="col-12 text-center py-5">
                     <i class="fas fa-mountain fa-3x text-muted mb-3"></i>
-                    <p class="text-muted">Belum ada trip tersedia.</p>
+                    <?php if (!empty($keyword)): ?>
+                        <p class="text-muted">Tidak ada trip dengan kata kunci "<strong><?= esc($keyword) ?></strong>"</p>
+                        <a href="<?= base_url('/#Trip') ?>" class="btn btn-outline-success mt-3">
+                            <i class="fas fa-arrow-left me-2"></i> Lihat Semua Trip
+                        </a>
+                    <?php else: ?>
+                        <p class="text-muted">Belum ada trip tersedia.</p>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </section>
 
-<!-- GALLERY SECTION - Dokumentasi Gunung -->
+<!-- GALLERY SECTION - Dokumentasi Gunung dengan Lightbox -->
 <section class="gallery-carousel-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
@@ -658,7 +1077,9 @@
                 <div class="carousel-inner">
                     <?php foreach ($galleryPhotos as $index => $photo): ?>
                         <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                            <div class="gallery-slide" style="background-image: url('<?= base_url('uploads/mountains/' . $photo['image']) ?>');">
+                            <div class="gallery-slide"
+                                style="background-image: url('<?= base_url('uploads/gallery/' . $photo['image']) ?>');"
+                                onclick="openHomeLightbox(<?= $index ?>)">
                                 <div class="gallery-caption">
                                     <h4><?= esc($photo['title'] ?? 'Dokumentasi Perjalanan') ?></h4>
                                     <p><?= esc($photo['album'] ?? 'Momen tak terlupakan bersama BLNTRK OUTDOOR') ?></p>
@@ -686,7 +1107,7 @@
     </div>
 </section>
 
-<!-- TESTIMONI SECTION -->
+<!-- TESTIMONI SECTION dengan Avatar Images -->
 <section class="py-5">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
@@ -704,7 +1125,12 @@
                             <p class="testimonial-text"><?= esc($c['comment']) ?></p>
                             <div class="testimonial-author">
                                 <div class="testimonial-avatar">
-                                    <?= strtoupper(substr($c['name'], 0, 1)) ?>
+                                    <?php if (!empty($c['profile_image'])): ?>
+                                        <img src="<?= base_url('uploads/profiles/' . $c['profile_image']) ?>"
+                                            alt="<?= esc($c['name']) ?>">
+                                    <?php else: ?>
+                                        <?= strtoupper(substr($c['name'], 0, 1)) ?>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="testimonial-info">
                                     <h6><?= esc($c['name']) ?></h6>
@@ -776,12 +1202,102 @@
     </div>
 </section>
 
+<!-- Home Lightbox -->
+<div class="home-lightbox" id="homeLightbox" onclick="closeHomeLightbox(event)">
+    <div class="home-lightbox-inner">
+        <button class="home-lb-close" onclick="closeHomeLightbox()">&times;</button>
+        <button class="home-lb-nav home-lb-prev" onclick="shiftHomePhoto(-1)">&#8592;</button>
+        <img id="homeLbImg" src="" alt="">
+        <button class="home-lb-nav home-lb-next" onclick="shiftHomePhoto(1)">&#8594;</button>
+        <div class="lightbox-meta">
+            <div class="lt" id="homeLbTitle"></div>
+            <div class="la" id="homeLbAlbum"></div>
+        </div>
+    </div>
+</div>
+
 <script>
+    // Home Gallery Lightbox Data
+    let homePhotos = [];
+    let homeCurrent = 0;
+
+    // Load gallery photos data
+    <?php if (!empty($galleryPhotos)): ?>
+        homePhotos = [
+            <?php foreach ($galleryPhotos as $photo): ?> {
+                    src: '<?= base_url('uploads/gallery/' . $photo['image']) ?>',
+                    title: '<?= addslashes($photo['title'] ?? 'Dokumentasi Perjalanan') ?>',
+                    album: '<?= addslashes($photo['album'] ?? 'Momen Tak Terlupakan') ?>'
+                },
+            <?php endforeach; ?>
+        ];
+    <?php endif; ?>
+
+    function openHomeLightbox(index) {
+        homeCurrent = index;
+        renderHomeLightbox();
+        document.getElementById('homeLightbox').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeHomeLightbox(e) {
+        if (e && e.target !== document.getElementById('homeLightbox') && !e.target.classList.contains('home-lb-close')) return;
+        document.getElementById('homeLightbox').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function shiftHomePhoto(dir) {
+        homeCurrent = (homeCurrent + dir + homePhotos.length) % homePhotos.length;
+        renderHomeLightbox();
+        if (event) event.stopPropagation();
+    }
+
+    function renderHomeLightbox() {
+        const p = homePhotos[homeCurrent];
+        document.getElementById('homeLbImg').src = p.src;
+        document.getElementById('homeLbTitle').textContent = p.title;
+        document.getElementById('homeLbAlbum').textContent = p.album;
+    }
+
+    // Keyboard navigation for home lightbox
+    document.addEventListener('keydown', e => {
+        const lb = document.getElementById('homeLightbox');
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        if (e.key === 'ArrowLeft') shiftHomePhoto(-1);
+        if (e.key === 'ArrowRight') shiftHomePhoto(1);
+    });
+
+    // Inisialisasi carousel manual
+    document.addEventListener('DOMContentLoaded', function() {
+        var carouselEl = document.getElementById('heroCarousel');
+        if (carouselEl) {
+            new bootstrap.Carousel(carouselEl, {
+                interval: 5000,
+                ride: 'carousel',
+                wrap: true
+            });
+        }
+    });
+
     // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+
+            // Lewati jika ini bagian dari carousel Bootstrap
+            if (
+                this.closest('.carousel') ||
+                this.hasAttribute('data-bs-slide') ||
+                this.hasAttribute('data-bs-slide-to') ||
+                href === '#'
+            ) return;
+
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',

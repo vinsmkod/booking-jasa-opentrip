@@ -2,12 +2,29 @@
 <?= $this->section('content') ?>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --ink: #0f0e0d;
+        --paper: #bcccb9;
+        --sand: #e8e2d9;
+        --rust: #c4603a;
+        --rust-light: #e8886a;
+        --muted: #8c8780;
+        --card-radius: 12px;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
 
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+    }
+
+    body {
+        background: var(--paper);
     }
 
     body {
@@ -17,15 +34,10 @@
     /* Hero Section */
     .hero-about {
         position: relative;
-        height: 90vh;
-        min-height: 600px;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: white;
+        padding: 60px 0 80px;
+        border-radius: 10px 10px 50px 50px;
+        margin-bottom: 0px;
+        overflow: hidden;
     }
 
     .hero-about::before {
@@ -35,7 +47,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
+        background: linear-gradient(135deg, rgba(26, 158, 90, 0.54) 0%, rgba(0, 0, 0, 0.4) 100%);
     }
 
     .hero-about .container {
@@ -76,8 +88,8 @@
 
     /* Statistics Section */
     .stats-section {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         padding: 60px 0;
+
     }
 
     .stat-card {
@@ -115,12 +127,65 @@
     .about-section {
         padding: 80px 0;
         background: white;
+        border-radius: 20px;
     }
 
     .about-image {
         border-radius: 24px;
         overflow: hidden;
         box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-image-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .about-image-main {
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-image-main img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+
+    .about-image-main:hover img {
+        transform: scale(1.05);
+    }
+
+    .about-image-small {
+        position: absolute;
+        bottom: -40px;
+        left: -40px;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        transform: rotate(-6deg);
+    }
+
+    .about-image-small img {
+        width: 220px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    @media (max-width:768px) {
+        .about-image-small {
+            left: 0;
+            bottom: -20px;
+        }
+
+        .about-image-small img {
+            width: 160px;
+            height: 110px;
+        }
     }
 
     .about-image img {
@@ -158,7 +223,6 @@
 
     /* How It Works */
     .howitworks-section {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         padding: 80px 0;
     }
 
@@ -221,6 +285,7 @@
     .whyus-section {
         padding: 80px 0;
         background: white;
+        border-radius: 20px;
     }
 
     .feature-card {
@@ -267,7 +332,7 @@
 
     /* Gallery Section */
     .gallery-section {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+
         padding: 80px 0;
     }
 
@@ -314,6 +379,9 @@
     .testimonial-section {
         padding: 80px 0;
         background: white;
+        border-radius: 20px;
+        margin-bottom: 70px;
+
     }
 
     .testimonial-card {
@@ -323,6 +391,7 @@
         text-align: center;
         transition: all 0.3s;
         height: 100%;
+        margin-bottom: 0px;
     }
 
     .testimonial-card:hover {
@@ -361,6 +430,9 @@
         padding: 80px 0;
         text-align: center;
         color: white;
+        border-radius: 20px;
+        margin-bottom: 70px;
+
     }
 
     .cta-section h2 {
@@ -422,9 +494,9 @@
 
 <!-- HERO SECTION -->
 <section class="hero-about"
-    style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat fixed;">
+    style="background:url('<?= base_url('assets/images/gunung4.jpeg') ?>') center/cover no-repeat;">
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="display-4 fw-bold">Open Trip Pendakian Gunung</h1>
+        <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
         <p class="lead mt-3">
             Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah
         </p>
@@ -470,33 +542,53 @@
 <section class="about-section">
     <div class="container">
         <div class="row align-items-center g-5">
+
+            <!-- IMAGE -->
             <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
-                <div class="about-image">
-                    <img src="<?= base_url('assets/images/hiking.jpg') ?>" class="img-fluid" alt="Hiking">
+                <div class="about-image-wrapper">
+
+                    <div class="about-image-main">
+                        <img src="<?= base_url('assets/images/gunung1.jpg') ?>"
+                            alt="Pendakian Gunung">
+                    </div>
+
+                    <div class="about-image-small">
+                        <img src="<?= base_url('assets/images/pendaki1.jpeg') ?>"
+                            alt="Open Trip">
+                    </div>
+
                 </div>
             </div>
+
+            <!-- TEXT -->
             <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
                 <div class="about-content">
                     <div class="about-badge">
                         <i class="fas fa-flag-checkered me-1"></i> Tentang Kami
                     </div>
+
                     <h2>Tentang BLNTRK Outdoor</h2>
+
                     <p class="text-success fw-semibold">
                         Platform open trip pendakian gunung berbasis online
                     </p>
+
                     <p>
                         BLNTRK Outdoor merupakan platform layanan open trip pendakian gunung
                         yang dirancang untuk memudahkan para pecinta alam dalam merencanakan
                         perjalanan pendakian secara praktis, aman, dan terorganisir.
                     </p>
+
                     <p>
                         Melalui website ini pengguna dapat melihat jadwal trip,
                         melakukan reservasi online, melakukan pembayaran,
                         serta memperoleh informasi lengkap mengenai meeting point,
                         itinerary perjalanan, dan detail kegiatan pendakian.
                     </p>
+
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -652,16 +744,16 @@
                 <div class="testimonial-card">
                     <i class="fas fa-quote-left"></i>
                     <p>"Tripnya seru dan sangat terorganisir! Guide profesional dan pemandangan luar biasa."</p>
-                    <h6>Rizky</h6>
-                    <small>Jakarta - Rinjani 2025</small>
+                    <h6>Randy</h6>
+                    <small>Cijambe - Rinjani 2025</small>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                 <div class="testimonial-card">
                     <i class="fas fa-quote-left"></i>
                     <p>"Guide profesional dan perjalanan aman. Pengalaman tak terlupakan bersama komunitas baru."</p>
-                    <h6>Dewi</h6>
-                    <small>Bandung - Semeru 2024</small>
+                    <h6>Sahar</h6>
+                    <small>Cigadung - Semeru 2024</small>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
