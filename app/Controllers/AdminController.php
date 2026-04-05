@@ -28,18 +28,8 @@ class AdminTripController extends BaseController
         return view('admin/trips/create');
     }
 
-    // =============================
-    // STORE — FIX: simpan whatsapp_group
-    // =============================
     public function store()
     {
-        $imageFile = $this->request->getFile('image');
-        $imageName = null;
-
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $imageName = $this->uploadImage('image');
-        }
-
         $this->tripModel->insert([
             'title'          => $this->request->getPost('title'),
             'location'       => $this->request->getPost('location'),
@@ -47,8 +37,8 @@ class AdminTripController extends BaseController
             'price'          => $this->request->getPost('price'),
             'status'         => $this->request->getPost('status') ?? 'active',
             'type'           => $this->request->getPost('type'),
-            'whatsapp_group' => $this->request->getPost('whatsapp_group') ?: null, // FIX
-            'image'          => $imageName,
+            'whatsapp_group' => $this->request->getPost('whatsapp_group') ?: null,
+            'image'          => $this->uploadImage('image'),
         ]);
 
         return redirect()->to('/admin/trips')
@@ -68,9 +58,6 @@ class AdminTripController extends BaseController
         ]);
     }
 
-    // =============================
-    // UPDATE — FIX: simpan whatsapp_group & status
-    // =============================
     public function update($trip_id)
     {
         $updateData = [
@@ -80,12 +67,13 @@ class AdminTripController extends BaseController
             'price'          => $this->request->getPost('price'),
             'type'           => $this->request->getPost('type'),
             'status'         => $this->request->getPost('status'),
-            'whatsapp_group' => $this->request->getPost('whatsapp_group') ?: null, // FIX
+            'whatsapp_group' => $this->request->getPost('whatsapp_group') ?: null,
+            'image'          => $this->uploadImage('image'),
         ];
 
-        $imageFile = $this->request->getFile('image');
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $updateData['image'] = $this->uploadImage('image');
+        // Hapus key image kalau tidak ada file baru supaya tidak overwrite dengan null
+        if ($updateData['image'] === null) {
+            unset($updateData['image']);
         }
 
         $this->tripModel->update($trip_id, $updateData);
@@ -106,31 +94,56 @@ class AdminTripController extends BaseController
     {
         $trips = $this->tripModel->findAll();
 
-        header("Content-type: application/vnd-ms-excel");
-        header("Content-Disposition: attachment; filename=trips.xls");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename=trips.xlsx');
 
-        echo "Trip ID\tTitle\tLocation\tPrice\tType\tStatus\n";
+        // Simple XML-based Excel (tidak perlu library eksternal)
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        echo '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+                    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+              <Worksheet ss:Name="Trips">
+              <Table>';
 
+        // Header row
+        echo '<Row>';
+        foreach (['Trip ID', 'Title', 'Location', 'Price', 'Type', 'Status'] as $col) {
+            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($col) . '</Data></Cell>';
+        }
+        echo '</Row>';
+
+        // Data rows
         foreach ($trips as $trip) {
-            echo $trip['trip_id']  . "\t";
-            echo $trip['title']    . "\t";
-            echo $trip['location'] . "\t";
-            echo $trip['price']    . "\t";
-            echo $trip['type']     . "\t";
-            echo $trip['status']   . "\n";
+            echo '<Row>';
+            echo '<Cell><Data ss:Type="Number">' . $trip['trip_id']  . '</Data></Cell>';
+            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['title'])    . '</Data></Cell>';
+            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['location']) . '</Data></Cell>';
+            echo '<Cell><Data ss:Type="Number">' . $trip['price']    . '</Data></Cell>';
+            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['type'])     . '</Data></Cell>';
+            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['status'])   . '</Data></Cell>';
+            echo '</Row>';
         }
 
+        echo '</Table></Worksheet></Workbook>';
         exit;
     }
 
-    private function uploadImage($inputName)
+    /*
+    =====================================
+    PRIVATE HELPERS
+    =====================================
+    */
+
+    private function uploadImage(string $inputName): ?string
     {
         $file = $this->request->getFile($inputName);
-        if ($file->isValid() && !$file->hasMoved()) {
-            $newName = $file->getRandomName();
-            $file->move(WRITEPATH . 'uploads/trips/', $newName);
-            return $newName;
+
+        if (!$file || !$file->isValid() || $file->hasMoved()) {
+            return null;
         }
-        return null;
+
+        $newName = $file->getRandomName();
+        $file->move(WRITEPATH . 'uploads/trips/', $newName);
+
+        return $newName;
     }
 }

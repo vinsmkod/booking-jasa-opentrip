@@ -286,6 +286,10 @@
         margin-top: 15px;
     }
 
+    .mt-4 {
+        margin-top: 20px;
+    }
+
     .mb-2 {
         margin-bottom: 8px;
     }
@@ -356,16 +360,16 @@
             <div>
                 <div class="info-item">
                     <div class="info-label">Nama Trip</div>
-                    <div class="info-value"><?= esc($trip['title'] ?? '-') ?></div>
+                    <div class="info-value"><?= esc($booking['title'] ?? '-') ?></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Lokasi</div>
-                    <div class="info-value"><?= esc($trip['location'] ?? '-') ?></div>
+                    <div class="info-value"><?= esc($booking['location'] ?? '-') ?></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Tanggal Trip</div>
                     <div class="info-value">
-                        <?= isset($schedule['departure_date']) ? date('d F Y', strtotime($schedule['departure_date'])) : '-' ?>
+                        <?= isset($booking['departure_date']) ? date('d F Y', strtotime($booking['departure_date'])) : '-' ?>
                     </div>
                 </div>
                 <div class="info-item">
@@ -374,7 +378,7 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Harga per Orang</div>
-                    <div class="info-value">Rp <?= number_format($trip['price'] ?? 0, 0, ',', '.') ?></div>
+                    <div class="info-value">Rp <?= number_format($booking['price'] ?? 0, 0, ',', '.') ?></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Harga</div>
@@ -444,6 +448,9 @@
                     <div class="info-value">
                         <?php if (!empty($booking['meeting_point_name'])): ?>
                             <?= esc($booking['meeting_point_name']) ?>
+                            <?php if (!empty($booking['meeting_point_address'])): ?>
+                                <br><small class="text-muted"><?= esc($booking['meeting_point_address']) ?></small>
+                            <?php endif; ?>
                         <?php else: ?>
                             <span class="text-muted">Akan diinformasikan setelah booking dikonfirmasi</span>
                         <?php endif; ?>
@@ -467,8 +474,8 @@
             <i class="fas fa-download"></i> Download Invoice
         </a>
 
-        <?php if (($booking['status'] ?? '') === 'confirmed' && !empty($trip['whatsapp_group'])): ?>
-            <a href="<?= esc($trip['whatsapp_group']) ?>" target="_blank" class="btn-success">
+        <?php if (($booking['status'] ?? '') === 'confirmed' && !empty($booking['whatsapp_group'])): ?>
+            <a href="<?= esc($booking['whatsapp_group']) ?>" target="_blank" class="btn-success">
                 <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp
             </a>
         <?php endif; ?>
@@ -488,5 +495,17 @@
         </small>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

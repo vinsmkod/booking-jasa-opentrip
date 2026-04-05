@@ -33,10 +33,13 @@ class BookingController extends BaseController
     }
 
     /**
-     * List all bookings for admin verification
+     * ✅ INDEX (SUDAH FULL FIX)
      */
     public function index()
     {
+        // ======================
+        // BOOKING DATA
+        // ======================
         $bookings = $this->bookingModel
             ->select('
                 bookings.*,
@@ -58,11 +61,61 @@ class BookingController extends BaseController
             ->orderBy('bookings.created_at', 'DESC')
             ->findAll();
 
-        return view('admin/bookings/index', ['bookings' => $bookings]);
+        // ======================
+        // DOCUMENT DATA
+        // ======================
+        $documents = $this->documentModel
+            ->select('
+                documents.*,
+                bookings.booking_code
+            ')
+            ->join('bookings', 'bookings.booking_id = documents.booking_id')
+            ->findAll();
+
+        // ======================
+        // OPTIMASI: MAP BOOKING
+        // ======================
+        $bookingMap = [];
+        foreach ($bookings as $b) {
+            $bookingMap[$b['booking_id']] = $b;
+        }
+
+        // ======================
+        // FORMAT PESERTA
+        // ======================
+        $bookingPeserta = [];
+
+        foreach ($documents as $doc) {
+            $bid = $doc['booking_id'];
+
+            if (!isset($bookingPeserta[$bid])) {
+                $bk = $bookingMap[$bid] ?? null;
+
+                $bookingPeserta[$bid] = [
+                    'booking_code' => $doc['booking_code'] ?? '-',
+                    'trip_title'   => $bk['trip_title'] ?? '-',
+                    'status'       => $bk['status'] ?? 'pending',
+                    'peserta'      => []
+                ];
+            }
+
+            $bookingPeserta[$bid]['peserta'][] = [
+                'name'      => $doc['name'],
+                'gender'    => $doc['gender'],
+                'email'     => $doc['email'],
+                'birthdate' => $doc['birthdate']
+            ];
+        }
+
+        return view('admin/bookings/index', [
+            'bookings'       => $bookings,
+            'documents'      => $documents,
+            'bookingPeserta' => $bookingPeserta
+        ]);
     }
 
     /**
-     * Confirm booking with payment verification
+     * ✅ CONFIRM BOOKING
      */
     public function confirm($id)
     {
@@ -87,42 +140,39 @@ class BookingController extends BaseController
             }
 
             // ======================
-            // GET OR CREATE PAYMENT RECORD
+            // PAYMENT
             // ======================
             $payment = $this->paymentModel
                 ->where('booking_id', $id)
                 ->first();
 
-            // If payment record doesn't exist, create one
             if (!$payment) {
-                $paymentData = [
+                $this->paymentModel->insert([
                     'booking_id' => $id,
-                    'method' => 'Manual Verification',
-                    'amount' => $booking['total_price'],
-                    'status' => 'verified',
-                    'paid_at' => date('Y-m-d H:i:s'),
+                    'method'     => 'Manual Verification',
+                    'amount'     => $booking['total_price'],
+                    'status'     => 'verified',
+                    'paid_at'    => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
-                ];
-                $this->paymentModel->insert($paymentData);
+                ]);
             } else {
-                // Update existing payment
                 $this->paymentModel->update($payment['payment_id'], [
-                    'status' => 'verified',
-                    'paid_at' => date('Y-m-d H:i:s'),
+                    'status'     => 'verified',
+                    'paid_at'    => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
             }
 
             // ======================
-            // UPDATE BOOKING
+            // BOOKING STATUS
             // ======================
             $this->bookingModel->update($id, [
-                'status' => 'confirmed',
+                'status'     => 'confirmed',
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
             // ======================
-            // UPDATE KUOTA SCHEDULE
+            // UPDATE KUOTA
             // ======================
             $newAvailable = $schedule['available'] - $booking['participant'];
 
@@ -131,11 +181,10 @@ class BookingController extends BaseController
             }
 
             $this->scheduleModel->update($schedule['schedule_id'], [
-                'available' => $newAvailable,
+                'available'  => $newAvailable,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            // Jika kuota habis, set trip jadi full
             if ($newAvailable === 0) {
                 $this->tripModel->update($schedule['trip_id'], [
                     'status' => 'full'
@@ -143,52 +192,45 @@ class BookingController extends BaseController
             }
 
             // ======================
-            // LOYALTY POINT (10 points)
+            // LOYALTY POINT
             // ======================
-            $pointsReward = 10;
-
-            // Check if loyalty point already given
-            $existingLoyalty = $this->loyaltyModel
+            $existing = $this->loyaltyModel
                 ->where('booking_id', $booking['booking_id'])
                 ->first();
 
-            if (!$existingLoyalty) {
+            if (!$existing) {
+                $points = 10;
+
                 $this->loyaltyModel->insert([
                     'user_id'     => $booking['user_id'],
                     'booking_id'  => $booking['booking_id'],
-                    'points'      => $pointsReward,
-                    'description' => 'Reward booking trip - ' . date('d M Y'),
+                    'points'      => $points,
+                    'description' => 'Reward booking trip',
                     'created_at'  => date('Y-m-d H:i:s')
                 ]);
 
                 $user = $this->userModel->find($booking['user_id']);
 
                 if ($user) {
-                    $newPoints = ($user['points'] ?? 0) + $pointsReward;
+                    $newPoints = ($user['points'] ?? 0) + $points;
 
                     $this->userModel->update($booking['user_id'], [
-                        'points' => $newPoints,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'points' => $newPoints
                     ]);
-
-                    // Sync session jika admin login sebagai user tersebut
-                    if (session()->get('user_id') == $booking['user_id']) {
-                        session()->set('points', $newPoints);
-                    }
                 }
             }
 
             $db->transCommit();
 
-            return redirect()->back()->with('success', 'Booking dikonfirmasi, pembayaran disetujui & poin diberikan');
+            return redirect()->back()->with('success', 'Booking berhasil dikonfirmasi');
         } catch (\Exception $e) {
             $db->transRollback();
-            return redirect()->back()->with('error', 'Gagal mengkonfirmasi booking: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
     /**
-     * Cancel booking
+     * ✅ CANCEL BOOKING
      */
     public function cancel($id)
     {
@@ -202,132 +244,41 @@ class BookingController extends BaseController
                 throw new \Exception('Booking tidak ditemukan');
             }
 
-            // Check if already cancelled
             if ($booking['status'] === 'cancelled') {
                 throw new \Exception('Booking sudah dibatalkan');
             }
 
-            // Update booking status
             $this->bookingModel->update($id, [
-                'status' => 'cancelled',
-                'updated_at' => date('Y-m-d H:i:s')
+                'status' => 'cancelled'
             ]);
 
-            // Update payment if exists and not verified
             $payment = $this->paymentModel
                 ->where('booking_id', $id)
                 ->first();
 
             if ($payment && $payment['status'] != 'verified') {
                 $this->paymentModel->update($payment['payment_id'], [
-                    'status' => 'rejected',
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'status' => 'rejected'
                 ]);
             }
 
-            // Restore quota if booking was confirmed
+            // restore quota
             if ($booking['status'] === 'confirmed') {
                 $schedule = $this->scheduleModel->find($booking['schedule_id']);
-                if ($schedule) {
-                    $newAvailable = $schedule['available'] + $booking['participant'];
-                    $this->scheduleModel->update($schedule['schedule_id'], [
-                        'available' => $newAvailable,
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
 
-                    // Update trip status back to active if it was full
-                    $trip = $this->tripModel->find($schedule['trip_id']);
-                    if ($trip && $trip['status'] == 'full') {
-                        $this->tripModel->update($schedule['trip_id'], [
-                            'status' => 'active'
-                        ]);
-                    }
+                if ($schedule) {
+                    $this->scheduleModel->update($schedule['schedule_id'], [
+                        'available' => $schedule['available'] + $booking['participant']
+                    ]);
                 }
             }
 
             $db->transCommit();
 
-            return redirect()->back()->with('success', 'Booking berhasil dibatalkan');
+            return redirect()->back()->with('success', 'Booking dibatalkan');
         } catch (\Exception $e) {
             $db->transRollback();
-            return redirect()->back()->with('error', 'Gagal membatalkan booking: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
-    }
-
-    /**
-     * View booking detail
-     */
-    public function detail($id)
-    {
-        $booking = $this->bookingModel
-            ->select('
-                bookings.*,
-                users.name as username,
-                users.email as user_email,
-                users.phone as user_phone,
-                trips.title as trip_title,
-                trips.location as trip_location,
-                trips.description as trip_description,
-                schedules.departure_date,
-                schedules.quota,
-                schedules.available as schedule_available,
-                payments.payment_id,
-                payments.method,
-                payments.proof,
-                payments.status as payment_status,
-                payments.amount as payment_amount,
-                payments.paid_at
-            ')
-            ->join('users', 'users.user_id = bookings.user_id')
-            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id')
-            ->join('trips', 'trips.trip_id = schedules.trip_id')
-            ->join('payments', 'payments.booking_id = bookings.booking_id', 'left')
-            ->where('bookings.booking_id', $id)
-            ->first();
-
-        if (!$booking) {
-            return redirect()->to('/admin/bookings')->with('error', 'Booking tidak ditemukan');
-        }
-
-        // Get participant documents
-        $documents = $this->documentModel
-            ->where('booking_id', $id)
-            ->findAll();
-
-        return view('admin/bookings/detail', [
-            'booking' => $booking,
-            'documents' => $documents
-        ]);
-    }
-
-    /**
-     * View booking invoice
-     */
-    public function invoice($id)
-    {
-        $booking = $this->bookingModel
-            ->select('
-                bookings.*,
-                users.name as username,
-                users.email as user_email,
-                trips.title as trip_title,
-                trips.location as trip_location,
-                schedules.departure_date,
-                payments.method,
-                payments.status as payment_status,
-                payments.paid_at
-            ')
-            ->join('users', 'users.user_id = bookings.user_id')
-            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id')
-            ->join('trips', 'trips.trip_id = schedules.trip_id')
-            ->join('payments', 'payments.booking_id = bookings.booking_id', 'left')
-            ->where('bookings.booking_id', $id)
-            ->first();
-
-        if (!$booking) {
-            return redirect()->to('/admin/bookings')->with('error', 'Booking tidak ditemukan');
-        }
-
-        return view('admin/bookings/invoice', ['booking' => $booking]);
     }
 }
