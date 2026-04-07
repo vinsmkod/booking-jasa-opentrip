@@ -2,21 +2,22 @@
    GLOBAL STYLE
 ================================ */
 
-:root {
-   --ink: #0f0e0d;
-   --paper: #f5f2ed;
-   --sand: #e8e2d9;
-   --rust: #c4603a;
-   --rust-light: #e8886a;
-   --muted: #8c8780;
-   --dark: #1a2a1c;
-   --light: #f8fafc;
-   --white: #ffffff;
-   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-   --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-   --transition: all 0.3s ease;
-}
+ @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --ink: #0f0e0d;
+        --paper: #bcccb9;
+        --sand: #e8e2d9;
+        --rust: #c4603a;
+        --rust-light: #e8886a;
+        --muted: #8c8780;
+        --card-radius: 12px;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
+        --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+        --transition: all .3s ease;
+    }
+
+    body { background: var(--paper); }
 
 * {
    margin: 0;
@@ -32,8 +33,8 @@ body {
    overflow-x: hidden;
 }
 
-section {
-   padding: 80px 0;
+section:not(.hero-slider):not(.hero-gallery) {
+    padding: 80px 0;
 }
 
 h1,
@@ -171,52 +172,108 @@ a {
    font-size: 1rem;
 }
 
-/* ===============================
-   TRIP CARD
-================================ */
+/* ── TRIP CARDS ── */
+    .trip-card {
+        background: white;
+        border-radius: var(--card-radius);
+        overflow: hidden;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        height: 100%;
+    }
 
-.card-trip {
-   border: none;
-   border-radius: 20px;
-   overflow: hidden;
-   transition: var(--transition);
-   background: var(--white);
-   box-shadow: var(--shadow-sm);
-}
+    .trip-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-md);
+    }
 
-.card-trip img {
-   height: 220px;
-   object-fit: cover;
-   transition: transform 0.5s ease;
-}
+    .trip-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        height: 220px;
+    }
 
-.card-trip:hover img {
-   transform: scale(1.08);
-}
+    .trip-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
 
-.card-trip .card-body {
-   padding: 20px;
-}
+    .trip-card:hover .trip-image {
+        transform: scale(1.1);
+    }
 
-.card-trip:hover {
-   transform: translateY(-8px);
-   box-shadow: var(--shadow-lg);
-}
+    .trip-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 12px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        z-index: 2;
+    }
 
-.card-trip .card-title {
-   font-size: 1.2rem;
-   font-weight: 700;
-   margin-bottom: 10px;
-   color: var(--ink);
-}
+    .trip-badge.available {
+        background: var(--rust);
+        color: white;
+    }
 
-.card-trip .price {
-   font-size: 1.3rem;
-   font-weight: 800;
-   color: var(--rust);
-   margin: 10px 0;
-}
+    .trip-badge.full {
+        background: #6c757d;
+        color: white;
+    }
 
+    .trip-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+    }
+
+    .trip-price {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    .trip-card .card-body {
+        padding: 20px;
+    }
+
+    .trip-card .card-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--ink);
+    }
+
+    .trip-info {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    .trip-info i {
+        width: 20px;
+        color: var(--rust);
+        margin-right: 8px;
+    }
+
+    .progress {
+        height: 6px;
+        background: var(--sand);
+        border-radius: 10px;
+    }
+
+    .progress-bar {
+        background: var(--rust);
+        border-radius: 10px;
+    }
 /* ===============================
    STATISTIK
 ================================ */

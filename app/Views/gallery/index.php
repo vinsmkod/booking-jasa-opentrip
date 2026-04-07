@@ -10,22 +10,15 @@
         --sand: #e8e2d9;
         --rust: #c4603a;
         --rust-light: #e8886a;
-        --muted: #000000ff;
         --card-radius: 12px;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s ease;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
+        --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+        --transition: all .3s ease;
     }
 
-    * {
-        box-sizing: border-box;
-    }
+    body { background: var(--paper); }
 
-    body {
-        background: var(--paper);
-    }
-
-    /* Hero Section */
+    /* ── HERO ── */
     .hero-gallery {
         position: relative;
         padding: 60px 0 80px;
@@ -37,88 +30,22 @@
     .hero-gallery::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(26, 158, 90, 0.54) 0%, rgba(0, 0, 0, 0.4) 100%);
+        inset: 0;
+        background: linear-gradient(135deg, rgba(26,158,90,.54) 0%, rgba(0,0,0,.4) 100%);
     }
 
-    .hero-gallery .container {
-        position: relative;
-        z-index: 2;
-    }
+    .hero-gallery .container { position: relative; z-index: 2; }
 
     .hero-gallery h1 {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 20px;
         color: var(--rust);
-
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        text-shadow: 2px 2px 4px rgba(0,0,0,.3);
     }
 
-    .hero-gallery p {
-        font-size: 1.2rem;
-        max-width: 700px;
-        margin: 0 auto;
-        opacity: 0.95;
-    }
-
-    .btn-hero {
-        background: linear-gradient(135deg, #c4603a, #b5532c);
-        color: white;
-        padding: 12px 30px;
-        border-radius: 50px;
-        font-weight: 600;
-        transition: all 0.3s;
-        border: none;
-        margin-top: 30px;
-    }
-
-    .btn-hero:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(196, 96, 58, 0.3);
-        color: white;
-    }
-
-    /* ── FILTER SECTION ── */
-    .filter-section {
-        background: white;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 30px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .filter-title {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--ink);
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .filter-title i {
-        color: var(--rust);
-    }
-
-    .trip-filters {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-
-    .trip-filter-btn {
+    /* ── FILTER & ALBUM BUTTONS ── */
+    .trip-filter-btn,
+    .album-tab {
         padding: 8px 20px;
-        border: 2px solid var(--sand);
         border-radius: 100px;
-        background: white;
-        color: var(--muted);
         font-family: 'DM Sans', sans-serif;
         font-size: 14px;
         font-weight: 500;
@@ -128,51 +55,20 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        color: #000;
+        background: white;
+        border: 2px solid var(--sand);
     }
 
-    .trip-filter-btn i {
-        font-size: 14px;
-    }
-
-    .trip-filter-btn:hover,
-    .trip-filter-btn.active {
+    .trip-filter-btn:hover, .trip-filter-btn.active,
+    .album-tab:hover,       .album-tab.active {
         background: var(--rust);
         border-color: var(--rust);
         color: white;
         transform: translateY(-2px);
     }
 
-    /* ── ALBUM TABS ── */
-    .album-tabs {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        padding: 0 0 20px;
-        border-bottom: 2px solid var(--sand);
-        margin-bottom: 30px;
-    }
-
-    .album-tab {
-        padding: 8px 20px;
-        border: none;
-        border-radius: 100px;
-        background: transparent;
-        color: var(--muted);
-        font-family: 'DM Sans', sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition);
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .album-tab:hover,
-    .album-tab.active {
-        background: var(--rust);
-        color: white;
-        transform: translateY(-2px);
-    }
+    .album-tab { border: none; background: transparent; }
 
     /* ── TRIP INFO CARD ── */
     .trip-info-card {
@@ -188,19 +84,11 @@
         gap: 15px;
     }
 
-    .trip-info-card h3 {
-        margin: 0;
-        font-family: 'Playfair Display', serif;
-        font-size: 1.5rem;
-    }
+    .trip-info-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin: 0; }
+    .trip-info-card p  { margin: 5px 0 0; opacity: .9; }
 
-    .trip-info-card p {
-        margin: 5px 0 0;
-        opacity: 0.9;
-    }
-
-    .trip-info-card .btn-clear {
-        background: rgba(255, 255, 255, 0.2);
+    .btn-clear {
+        background: rgba(255,255,255,.2);
         border: none;
         color: white;
         padding: 8px 20px;
@@ -208,30 +96,13 @@
         text-decoration: none;
         transition: var(--transition);
     }
-
-    .trip-info-card .btn-clear:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-    }
+    .btn-clear:hover { background: rgba(255,255,255,.3); transform: translateY(-2px); color: white; }
 
     /* ── MASONRY GRID ── */
-    .masonry-grid {
-        columns: 3 320px;
-        column-gap: 25px;
-    }
+    .masonry-grid { columns: 3 320px; column-gap: 25px; }
 
-    @media(max-width: 992px) {
-        .masonry-grid {
-            columns: 2 280px;
-            column-gap: 20px;
-        }
-    }
-
-    @media(max-width: 576px) {
-        .masonry-grid {
-            columns: 1 280px;
-        }
-    }
+    @media (max-width: 992px) { .masonry-grid { columns: 2 280px; column-gap: 20px; } }
+    @media (max-width: 576px) { .masonry-grid { columns: 1 280px; } }
 
     .photo-card {
         break-inside: avoid;
@@ -245,25 +116,20 @@
         transition: var(--transition);
     }
 
-    .photo-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-md);
-    }
+    .photo-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
 
     .photo-card img {
         display: block;
         width: 100%;
-        transition: transform .5s cubic-bezier(.25, .46, .45, .94);
+        transition: transform .5s cubic-bezier(.25,.46,.45,.94);
     }
 
-    .photo-card:hover img {
-        transform: scale(1.05);
-    }
+    .photo-card:hover img { transform: scale(1.05); }
 
     .photo-card .overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+        background: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 60%);
         opacity: 0;
         transition: opacity .3s ease;
         display: flex;
@@ -271,9 +137,7 @@
         padding: 20px;
     }
 
-    .photo-card:hover .overlay {
-        opacity: 1;
-    }
+    .photo-card:hover .overlay { opacity: 1; }
 
     .overlay-text .title {
         font-family: 'Playfair Display', serif;
@@ -285,11 +149,11 @@
 
     .overlay-text .album-tag {
         font-size: .75rem;
-        color: rgba(255, 255, 255, .8);
+        color: rgba(255,255,255,.8);
         letter-spacing: .08em;
         text-transform: uppercase;
         display: inline-block;
-        background: rgba(196, 96, 58, 0.8);
+        background: rgba(196,96,58,.8);
         padding: 2px 8px;
         border-radius: 20px;
     }
@@ -299,7 +163,7 @@
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: rgba(0, 0, 0, .95);
+        background: rgba(0,0,0,.95);
         backdrop-filter: blur(8px);
         display: flex;
         align-items: center;
@@ -309,10 +173,7 @@
         transition: opacity .3s ease;
     }
 
-    .lightbox-backdrop.open {
-        opacity: 1;
-        pointer-events: all;
-    }
+    .lightbox-backdrop.open { opacity: 1; pointer-events: all; }
 
     .lightbox-inner {
         position: relative;
@@ -322,24 +183,17 @@
         flex-direction: column;
         align-items: center;
         transform: scale(.96);
-        transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+        transition: transform .3s cubic-bezier(.34,1.56,.64,1);
     }
 
-    .lightbox-backdrop.open .lightbox-inner {
-        transform: scale(1);
-    }
+    .lightbox-backdrop.open .lightbox-inner { transform: scale(1); }
 
     .lightbox-inner img {
         max-width: 100%;
         max-height: 78vh;
         object-fit: contain;
         border-radius: 12px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
-    }
-
-    .lightbox-meta {
-        margin-top: 20px;
-        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,.5);
     }
 
     .lightbox-meta .lt {
@@ -351,7 +205,7 @@
 
     .lightbox-meta .la {
         font-size: .85rem;
-        color: rgba(255, 255, 255, .6);
+        color: rgba(255,255,255,.6);
         letter-spacing: .1em;
         text-transform: uppercase;
         margin-top: 6px;
@@ -363,21 +217,19 @@
         right: 0;
         background: none;
         border: none;
-        color: rgba(255, 255, 255, .6);
+        color: rgba(255,255,255,.6);
         font-size: 2rem;
         cursor: pointer;
         transition: color .2s;
     }
 
-    .lb-close:hover {
-        color: #fff;
-    }
+    .lb-close:hover { color: #fff; }
 
     .lb-nav {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(255, 255, 255, .1);
+        background: rgba(255,255,255,.1);
         border: none;
         color: #fff;
         width: 48px;
@@ -391,124 +243,61 @@
         justify-content: center;
     }
 
-    .lb-nav:hover {
-        background: rgba(255, 255, 255, .2);
-    }
-
-    .lb-prev {
-        left: -70px;
-    }
-
-    .lb-next {
-        right: -70px;
-    }
+    .lb-nav:hover { background: rgba(255,255,255,.2); }
+    .lb-prev { left: -70px; }
+    .lb-next { right: -70px; }
 
     @media (max-width: 768px) {
-        .lb-prev {
-            left: 10px;
-        }
-
-        .lb-next {
-            right: 10px;
-        }
-
-        .lb-nav {
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-        }
-    }
-
-    /* ── EMPTY STATE ── */
-    .empty-state {
-        text-align: center;
-        padding: 80px 20px;
-        background: white;
-        border-radius: 20px;
-        color: var(--muted);
-    }
-
-    .empty-state .icon {
-        font-size: 4rem;
-        margin-bottom: 20px;
-        opacity: .5;
-    }
-
-    .empty-state h4 {
-        font-family: 'Playfair Display', serif;
-        margin-bottom: 10px;
-        color: var(--ink);
-    }
-
-    .empty-state p {
-        font-size: 1rem;
-        margin-bottom: 20px;
-    }
-
-    /* ── STATS ── */
-    .stats-info {
-        text-align: center;
-        margin: 30px 0;
-        padding: 15px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .stats-info small {
-        color: var(--muted);
-        font-size: 0.85rem;
-    }
-
-    .stats-info i {
-        color: var(--rust);
-        margin-right: 6px;
-    }
-
-    /* ── DIVIDER ── */
-    .divider {
-        height: 2px;
-        background: var(--sand);
-        margin: 0 0 30px;
+        .lb-prev { left: 10px; }
+        .lb-next { right: 10px; }
+        .lb-nav  { width: 40px; height: 40px; font-size: 1.2rem; }
     }
 </style>
-<!-- HERO SECTION -->
-<section class="hero-gallery"
-    style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat;">
+
+
+<!-- ══════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════ -->
+<section class="hero-gallery" style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat;">
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
-        <p class="lead mt-3">
-            Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah
-        </p>
-        <a href="<?= base_url('trips') ?>" class="btn btn-hero" data-aos="zoom-in" data-aos-delay="300">
-            <i class="fas fa-mountain me-2"></i> Lihat Jadwal Trip
+        <p class="lead mt-3 opacity-95">Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah</p>
+        <a href="<?= base_url('trips') ?>" class="btn rounded-pill fw-semibold px-4 py-3 mt-4 text-white" style="background:linear-gradient(135deg,#c4603a,#b5532c);border:none;transition:all .3s;" data-aos="zoom-in" data-aos-delay="300"
+            onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 25px rgba(196,96,58,.3)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <i class="fas fa-mountain me-2"></i>Lihat Jadwal Trip
         </a>
     </div>
 </section>
 
-<!-- LIGHTBOX BACKDROP -->
+
+<!-- ══════════════════════════════════════════
+     LIGHTBOX
+══════════════════════════════════════════ -->
 <div class="lightbox-backdrop" id="lightbox" onclick="closeLightbox(event)">
     <div class="lightbox-inner">
         <button class="lb-close" onclick="closeLightbox()">&times;</button>
         <button class="lb-nav lb-prev" onclick="shiftPhoto(-1)">&#8592;</button>
         <img id="lb-img" src="" alt="">
         <button class="lb-nav lb-next" onclick="shiftPhoto(1)">&#8594;</button>
-        <div class="lightbox-meta">
+        <div class="lightbox-meta mt-4 text-center">
             <div class="lt" id="lb-title"></div>
             <div class="la" id="lb-album"></div>
         </div>
     </div>
 </div>
 
-<!-- TRIP FILTER SECTION -->
+
+<!-- ══════════════════════════════════════════
+     TRIP FILTER
+══════════════════════════════════════════ -->
 <?php if (!empty($trips)): ?>
-    <div class="filter-section">
-        <div class="filter-title">
-            <i class="fas fa-mountain"></i> Filter Berdasarkan Trip
+    <div class="bg-white rounded-4 p-4 mb-4 shadow-sm">
+        <div class="d-flex align-items-center gap-2 fw-semibold small mb-3">
+            <i class="fas fa-mountain" style="color:var(--rust);"></i> Filter Berdasarkan Trip
         </div>
-        <div class="trip-filters">
-            <a href="<?= base_url('gallery') ?>"
-                class="trip-filter-btn <?= empty($activeTrip) ? 'active' : '' ?>">
+        <div class="d-flex flex-wrap gap-3">
+            <a href="<?= base_url('gallery') ?>" class="trip-filter-btn <?= empty($activeTrip) ? 'active' : '' ?>">
                 <i class="fas fa-globe"></i> Semua Trip
             </a>
             <?php foreach ($trips as $trip): ?>
@@ -521,43 +310,53 @@
     </div>
 <?php endif; ?>
 
-<!-- ACTIVE TRIP INFO -->
+
+<!-- ══════════════════════════════════════════
+     ACTIVE TRIP INFO
+══════════════════════════════════════════ -->
 <?php if (!empty($selectedTrip)): ?>
     <div class="trip-info-card">
         <div>
-            <h3><i class="fas fa-flag-checkered"></i> <?= esc($selectedTrip['title']) ?></h3>
-            <p><i class="fas fa-map-marker-alt"></i> <?= esc($selectedTrip['location']) ?> |
-                <i class="fas fa-calendar"></i> Dokumentasi Perjalanan
+            <h3><i class="fas fa-flag-checkered me-2"></i><?= esc($selectedTrip['title']) ?></h3>
+            <p>
+                <i class="fas fa-map-marker-alt me-1"></i><?= esc($selectedTrip['location']) ?>
+                &nbsp;|&nbsp;<i class="fas fa-calendar me-1"></i>Dokumentasi Perjalanan
             </p>
         </div>
         <a href="<?= base_url('gallery') ?>" class="btn-clear">
-            <i class="fas fa-times"></i> Tampilkan Semua
+            <i class="fas fa-times me-1"></i>Tampilkan Semua
         </a>
     </div>
 <?php endif; ?>
 
-<!-- ALBUM TABS -->
+
+<!-- ══════════════════════════════════════════
+     ALBUM TABS
+══════════════════════════════════════════ -->
 <?php if (!empty($albums)): ?>
-    <div class="album-tabs">
+    <div class="d-flex flex-wrap gap-2 pb-3 mb-4 border-bottom" style="border-color:var(--sand)!important;">
         <a href="<?= base_url('gallery') . ($activeTrip ? '?trip=' . $activeTrip : '') ?>"
             class="album-tab <?= !isset($activeAlbum) ? 'active' : '' ?>">
-            <i class="fas fa-th-large"></i> Semua Album
+            <i class="fas fa-th-large me-1"></i>Semua Album
         </a>
         <?php foreach ($albums as $album): ?>
             <?php if (!empty($album['album'])): ?>
                 <a href="<?= base_url('gallery?album=' . urlencode($album['album'])) . ($activeTrip ? '&trip=' . $activeTrip : '') ?>"
                     class="album-tab <?= (isset($activeAlbum) && $activeAlbum === $album['album']) ? 'active' : '' ?>">
-                    <i class="fas fa-folder"></i> <?= esc($album['album']) ?>
+                    <i class="fas fa-folder me-1"></i><?= esc($album['album']) ?>
                 </a>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
 
-<!-- STATS INFO -->
-<div class="stats-info">
-    <small>
-        <i class="fas fa-images"></i>
+
+<!-- ══════════════════════════════════════════
+     STATS INFO
+══════════════════════════════════════════ -->
+<div class="bg-white rounded-3 shadow-sm text-center p-3 mb-4">
+    <small class="text-muted">
+        <i class="fas fa-images me-1" style="color:var(--rust);"></i>
         <?= count($galleryPhotos) ?> foto ditemukan
         <?php if (!empty($selectedTrip)): ?>
             dalam perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>
@@ -569,7 +368,10 @@
     </small>
 </div>
 
-<!-- MASONRY GRID -->
+
+<!-- ══════════════════════════════════════════
+     MASONRY GRID
+══════════════════════════════════════════ -->
 <?php if (!empty($galleryPhotos)): ?>
     <div class="masonry-grid" id="photoGrid">
         <?php foreach ($galleryPhotos as $i => $photo): ?>
@@ -592,17 +394,17 @@
         <?php endforeach; ?>
     </div>
 
-    <!-- Additional Info -->
     <div class="text-center mt-5 mb-4">
-        <small class="text-muted">
-            <i class="fas fa-camera"></i> Klik foto untuk melihat lebih detail
-        </small>
+        <small class="text-muted"><i class="fas fa-camera me-1"></i>Klik foto untuk melihat lebih detail</small>
     </div>
+
 <?php else: ?>
-    <div class="empty-state">
-        <div class="icon">🏔️</div>
-        <h4>Belum Ada Dokumentasi</h4>
-        <p>
+
+    <!-- EMPTY STATE -->
+    <div class="text-center py-5 bg-white rounded-4">
+        <div class="fs-1 mb-3 opacity-50">🏔️</div>
+        <h4 class="fw-bold mb-2" style="font-family:'Playfair Display',serif;">Belum Ada Dokumentasi</h4>
+        <p class="text-muted mb-4">
             <?php if (!empty($selectedTrip)): ?>
                 Belum ada foto untuk perjalanan <strong><?= esc($selectedTrip['title']) ?></strong>.
             <?php elseif (!empty($activeAlbum)): ?>
@@ -611,25 +413,21 @@
                 Belum ada foto dalam galeri. Ikuti perjalanan kami untuk melihat dokumentasi petualangan!
             <?php endif; ?>
         </p>
-        <a href="<?= base_url('trips') ?>" class="btn btn-outline-primary mt-2">
-            <i class="fas fa-hiking"></i> Lihat Trip Tersedia
+        <a href="<?= base_url('trips') ?>" class="btn btn-outline-primary">
+            <i class="fas fa-hiking me-1"></i>Lihat Trip Tersedia
         </a>
     </div>
+
 <?php endif; ?>
 
-<div style="height: 40px"></div>
-</div>
+<div class="mb-5"></div>
+
 
 <script>
-    let photos = [];
-    let current = 0;
+    let photos = [], current = 0;
 
     document.querySelectorAll('.photo-card').forEach(card => {
-        photos.push({
-            src: card.dataset.src,
-            title: card.dataset.title,
-            album: card.dataset.album,
-        });
+        photos.push({ src: card.dataset.src, title: card.dataset.title, album: card.dataset.album });
     });
 
     function openLightbox(card) {
@@ -661,24 +459,17 @@
     document.addEventListener('keydown', e => {
         const lb = document.getElementById('lightbox');
         if (!lb.classList.contains('open')) return;
-        if (e.key === 'Escape') {
-            lb.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        if (e.key === 'ArrowLeft') shiftPhoto(-1);
+        if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; }
+        if (e.key === 'ArrowLeft')  shiftPhoto(-1);
         if (e.key === 'ArrowRight') shiftPhoto(1);
     });
 
-    /* Staggered reveal animation */
-    const cards = document.querySelectorAll('.photo-card');
-    cards.forEach((c, i) => {
+    /* Staggered reveal */
+    document.querySelectorAll('.photo-card').forEach((c, i) => {
         c.style.opacity = 0;
         c.style.transform = 'translateY(20px)';
-        c.style.transition = `opacity 0.5s ease ${i*50}ms, transform 0.5s ease ${i*50}ms`;
-        setTimeout(() => {
-            c.style.opacity = 1;
-            c.style.transform = 'translateY(0)';
-        }, 100);
+        c.style.transition = `opacity .5s ease ${i * 50}ms, transform .5s ease ${i * 50}ms`;
+        setTimeout(() => { c.style.opacity = 1; c.style.transform = 'translateY(0)'; }, 100);
     });
 </script>
 

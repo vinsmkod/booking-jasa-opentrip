@@ -1,4 +1,5 @@
-<?= $this->extend('layouts/main') ?>
+<?= $this->extend('layouts/admin') ?>
+<?= view('layouts/admin'); ?>
 <?= $this->section('content') ?>
 
 <div class="container py-5">
