@@ -25,12 +25,27 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background: #f8f9fa;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-bottom: 100px;
         }
 
         .custom-wrapper {
@@ -105,21 +120,25 @@
         /* FOOTER */
 
         footer {
-            background: #212529;
-            color: #ccc;
-            padding: 40px 0;
+            background: #1a1a1a;
+            color: #cbd5e1;
+            padding: 48px 20px 24px;
             margin-top: auto;
+            border-top: 1px solid #333;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
         footer h5 {
             font-weight: 600;
             margin-bottom: 15px;
+            color: white;
         }
 
         footer a {
-            color: #ccc;
+            color: #a0a0a0;
             text-decoration: none;
-            margin: 0 8px;
         }
 
         footer a:hover {

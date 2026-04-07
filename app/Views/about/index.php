@@ -8,8 +8,8 @@
         --ink: #0f0e0d;
         --paper: #bcccb9;
         --sand: #e8e2d9;
-        --rust: #c4603a;
-        --rust-light: #e8886a;
+        --rust: #2d7d3a;
+        --rust-light: #7fb069;
         --muted: #8c8780;
         --card-radius: 12px;
         --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -60,6 +60,7 @@
         font-weight: 800;
         margin-bottom: 20px;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        color: white;
     }
 
     .hero-about p {
@@ -67,10 +68,11 @@
         max-width: 700px;
         margin: 0 auto;
         opacity: 0.95;
+        color: white;
     }
 
     .btn-hero {
-        background: linear-gradient(135deg, #c4603a, #b5532c);
+        background: linear-gradient(135deg, #2d7d3a, #1f5a29);
         color: white;
         padding: 12px 30px;
         border-radius: 50px;
@@ -82,7 +84,7 @@
 
     .btn-hero:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(196, 96, 58, 0.3);
+        box-shadow: 0 10px 25px rgba(45, 125, 58, 0.3);
         color: white;
     }
 
@@ -109,7 +111,7 @@
     .stat-number {
         font-size: 2.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #c4603a, #b5532c);
+        background: linear-gradient(135deg, #2d7d3a, #1f5a29);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -206,8 +208,8 @@
 
     .about-badge {
         display: inline-block;
-        background: #c4603a10;
-        color: #c4603a;
+        background: #2d7d3a10;
+        color: #2d7d3a;
         padding: 5px 15px;
         border-radius: 50px;
         font-size: 0.8rem;
@@ -243,7 +245,7 @@
     .step-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #c4603a, #b5532c);
+        background: linear-gradient(135deg, #2d7d3a, #1f5a29);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -259,7 +261,7 @@
     .step-number {
         width: 30px;
         height: 30px;
-        background: #c4603a;
+        background: #2d7d3a;
         color: white;
         border-radius: 50%;
         display: flex;
@@ -306,7 +308,7 @@
     .feature-icon {
         width: 70px;
         height: 70px;
-        background: #c4603a10;
+        background: #2d7d3a10;
         border-radius: 20px;
         display: flex;
         align-items: center;
@@ -316,7 +318,7 @@
 
     .feature-icon i {
         font-size: 2rem;
-        color: #c4603a;
+        color: #2d7d3a;
     }
 
     .feature-card h5 {
@@ -401,7 +403,7 @@
 
     .testimonial-card i {
         font-size: 2rem;
-        color: #c4603a;
+        color: #2d7d3a;
         opacity: 0.3;
         margin-bottom: 15px;
     }
@@ -426,7 +428,7 @@
 
     /* CTA Section */
     .cta-section {
-        background: linear-gradient(135deg, #c4603a 0%, #b5532c 100%);
+        background: linear-gradient(135deg, #2d7d3a 0%, #1f5a29 100%);
         padding: 80px 0;
         text-align: center;
         color: white;
@@ -450,7 +452,7 @@
 
     .btn-cta {
         background: white;
-        color: #c4603a;
+        color: #2d7d3a;
         padding: 12px 35px;
         border-radius: 50px;
         font-weight: 600;
@@ -461,7 +463,7 @@
     .btn-cta:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        color: #c4603a;
+        color: #2d7d3a;
     }
 
     /* Responsive */

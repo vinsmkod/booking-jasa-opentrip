@@ -78,15 +78,63 @@ class ItineraryController extends BaseController
 
     /*
     |--------------------------------------------------------------------------
+    | SIMPAN DATA BATCH (MULTIPLE)
+    |--------------------------------------------------------------------------
+    */
+
+    public function storeBatch()
+    {
+        $tripId = $this->request->getPost('trip_id');
+        $times = $this->request->getPost('time');
+        $activities = $this->request->getPost('activity');
+
+        if (!$tripId || !is_array($times) || !is_array($activities)) {
+            return redirect()->back()->with('error', 'Data tidak valid');
+        }
+
+        $data = [];
+        foreach ($times as $key => $time) {
+            if (!empty($time) && !empty($activities[$key] ?? null)) {
+                $data[] = [
+                    'trip_id' => $tripId,
+                    'time' => $time,
+                    'activity' => $activities[$key]
+                ];
+            }
+        }
+
+        if (!empty($data)) {
+            $this->itineraryModel->insertBatch($data);
+        }
+
+        return redirect()->to('/admin/itinerary')
+            ->with('success', count($data) . ' Itinerary berhasil ditambahkan');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | FORM EDIT
     |--------------------------------------------------------------------------
     */
 
     public function edit($id)
     {
+        $db = \Config\Database::connect();
+        
+        $itinerary = $this->itineraryModel->find($id);
+        $tripId = $itinerary['trip_id'] ?? null;
+        
+        // Get all itineraries for this trip
+        $allItineraries = $db->table('trip_itinerary')
+            ->where('trip_id', $tripId)
+            ->orderBy('time', 'ASC')
+            ->get()
+            ->getResultArray();
+
         $data = [
             'title' => 'Edit Itinerary',
-            'itinerary' => $this->itineraryModel->find($id),
+            'tripId' => $tripId,
+            'allItineraries' => $allItineraries,
             'trips' => $this->tripModel->findAll()
         ];
 
@@ -116,6 +164,47 @@ class ItineraryController extends BaseController
     | DELETE
     |--------------------------------------------------------------------------
     */
+
+    public function updateBatch()
+    {
+        $tripId = $this->request->getPost('trip_id');
+        $times = $this->request->getPost('time');
+        $activities = $this->request->getPost('activity');
+        $itineraryIds = $this->request->getPost('itinerary_id');
+
+        if (!$tripId || !is_array($times) || !is_array($activities)) {
+            return redirect()->back()->with('error', 'Data tidak valid');
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('trip_itinerary');
+        
+        foreach ($times as $key => $time) {
+            if (!empty($time) && !empty($activities[$key] ?? null)) {
+                $itineraryId = $itineraryIds[$key] ?? null;
+                
+                if ($itineraryId) {
+                    // Update existing
+                    $db->table('trip_itinerary')
+                        ->where('itinerary_id', $itineraryId)
+                        ->update([
+                            'time' => $time,
+                            'activity' => $activities[$key]
+                        ]);
+                } else {
+                    // Insert new
+                    $db->table('trip_itinerary')->insert([
+                        'trip_id' => $tripId,
+                        'time' => $time,
+                        'activity' => $activities[$key]
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->to('/admin/itinerary')
+            ->with('success', 'Itinerary berhasil diperbarui');
+    }
 
     public function delete($id)
     {

@@ -46,8 +46,12 @@
     /* Trip Image */
     .trip-image {
         width: 100%;
+        max-height: 500px;
+        height: auto;
+        object-fit: cover;
         border-radius: 12px;
         margin-bottom: 25px;
+        display: block;
     }
 
     /* Trip Title */

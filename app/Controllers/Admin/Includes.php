@@ -76,15 +76,67 @@ class Includes extends BaseController
 
     /*
     |--------------------------------------------------------------------------
+    | SIMPAN INCLUDE BATCH (MULTIPLE)
+    |--------------------------------------------------------------------------
+    */
+
+    public function storeBatch()
+    {
+        $tripId = $this->request->getPost('trip_id');
+        $titles = $this->request->getPost('title');
+
+        if (!$tripId || !is_array($titles)) {
+            return redirect()->back()->with('error', 'Data tidak valid');
+        }
+
+        $data = [];
+        foreach ($titles as $title) {
+            if (!empty($title)) {
+                $data[] = [
+                    'trip_id' => $tripId,
+                    'title' => $title
+                ];
+            }
+        }
+
+        if (!empty($data)) {
+            $this->includeModel->insertBatch($data);
+        }
+
+        return redirect()->to('/admin/includes')
+            ->with('success', count($data) . ' Include berhasil ditambahkan');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | FORM EDIT INCLUDE
     |--------------------------------------------------------------------------
     */
 
     public function edit($id)
     {
+        $db = \Config\Database::connect();
+        
+        // Get single include to find trip_id
+        $include = $this->includeModel->find($id);
+        
+        if (!$include) {
+            return redirect()->to('/admin/includes')->with('error', 'Include tidak ditemukan');
+        }
+        
+        $tripId = $include['trip_id'];
+        
+        // Get all includes for this trip
+        $allIncludes = $db->table('trip_includes')
+            ->where('trip_id', $tripId)
+            ->orderBy('include_id', 'ASC')
+            ->get()
+            ->getResultArray();
+        
         $data = [
-            'title' => 'Edit Include',
-            'include' => $this->includeModel->find($id),
+            'title' => 'Edit Include Batch',
+            'tripId' => $tripId,
+            'allIncludes' => $allIncludes,
             'trips' => $this->tripModel->findAll()
         ];
 
@@ -106,6 +158,67 @@ class Includes extends BaseController
 
         return redirect()->to('/admin/includes')
             ->with('success', 'Include berhasil diupdate');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE INCLUDE BATCH (MULTIPLE)
+    |--------------------------------------------------------------------------
+    */
+
+    public function updateBatch()
+    {
+        $tripId = $this->request->getPost('trip_id');
+        $titles = $this->request->getPost('title');
+        $includeIds = $this->request->getPost('include_id');
+
+        if (!$tripId || !is_array($titles)) {
+            return redirect()->back()->with('error', 'Data tidak valid');
+        }
+
+        $db = \Config\Database::connect();
+        $updateCount = 0;
+        $insertCount = 0;
+
+        // Update existing and insert new includes
+        foreach ($titles as $idx => $title) {
+            if (empty($title)) {
+                continue;
+            }
+
+            $includeId = isset($includeIds[$idx]) ? $includeIds[$idx] : null;
+
+            if (!empty($includeId)) {
+                // Update existing
+                $this->includeModel->update($includeId, [
+                    'trip_id' => $tripId,
+                    'title' => $title
+                ]);
+                $updateCount++;
+            } else {
+                // Insert new
+                $this->includeModel->insert([
+                    'trip_id' => $tripId,
+                    'title' => $title
+                ]);
+                $insertCount++;
+            }
+        }
+
+        $message = '';
+        if ($updateCount > 0) {
+            $message .= $updateCount . ' include diupdate';
+        }
+        if ($insertCount > 0) {
+            if ($message) $message .= ', ';
+            $message .= $insertCount . ' include ditambahkan';
+        }
+        if (!$message) {
+            $message = 'Tidak ada perubahan';
+        }
+
+        return redirect()->to('/admin/includes')
+            ->with('success', $message);
     }
 
     /*

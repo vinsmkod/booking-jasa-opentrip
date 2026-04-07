@@ -8,8 +8,8 @@
         --ink: #0f0e0d;
         --paper: #bcccb9;
         --sand: #e8e2d9;
-        --rust: #c4603a;
-        --rust-light: #e8886a;
+        --rust: #2d7d3a;
+        --rust-light: #7fb069;
         --card-radius: 12px;
         --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
         --shadow-md: 0 4px 12px rgba(0,0,0,.1);
@@ -37,8 +37,12 @@
     .hero-gallery .container { position: relative; z-index: 2; }
 
     .hero-gallery h1 {
-        color: var(--rust);
+        color: white;
         text-shadow: 2px 2px 4px rgba(0,0,0,.3);
+    }
+
+    .hero-gallery .lead {
+        color: white;
     }
 
     /* ── FILTER & ALBUM BUTTONS ── */
@@ -262,9 +266,9 @@
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
         <p class="lead mt-3 opacity-95">Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah</p>
-        <a href="<?= base_url('trips') ?>" class="btn rounded-pill fw-semibold px-4 py-3 mt-4 text-white" style="background:linear-gradient(135deg,#c4603a,#b5532c);border:none;transition:all .3s;" data-aos="zoom-in" data-aos-delay="300"
-            onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 25px rgba(196,96,58,.3)'"
-            onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <a href="<?= base_url('trips') ?>" class="btn rounded-pill fw-semibold px-4 py-3 mt-4 text-white" style="background:linear-gradient(135deg,#2d7d3a,#1f5a29);border:none;transition:all .3s;" data-aos="zoom-in" data-aos-delay="300"
+            onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 25px rgba(45,125,58,.3)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''">            
             <i class="fas fa-mountain me-2"></i>Lihat Jadwal Trip
         </a>
     </div>

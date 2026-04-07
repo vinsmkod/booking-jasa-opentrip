@@ -234,9 +234,11 @@ $routes->group('admin', [
 
     $routes->get('includes/create', 'Includes::create');
     $routes->post('includes/store', 'Includes::store');
+    $routes->post('includes/store-batch', 'Includes::storeBatch');
 
     $routes->get('includes/edit/(:num)', 'Includes::edit/$1');
     $routes->post('includes/update/(:num)', 'Includes::update/$1');
+    $routes->post('includes/update-batch', 'Includes::updateBatch');
 
     $routes->get('includes/delete/(:num)', 'Includes::delete/$1');
 
@@ -250,9 +252,11 @@ $routes->group('admin', [
 
     $routes->get('itinerary/create', 'ItineraryController::create');
     $routes->post('itinerary/store', 'ItineraryController::store');
+    $routes->post('itinerary/store-batch', 'ItineraryController::storeBatch');
 
     $routes->get('itinerary/edit/(:num)', 'ItineraryController::edit/$1');
     $routes->post('itinerary/update/(:num)', 'ItineraryController::update/$1');
+    $routes->post('itinerary/update-batch', 'ItineraryController::updateBatch');
 
     $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
 
@@ -348,7 +352,7 @@ $routes->post('payment/webhook', 'PaymentController::webhook');
 |--------------------------------------------------------------------------
 */
 
-$routes->get('booking/exportExcel', 'BookingController::exportExcel');
+$routes->get('booking/exportExcel', 'AdminController::exportExcel');
 
 
 /*

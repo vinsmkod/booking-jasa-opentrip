@@ -4,14 +4,17 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\TripModel;
+use App\Models\BookingModel;
 
-class AdminTripController extends BaseController
+class AdminController extends BaseController
 {
     protected $tripModel;
+    protected $bookingModel;
 
     public function __construct()
     {
         $this->tripModel = new TripModel();
+        $this->bookingModel = new BookingModel();
     }
 
     public function index()
@@ -92,38 +95,55 @@ class AdminTripController extends BaseController
 
     public function exportExcel()
     {
-        $trips = $this->tripModel->findAll();
+        // Query booking dengan join trip, schedule, users, dan meeting_points
+        $bookings = $this->bookingModel
+            ->select('bookings.booking_code, users.name as user_name, trips.title, trips.location, bookings.participant, meeting_points.name as meeting_point, trips.price, trips.type, schedules.departure_date, bookings.status as payment_status')
+            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
+            ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
+            ->join('users', 'users.user_id = bookings.user_id', 'left')
+            ->join('meeting_points', 'meeting_points.meeting_point_id = bookings.meeting_point_id', 'left')
+            ->orderBy('bookings.booking_id', 'DESC')
+            ->findAll();
 
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename=trips.xlsx');
+        // Export sebagai CSV
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=bookings_' . date('Y-m-d_His') . '.csv');
 
-        // Simple XML-based Excel (tidak perlu library eksternal)
-        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        echo '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-                    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
-              <Worksheet ss:Name="Trips">
-              <Table>';
+        // Output BOM untuk UTF-8
+        echo "\xEF\xBB\xBF";
 
         // Header row
-        echo '<Row>';
-        foreach (['Trip ID', 'Title', 'Location', 'Price', 'Type', 'Status'] as $col) {
-            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($col) . '</Data></Cell>';
-        }
-        echo '</Row>';
+        $output = fopen('php://output', 'w');
+        fputcsv($output, [
+            'Kode Booking',
+            'Nama Peserta',
+            'Nama Trip',
+            'Lokasi',
+            'Jumlah Anggota',
+            'Meeting Point',
+            'Price',
+            'Jenis Trip',
+            'Tanggal Keberangkatan',
+            'Status Pembayaran'
+        ]);
 
         // Data rows
-        foreach ($trips as $trip) {
-            echo '<Row>';
-            echo '<Cell><Data ss:Type="Number">' . $trip['trip_id']  . '</Data></Cell>';
-            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['title'])    . '</Data></Cell>';
-            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['location']) . '</Data></Cell>';
-            echo '<Cell><Data ss:Type="Number">' . $trip['price']    . '</Data></Cell>';
-            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['type'])     . '</Data></Cell>';
-            echo '<Cell><Data ss:Type="String">' . htmlspecialchars($trip['status'])   . '</Data></Cell>';
-            echo '</Row>';
+        foreach ($bookings as $booking) {
+            fputcsv($output, [
+                $booking['booking_code'],
+                $booking['user_name'] ?? '-',
+                $booking['title'] ?? '-',
+                $booking['location'] ?? '-',
+                $booking['participant'] ?? '-',
+                $booking['meeting_point'] ?? '-',
+                $booking['price'] ?? '-',
+                $booking['type'] ?? '-',
+                $booking['departure_date'] ? date('d-m-Y', strtotime($booking['departure_date'])) : '-',
+                $booking['payment_status'] ?? '-'
+            ]);
         }
 
-        echo '</Table></Worksheet></Workbook>';
+        fclose($output);
         exit;
     }
 
