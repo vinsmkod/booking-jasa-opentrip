@@ -12,106 +12,129 @@
 
     body {
         font-family: 'Inter', sans-serif;
-        background: #f8fafc;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     }
 
     .history-container {
-        max-width: 1200px;
+        max-width: 1280px;
         margin: 0 auto;
-        padding: 40px 20px;
+        padding: 40px 24px;
     }
 
     /* Breadcrumb */
-    .breadcrumb-modern {
+    .breadcrumb {
         background: transparent;
         padding: 0;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
+        display: flex;
+        gap: 8px;
+        font-size: 0.85rem;
     }
 
-    .breadcrumb-modern .breadcrumb-item a {
+    .breadcrumb-item a {
         color: #64748b;
         text-decoration: none;
-        font-size: 0.85rem;
         transition: color 0.2s;
     }
 
-    .breadcrumb-modern .breadcrumb-item a:hover {
-        color: #c4603a;
+    .breadcrumb-item a:hover {
+        color: #2d7d3a;
     }
 
-    .breadcrumb-modern .breadcrumb-item.active {
-        color: #1e293b;
-        font-weight: 500;
+    .breadcrumb-item.active {
+        color: #0f172a;
+        font-weight: 600;
     }
 
-    /* Header */
+    .breadcrumb-item::after {
+        content: '/';
+        margin-left: 8px;
+        color: #cbd5e1;
+    }
+
+    .breadcrumb-item:last-child::after {
+        content: '';
+    }
+
+    /* Page Header */
     .page-header {
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
 
-    .page-header h3 {
-        font-size: 1.8rem;
+    .page-title {
+        font-size: 2rem;
         font-weight: 800;
         color: #0f172a;
-        position: relative;
-        display: inline-block;
-        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .page-header h3:after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 50px;
-        height: 3px;
-        background: linear-gradient(135deg, #c4603a, #b5532c);
-        border-radius: 2px;
+    .page-title i {
+        color: #2d7d3a;
+        font-size: 2.2rem;
     }
 
-    .page-header p {
+    .page-subtitle {
         color: #64748b;
-        margin-top: 15px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        font-weight: 500;
     }
 
     /* Stats Summary */
     .stats-summary {
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-        margin-bottom: 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
     }
 
-    .stat-summary-card {
+    .stat-card {
         background: white;
         border-radius: 16px;
-        padding: 15px 25px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        flex: 1;
-        min-width: 150px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f1f5f9;
+        transition: all 0.2s;
     }
 
-    .stat-summary-card .stat-label {
-        font-size: 0.75rem;
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        border-color: #e0e7ff;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 5px;
+        font-weight: 600;
+        margin-bottom: 10px;
     }
 
-    .stat-summary-card .stat-number {
-        font-size: 1.5rem;
+    .stat-number {
+        font-size: 1.8rem;
         font-weight: 800;
-        color: #c4603a;
+        color: #2d7d3a;
+        line-height: 1.2;
     }
 
-    /* Table */
+    .stat-card.stat-accent {
+        background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+        border-color: #d1fae5;
+    }
+
+    /* Table Wrapper */
     .table-wrapper {
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f1f5f9;
+        margin-bottom: 28px;
     }
 
     .table {
@@ -119,30 +142,58 @@
     }
 
     .table thead th {
-        background: linear-gradient(135deg, #1a2a1c, #2c3e2f);
-        color: white;
-        font-weight: 600;
+        background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+        border-bottom: 2px solid #d1fae5;
+        color: #2d7d3a;
+        font-weight: 700;
         font-size: 0.85rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        padding: 15px;
-        border: none;
+        padding: 16px;
+        text-align: left;
     }
 
     .table tbody tr {
-        transition: all 0.2s;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #f1f5f9;
+        transition: background-color 0.2s;
     }
 
     .table tbody tr:hover {
         background: #f8fafc;
     }
 
+    .table tbody tr:last-child {
+        border-bottom: none;
+    }
+
     .table tbody td {
-        padding: 15px;
-        vertical-align: middle;
-        color: #334155;
+        padding: 16px;
+        color: #0f172a;
         font-size: 0.9rem;
+        vertical-align: middle;
+    }
+
+    .booking-code {
+        font-weight: 700;
+        color: #2d7d3a;
+        font-family: 'Monaco', 'Courier New', monospace;
+        font-size: 0.9rem;
+    }
+
+    .trip-name {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .price-amount {
+        font-weight: 700;
+        color: #2d7d3a;
+        font-size: 0.95rem;
+    }
+
+    .text-icon {
+        margin-right: 6px;
+        color: #64748b;
     }
 
     /* Badge Status */
@@ -150,120 +201,151 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 5px 12px;
-        border-radius: 50px;
-        font-size: 0.75rem;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
         font-weight: 600;
     }
 
     .badge-pending {
-        background: #fef3c7;
-        color: #d97706;
-    }
-
-    .badge-paid {
-        background: #d1fae5;
-        color: #059669;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
     }
 
     .badge-confirmed {
-        background: #c4603a10;
-        color: #c4603a;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+    }
+
+    .badge-paid {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
     }
 
     .badge-cancelled {
-        background: #fee2e2;
-        color: #dc2626;
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #7f1d1d;
     }
 
     .badge-default {
-        background: #f1f5f9;
-        color: #64748b;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        color: #475569;
     }
 
     /* Button */
     .btn-detail {
-        background: transparent;
-        border: 1px solid #c4603a;
-        color: #c4603a;
-        padding: 6px 15px;
+        background: white;
+        border: 1.5px solid #e2e8f0;
+        color: #0f172a;
+        padding: 8px 14px;
         border-radius: 8px;
         font-size: 0.8rem;
-        font-weight: 500;
+        font-weight: 600;
         transition: all 0.2s;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        cursor: pointer;
     }
 
     .btn-detail:hover {
-        background: #c4603a;
-        color: white;
+        border-color: #2d7d3a;
+        color: #2d7d3a;
+        background: #f0fdf4;
         transform: translateY(-2px);
     }
 
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 60px 40px;
         background: white;
-        border-radius: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f1f5f9;
     }
 
-    .empty-state i {
+    .empty-state-icon {
         font-size: 4rem;
         color: #cbd5e1;
         margin-bottom: 20px;
     }
 
     .empty-state h4 {
-        font-size: 1.3rem;
-        font-weight: 600;
+        font-size: 1.4rem;
+        font-weight: 700;
         color: #0f172a;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .empty-state p {
         color: #64748b;
-        margin-bottom: 20px;
+        margin-bottom: 28px;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
-    .empty-state .btn-primary-custom {
-        background: linear-gradient(135deg, #c4603a, #b5532c);
+    .btn-explore {
+        background: linear-gradient(135deg, #2d7d3a 0%, #1f5428 100%);
         color: white;
-        padding: 10px 25px;
-        border-radius: 50px;
+        padding: 12px 28px;
+        border-radius: 10px;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 8px;
         transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
     }
 
-    .empty-state .btn-primary-custom:hover {
+    .btn-explore:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(196, 96, 58, 0.3);
+        box-shadow: 0 8px 24px rgba(45, 125, 58, 0.3);
+    }
+
+    /* Info Note */
+    .info-note {
+        background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+        border: 1.5px solid #d1fae5;
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #475569;
+    }
+
+    .info-note i {
+        color: #2d7d3a;
+        margin-right: 8px;
     }
 
     /* Responsive */
+    @media (max-width: 1024px) {
+        .stats-summary {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
         .history-container {
-            padding: 20px;
+            padding: 20px 16px;
         }
 
-        .page-header h3 {
-            font-size: 1.4rem;
+        .page-title {
+            font-size: 1.5rem;
         }
 
         .stats-summary {
-            flex-direction: column;
+            grid-template-columns: 1fr;
+            gap: 16px;
         }
 
-        .stat-summary-card {
-            text-align: center;
+        .stat-card {
+            padding: 16px;
         }
 
         .table-wrapper {
@@ -271,39 +353,75 @@
         }
 
         .table {
-            min-width: 600px;
+            min-width: 700px;
+            font-size: 0.85rem;
+        }
+
+        .table tbody td {
+            padding: 12px;
+        }
+
+        .table thead th {
+            padding: 12px;
+            font-size: 0.75rem;
         }
 
         .btn-detail {
-            padding: 5px 12px;
+            padding: 6px 10px;
             font-size: 0.75rem;
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+        }
+
+        .empty-state h4 {
+            font-size: 1.2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .history-container {
+            padding: 16px 12px;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+        }
+
+        .stat-number {
+            font-size: 1.4rem;
         }
     }
 </style>
 
 <div class="history-container">
     <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="breadcrumb-modern">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?= base_url('/') ?>">Home</a></li>
-            <li class="breadcrumb-item active">Riwayat Booking</li>
-        </ol>
-    </nav>
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="<?= base_url('/') ?>">Home</a></span>
+        <span class="breadcrumb-item active">Riwayat Booking</span>
+    </div>
 
     <!-- Page Header -->
     <div class="page-header">
-        <h3><i class="fas fa-history me-2" style="color: #c4603a;"></i> Riwayat Booking Saya</h3>
-        <p>Lihat dan kelola semua pemesanan trip yang telah Anda lakukan</p>
+        <h1 class="page-title">
+            <i class="fas fa-history"></i> Riwayat Booking Saya
+        </h1>
+        <p class="page-subtitle">Lihat dan kelola semua pemesanan trip yang telah Anda lakukan</p>
     </div>
 
     <?php if (empty($bookings)): ?>
         <!-- Empty State -->
         <div class="empty-state">
-            <i class="fas fa-calendar-alt"></i>
+            <i class="fas fa-calendar-alt empty-state-icon"></i>
             <h4>Belum Ada Booking</h4>
-            <p>Anda belum melakukan pemesanan trip apapun. Yuk, mulai petualanganmu sekarang!</p>
-            <a href="<?= base_url('trips') ?>" class="btn-primary-custom">
-                <i class="fas fa-mountain"></i> Lihat Trip Tersedia
+            <p>Anda belum melakukan pemesanan trip apapun. Yuk, mulai petualanganmu sekarang dan jelajahi destinasi impianmu bersama OpenTrip!</p>
+            <a href="<?= base_url('trips') ?>" class="btn-explore">
+                <i class="fas fa-compass"></i> Jelajahi Trip Tersedia
             </a>
         </div>
     <?php else: ?>
@@ -320,19 +438,19 @@
         ?>
 
         <div class="stats-summary">
-            <div class="stat-summary-card">
+            <div class="stat-card">
                 <div class="stat-label">Total Booking</div>
                 <div class="stat-number"><?= $totalBooking ?></div>
             </div>
-            <div class="stat-summary-card">
+            <div class="stat-card stat-accent">
                 <div class="stat-label">Total Pengeluaran</div>
                 <div class="stat-number">Rp <?= number_format($totalSpent, 0, ',', '.') ?></div>
             </div>
-            <div class="stat-summary-card">
+            <div class="stat-card">
                 <div class="stat-label">Menunggu Konfirmasi</div>
                 <div class="stat-number"><?= $pendingCount ?></div>
             </div>
-            <div class="stat-summary-card">
+            <div class="stat-card stat-accent">
                 <div class="stat-label">Terkonfirmasi</div>
                 <div class="stat-number"><?= $confirmedCount ?></div>
             </div>
@@ -344,63 +462,62 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="text-center">Kode Booking</th>
+                            <th>Kode Booking</th>
                             <th>Trip</th>
-                            <th class="text-center">Tanggal Keberangkatan</th>
-                            <th class="text-center">Jumlah Peserta</th>
-                            <th class="text-center">Total Harga</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Aksi</th>
+                            <th>Tanggal Keberangkatan</th>
+                            <th>Peserta</th>
+                            <th>Total Harga</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($bookings as $b): ?>
                             <tr>
-                                <td class="text-center">
-                                    <span class="fw-bold" style="color: #c4603a;"><?= esc($b['booking_code'] ?? $b['booking_id']) ?></span>
+                                <td>
+                                    <span class="booking-code"><?= esc($b['booking_code'] ?? $b['booking_id']) ?></span>
                                 </td>
                                 <td>
-                                    <strong><?= esc($b['trip_title'] ?? '-') ?></strong>
+                                    <span class="trip-name"><?= esc($b['trip_title'] ?? '-') ?></span>
                                 </td>
-                                <td class="text-center">
+                                <td>
+                                    <i class="far fa-calendar-alt text-icon"></i>
                                     <?= !empty($b['departure_date'])
-                                        ? '<i class="far fa-calendar-alt me-1 text-muted"></i> ' . date('d M Y', strtotime($b['departure_date']))
+                                        ? date('d M Y', strtotime($b['departure_date']))
                                         : '-' ?>
                                 </td>
-                                <td class="text-center">
-                                    <i class="fas fa-user-friends me-1 text-muted"></i> <?= esc($b['participant'] ?? 0) ?>
+                                <td>
+                                    <i class="fas fa-users text-icon"></i> <?= esc($b['participant'] ?? 0) ? esc($b['participant']) . ' Orang' : '-' ?>
                                 </td>
-                                <td class="text-center">
-                                    <span class="fw-bold" style="color: #c4603a;">
-                                        Rp <?= number_format($b['total_price'] ?? 0, 0, ',', '.') ?>
-                                    </span>
+                                <td>
+                                    <span class="price-amount">Rp <?= number_format($b['total_price'] ?? 0, 0, ',', '.') ?></span>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <?php
                                     switch ($b['status'] ?? '') {
                                         case 'pending':
                                             $badge = 'badge-pending';
-                                            $icon = 'fas fa-clock';
+                                            $icon = 'fas fa-hourglass-half';
                                             $text = 'Pending';
                                             break;
                                         case 'paid':
                                             $badge = 'badge-paid';
                                             $icon = 'fas fa-check-circle';
-                                            $text = 'Paid';
+                                            $text = 'Dibayar';
                                             break;
                                         case 'confirmed':
                                             $badge = 'badge-confirmed';
                                             $icon = 'fas fa-check-double';
-                                            $text = 'Confirmed';
+                                            $text = 'Terkonfirmasi';
                                             break;
                                         case 'cancelled':
                                             $badge = 'badge-cancelled';
-                                            $icon = 'fas fa-times-circle';
-                                            $text = 'Cancelled';
+                                            $icon = 'fas fa-ban';
+                                            $text = 'Dibatalkan';
                                             break;
                                         default:
                                             $badge = 'badge-default';
-                                            $icon = 'fas fa-question-circle';
+                                            $icon = 'fas fa-info-circle';
                                             $text = esc($b['status'] ?? 'Unknown');
                                     }
                                     ?>
@@ -408,10 +525,10 @@
                                         <i class="<?= $icon ?>"></i> <?= $text ?>
                                     </span>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <a href="<?= base_url('booking/detail/' . $b['booking_id']) ?>"
                                         class="btn-detail">
-                                        <i class="fas fa-eye"></i> Detail
+                                        <i class="fas fa-arrow-right"></i> Detail
                                     </a>
                                 </td>
                             </tr>
@@ -422,11 +539,9 @@
         </div>
 
         <!-- Info Note -->
-        <div class="text-center mt-4">
-            <small class="text-muted">
-                <i class="fas fa-info-circle me-1"></i>
-                Untuk informasi lebih lanjut tentang booking, klik tombol Detail
-            </small>
+        <div class="info-note">
+            <i class="fas fa-info-circle"></i>
+            <span>Klik tombol Detail untuk melihat informasi lengkap dan mengelola booking Anda</span>
         </div>
     <?php endif; ?>
 </div>
