@@ -8,8 +8,8 @@
     --ink: #0f0e0d;
     --paper: #bcccb9;
     --sand: #e8e2d9;
-    --rust: #c4603a;
-    --rust-light: #e8886a;
+    --rust: #2d8653;
+    --rust-light: #52b37a;
     --muted: #8c8780;
     --radius: 12px;
     --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
@@ -152,7 +152,7 @@ body { background: var(--paper); }
     transition: var(--transition);
 }
 .btn-rust:hover {
-    background: #b5532c;
+    background: #1f6b40;
 }
 
 /* ANIM */
@@ -274,7 +274,7 @@ body { background: var(--paper); }
 
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">TRIP</span>
+                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,134,83,.1);color:var(--rust);">TRIP</span>
                 <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Trip Tersedia</h2>
                 <p class="text-muted">Pilih destinasi pendakian favorit Anda dan mulai petualangan</p>
             </div>
@@ -419,7 +419,7 @@ body { background: var(--paper); }
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">DOKUMENTASI</span>
+                style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,134,83,.1);color:var(--rust);">DOKUMENTASI</span>
             <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Momen Perjalanan</h2>
             <p class="text-muted">Dokumentasi perjalanan pendakian bersama peserta trip</p>
         </div>
@@ -473,7 +473,7 @@ body { background: var(--paper); }
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">TESTIMONI</span>
+                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,134,83,.1);color:var(--rust);">TESTIMONI</span>
                 <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Apa Kata Mereka?</h2>
                 <p class="text-muted">Pengalaman peserta yang telah bergabung bersama kami</p>
             </div>

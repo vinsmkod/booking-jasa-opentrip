@@ -193,6 +193,11 @@ class GalleryController extends BaseController
         }
 
         $uploadPath = FCPATH . 'uploads/gallery/';
+        
+        // Pastikan director upload ada
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
 
         $data = [
             'title' => $this->request->getPost('title'),
@@ -207,29 +212,66 @@ class GalleryController extends BaseController
         */
         $crop = $this->request->getPost('cropped_image');
 
-        if ($crop) {
-            $image = str_replace('data:image/jpeg;base64,', '', $crop);
-            $image = base64_decode($image);
+        if ($crop && !empty($crop) && $crop !== '') {
+            try {
+                // Remove data URI prefix
+                if (strpos($crop, 'data:image/') === 0) {
+                    $crop = preg_replace('#^data:image/[^;]+;base64,#', '', $crop);
+                }
 
-            $fileName = time() . '.jpg';
-            $tempPath = $uploadPath . 'temp_' . $fileName;
+                // Decode base64 dengan strict mode
+                $image = base64_decode($crop, true);
 
-            file_put_contents($tempPath, $image);
+                // Validasi bahwa decode berhasil
+                if ($image === false || empty($image)) {
+                    return redirect()->back()
+                        ->with('error', 'Gambar yang di-crop tidak valid. Silakan coba lagi.');
+                }
 
-            // Resize image
-            $this->resizeImage($tempPath, $uploadPath . $fileName, 1200, 1200);
+                // Generate filename
+                $fileName = time() . '_' . uniqid() . '.jpg';
+                $tempPath = $uploadPath . 'temp_' . $fileName;
+                $finalPath = $uploadPath . $fileName;
 
-            // Delete temp file
-            if (file_exists($tempPath)) {
-                unlink($tempPath);
+                // Tulis ke file temporary
+                $bytesWritten = file_put_contents($tempPath, $image);
+
+                // Validasi bahwa file berhasil ditulis
+                if ($bytesWritten === false || $bytesWritten === 0) {
+                    return redirect()->back()
+                        ->with('error', 'Gagal menyimpan file. Pastikan folder uploads/gallery memiliki permission yang tepat.');
+                }
+
+                // Validasi bahwa file temporary ada
+                if (!file_exists($tempPath)) {
+                    return redirect()->back()
+                        ->with('error', 'File temporary tidak dapat dibuat.');
+                }
+
+                // Resize image dan pindahkan ke final path
+                $resizeSuccess = $this->resizeImage($tempPath, $finalPath, 1200, 900, 85);
+
+                // Hapus temp file
+                if (file_exists($tempPath)) {
+                    @unlink($tempPath);
+                }
+
+                if (!$resizeSuccess || !file_exists($finalPath)) {
+                    return redirect()->back()
+                        ->with('error', 'Gagal memproses gambar. Silakan coba dengan gambar lain.');
+                }
+
+                // Hapus file lama
+                if (!empty($gallery['image']) && file_exists($uploadPath . $gallery['image'])) {
+                    @unlink($uploadPath . $gallery['image']);
+                }
+
+                $data['image'] = $fileName;
+            } catch (\Exception $e) {
+                log_message('error', 'Crop image error: ' . $e->getMessage());
+                return redirect()->back()
+                    ->with('error', 'Terjadi kesalahan saat memproses gambar: ' . $e->getMessage());
             }
-
-            // Delete old file
-            if (file_exists($uploadPath . $gallery['image'])) {
-                unlink($uploadPath . $gallery['image']);
-            }
-
-            $data['image'] = $fileName;
         }
 
         /*
@@ -239,7 +281,7 @@ class GalleryController extends BaseController
         */
         $file = $this->request->getFile('image');
 
-        if ($file && $file->isValid()) {
+        if ($file && $file->isValid() && $file->getName() !== '') {
             // Validate file size
             if ($file->getSize() > 10485760) {
                 return redirect()->back()
@@ -260,24 +302,31 @@ class GalleryController extends BaseController
 
             // Resize and optimize
             $fileName = time() . '_' . uniqid() . '.jpg';
-            $success = $this->resizeImage($tempPath, $uploadPath . $fileName, 1200, 1200, 85);
+            $success = $this->resizeImage($tempPath, $uploadPath . $fileName, 1200, 900, 85);
 
             if ($success) {
                 // Delete temp
                 if (file_exists($tempPath)) {
-                    unlink($tempPath);
+                    @unlink($tempPath);
                 }
 
                 // Delete old file
-                if (file_exists($uploadPath . $gallery['image'])) {
-                    unlink($uploadPath . $gallery['image']);
+                if (!empty($gallery['image']) && file_exists($uploadPath . $gallery['image'])) {
+                    @unlink($uploadPath . $gallery['image']);
                 }
 
                 $data['image'] = $fileName;
+            } else {
+                return redirect()->back()
+                    ->with('error', 'Gagal memproses gambar. Silakan coba lagi.');
             }
         }
 
-        $this->galleryModel->update($id, $data);
+        // Update database
+        if (!$this->galleryModel->update($id, $data)) {
+            return redirect()->back()
+                ->with('error', 'Gagal menyimpan perubahan ke database.');
+        }
 
         return redirect()
             ->to('/admin/gallery')
@@ -412,11 +461,14 @@ class GalleryController extends BaseController
         ]);
 
         foreach ($data as $row) {
+            // Cast ID to integer to prevent leading zeros
+            $galleryId = (int)$row['gallery_id'];
+            
             fputcsv($output, [
-                $row['gallery_id'],
-                $row['title'],
-                $row['album'],
-                $row['image'],
+                $galleryId,
+                $row['title'] ?? '-',
+                $row['album'] ?? '-',
+                $row['image'] ?? '-',
                 date('d-m-Y H:i:s', strtotime($row['created_at']))
             ]);
         }

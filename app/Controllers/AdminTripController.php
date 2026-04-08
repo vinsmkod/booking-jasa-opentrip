@@ -110,17 +110,21 @@ class AdminTripController extends BaseController
         $trips = $this->tripModel->findAll();
 
         header("Content-type: application/vnd-ms-excel");
-        header("Content-Disposition: attachment; filename=trips.xls");
+        header("Content-Disposition: attachment; filename=trips_" . date('Y-m-d_His') . ".xls");
 
         echo "Trip ID\tTitle\tLocation\tPrice\tType\tStatus\n";
 
         foreach ($trips as $trip) {
-            echo $trip['trip_id'] . "\t";
-            echo $trip['title'] . "\t";
-            echo $trip['location'] . "\t";
-            echo $trip['price'] . "\t";
-            echo $trip['type'] . "\t";
-            echo $trip['status'] . "\n";
+            // Cast numeric fields to remove leading zeros
+            $tripId = (int)$trip['trip_id'];
+            $price = ($trip['price'] && $trip['price'] !== '') ? (int)$trip['price'] : '0';
+            
+            echo $tripId . "\t";
+            echo ($trip['title'] ?? '-') . "\t";
+            echo ($trip['location'] ?? '-') . "\t";
+            echo $price . "\t";
+            echo ($trip['type'] ?? '-') . "\t";
+            echo ($trip['status'] ?? '-') . "\n";
         }
 
         exit;

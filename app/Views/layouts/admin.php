@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/admin.css') ?>">
 
 
-    <!-- CSS tambahan dari tiap view (opsional) -->
+    <!-- CSS -->
     <?= $this->renderSection('styles') ?>
 </head>
 
 <body>
 
 <?php
-    // ── Session user (tersedia di semua halaman) ──
+    // ── Session user  ──
     $sessionName  = session()->get('name') ?? 'Admin';
     $initials     = strtoupper(substr($sessionName, 0, 2));
 
@@ -73,7 +73,7 @@
             </a>
             <a href="/admin/bookings" class="nav-link <?= $isActive('admin/bookings') ?>">
                 <i class="fas fa-calendar-check nav-icon"></i>
-                <span class="nav-label">Booking</span>
+                <span class="nav-label">Verifikasi Pembayaran</span>
                 <?php if ($pendingCount > 0): ?>
                     <span class="nav-badge"><?= $pendingCount ?></span>
                 <?php endif; ?>
@@ -118,7 +118,7 @@
 
     <!-- ═══════════════════ TOPBAR ═══════════════════ -->
     <header class="topbar">
-        <button class="topbar-toggle" onclick="toggleSidebar(); return false;" type="button" title="Toggle Sidebar">
+        <button class="topbar-toggle" id="sidebarToggle" type="button" title="Toggle Sidebar">
             <i class="fas fa-bars"></i>
         </button>
 
@@ -160,110 +160,44 @@
     </div>
 
     <!-- ═══════════════════ SIDEBAR OVERLAY ═══════════════════ -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 </div><!-- /layout -->
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// SIDEBAR TOGGLE - Simple & Direct
-// ═══════════════════════════════════════════════════════════
-
-window.toggleSidebar = function() {
-    console.log('%c[TOGGLE] Button Clicked!', 'color: blue; font-weight: bold;');
-    
-    // Try multiple selectors for robustness
-    let sidebar = document.getElementById('sidebar');
-    if (!sidebar) {
-        console.log('%c[TOGGLE] ID selector failed, trying class selector', 'color: orange;');
-        sidebar = document.querySelector('.sidebar');
-    }
-    
-    const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    
-    console.log('%c[TOGGLE] Sidebar Element:', 'color: green;', sidebar);
-    console.log('%c[TOGGLE] Overlay Element:', 'color: green;', overlay);
-    
-    if (!sidebar) {
-        console.error('ERROR: Sidebar element not found with any selector!');
-        alert('ERROR: Sidebar element not found!');
-        return;
-    }
-    
-    // Check current state BEFORE change
-    const hadOpenClassBefore = sidebar.classList.contains('open');
-    console.log('%c[TOGGLE] BEFORE - Has "open" class:', 'color: orange;', hadOpenClassBefore);
-    
-    // Toggle the class
-    sidebar.classList.toggle('open');
-    if (overlay) overlay.classList.toggle('open');
-    
-    // Check new state AFTER change
-    const hasOpenClassAfter = sidebar.classList.contains('open');
-    console.log('%c[TOGGLE] AFTER - Has "open" class:', 'color: red;', hasOpenClassAfter);
-    console.log('%c[TOGGLE] Full class list:', 'color: purple;', sidebar.className);
-    
-    // Force browser to recalculate styles
-    void sidebar.offsetHeight;
-    console.log('%c[TOGGLE] Forced style recalculation', 'color: green;');
-    
-    // Verify computed style
-    const computedStyle = window.getComputedStyle(sidebar);
-    console.log('%c[TOGGLE] Computed transform:', 'color: cyan;', computedStyle.transform);
-};
-
-window.closeSidebar = function() {
-    console.log('%c[CLOSE] Called', 'color: blue;');
-    let sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    
-    if (sidebar) {
-        sidebar.classList.remove('open');
-        void sidebar.offsetHeight;
-        console.log('%c[CLOSE] Removed open class', 'color: green;');
-    }
-    if (overlay) overlay.classList.remove('open');
-};
-
-// Initialize event listeners
+// Hamburger Menu Toggle - Ultra Simple Version
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('%c[INIT] DOM Content Loaded', 'color: blue; font-weight: bold;');
+    const sb = document.getElementById('sidebar');
+    const ov = document.getElementById('sidebarOverlay');
+    const btn = document.getElementById('sidebarToggle');
     
-    // Close sidebar when clicking nav links (mobile only)
-    const navLinks = document.querySelectorAll('.nav-link');
-    console.log('%c[INIT] Found nav links:', 'color: green;', navLinks.length);
+    if (!sb || !btn) return;
     
-    navLinks.forEach(link => {
+    // Button - Toggle sidebar
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        sb.classList.toggle('open');
+        if (ov) ov.classList.toggle('open');
+    });
+    
+    // Overlay - Click to close
+    if (ov) {
+        ov.addEventListener('click', function() {
+            sb.classList.remove('open');
+            ov.classList.remove('open');
+        });
+    }
+    
+    // Nav links - Close on mobile
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                console.log('%c[NAV-LINK] Mobile - closing sidebar', 'color: orange;');
-                window.closeSidebar();
+                sb.classList.remove('open');
+                if (ov) ov.classList.remove('open');
             }
         });
     });
-    
-    // Close sidebar on window resize to desktop
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            console.log('%c[RESIZE] Desktop width - closing sidebar', 'color: orange;');
-            window.closeSidebar();
-        }
-    });
-    
-    console.log('%c[INIT] Setup complete!', 'color: green; font-weight: bold;');
 });
-
-// Test: log current styles on load
-setTimeout(function() {
-    const sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
-    if (sidebar) {
-        const styles = window.getComputedStyle(sidebar);
-        console.log('%c[TEST] Sidebar initial transform:', 'color: cyan; font-size: 14px;', styles.transform);
-        console.log('%c[TEST] Sidebar z-index:', 'color: cyan; font-size: 14px;', styles.zIndex);
-    }
-}, 500);
-
-console.log('%c[INFO] Sidebar toggle script loaded', 'color: blue; font-weight: bold; font-size: 14px;');
 </script>
 
 <!-- JS tambahan dari tiap view (opsional) -->

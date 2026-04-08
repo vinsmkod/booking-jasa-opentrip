@@ -27,6 +27,93 @@
 @media(max-width:768px) {
     .metrics { grid-template-columns: 1fr 1fr; }
 }
+
+.featured-trip {
+    background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%);
+    border-radius: 14px;
+    padding: 28px;
+    color: white;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-trip::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+}
+
+.featured-trip::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 250px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+}
+
+.featured-trip-content {
+    position: relative;
+    z-index: 2;
+}
+
+.featured-trip-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.featured-trip-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.featured-trip-title i {
+    font-size: 32px;
+}
+
+.featured-trip-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+}
+
+.featured-trip-stat {
+    flex: 1;
+}
+
+.featured-trip-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.featured-trip-stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+@media(max-width:1280px) {
+    .featured-trip-title { font-size: 24px; }
+    .featured-trip-stats { gap: 20px; }
+}
 </style>
 <?= $this->endSection() ?>
 
@@ -84,6 +171,29 @@
     </div>
 </div>
 
+<!-- Featured Popular Trip -->
+<?php if (!empty($popularTrips) && isset($popularTrips[0])): 
+    $topTrip = $popularTrips[0];
+?>
+<div class="featured-trip">
+    <div class="featured-trip-content">
+        <div class="featured-trip-label">
+            <i class="fas fa-crown"></i> Trip Paling Populer
+        </div>
+        <div class="featured-trip-title">
+            <i class="fas fa-mountain"></i>
+            <?= esc($topTrip['nama_trip']) ?>
+        </div>
+        <div class="featured-trip-stats">
+            <div class="featured-trip-stat">
+                <span class="featured-trip-stat-value"><?= $topTrip['total_booking'] ?></span>
+                <span class="featured-trip-stat-label">Total Booking</span>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <div class="content-grid">
     <div class="panel">
         <div class="panel-header">
@@ -115,7 +225,7 @@
                         <td><?= esc($b['nama']) ?></td>
                         <td class="td-muted"><?= esc($b['nama_trip']) ?></td>
                         <td><span class="pill <?= $pill ?>"><?= ucfirst($b['status']) ?></span></td>
-                        <td class="td-right">Rp <?= number_format($b['total_harga'], 0, ',', '.') ?></td>
+                        <td class="td-right">Rp <?= number_format($b['total_price'], 0, ',', '.') ?></td>
                     </tr>
                     <?php endforeach; else: ?>
                     <tr><td colspan="5">
