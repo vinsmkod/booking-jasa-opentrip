@@ -82,6 +82,7 @@ class DashboardController extends BaseController
 
         $totalBooking = $bookingModel
             ->where('user_id', $userId)
+            ->where('status', 'confirmed')
             ->countAllResults();
 
         $points = $user['points'] ?? 0;

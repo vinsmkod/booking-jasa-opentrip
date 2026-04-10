@@ -7,7 +7,6 @@ use App\Models\PaymentModel;
 use App\Models\BookingModel;
 use App\Models\ScheduleModel;
 use App\Models\TripModel;
-use App\Models\LoyaltyModel;
 use App\Models\UserModel;
 
 class PaymentController extends BaseController
@@ -16,7 +15,6 @@ class PaymentController extends BaseController
     protected $bookingModel;
     protected $scheduleModel;
     protected $tripModel;
-    protected $loyaltyModel;
     protected $userModel;
 
     public function __construct()
@@ -25,7 +23,6 @@ class PaymentController extends BaseController
         $this->bookingModel  = new BookingModel();
         $this->scheduleModel = new ScheduleModel();
         $this->tripModel     = new TripModel();
-        $this->loyaltyModel  = new LoyaltyModel();
         $this->userModel     = new UserModel();
     }
 
@@ -127,41 +124,9 @@ class PaymentController extends BaseController
                 ]);
             }
 
-            // ======================
-            // TAMBAH LOYALTY POINT (10 points per booking)
-            // ======================
-            $pointsReward = 10;
-
-            // Simpan riwayat poin
-            $this->loyaltyModel->insert([
-                'user_id'     => $booking['user_id'],
-                'booking_id'  => $booking['booking_id'],
-                'points'      => $pointsReward,
-                'description' => 'Reward booking trip - ' . date('d M Y'),
-                'created_at'  => date('Y-m-d H:i:s')
-            ]);
-
-            // Update user points
-            $user = $this->userModel->find($booking['user_id']);
-
-            if ($user) {
-                $currentPoints = $user['points'] ?? 0;
-                $newPoints = $currentPoints + $pointsReward;
-
-                $this->userModel->update($booking['user_id'], [
-                    'points' => $newPoints,
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
-
-                // Update session jika user sedang login
-                if (session()->get('user_id') == $booking['user_id']) {
-                    session()->set('points', $newPoints);
-                }
-            }
-
             $db->transCommit();
 
-            return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi, booking dikonfirmasi & poin loyalty diberikan');
+            return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi dan booking dikonfirmasi');
         } catch (\Exception $e) {
             $db->transRollback();
             return redirect()->back()->with('error', 'Gagal memverifikasi pembayaran: ' . $e->getMessage());

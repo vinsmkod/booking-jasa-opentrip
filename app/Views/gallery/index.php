@@ -41,64 +41,30 @@
 <!-- ══════════════════════════════════════════
      TRIP FILTER
 ══════════════════════════════════════════ -->
-<?php if (!empty($trips)): ?>
+<?php if (!empty($albums)): ?>
     <div class="bg-white rounded-4 p-4 mb-4 shadow-sm">
         <div class="d-flex align-items-center gap-2 fw-semibold small mb-3">
-            <i class="fas fa-mountain" style="color:var(--rust);"></i> Filter Berdasarkan Trip
+            <i class="fas fa-folder" style="color:var(--rust);"></i> Filter Berdasarkan Album
         </div>
-        <div class="d-flex flex-wrap gap-3">
-            <a href="<?= base_url('gallery') ?>" class="trip-filter-btn <?= empty($activeTrip) ? 'active' : '' ?>">
-                <i class="fas fa-globe"></i> Semua Trip
+        <div class="d-flex flex-wrap gap-2">
+            <a href="<?= base_url('gallery') ?>"
+                class="album-tab <?= !isset($activeAlbum) ? 'active' : '' ?>">
+                <i class="fas fa-th-large me-1"></i>Semua Album
             </a>
-            <?php foreach ($trips as $trip): ?>
-                <a href="<?= base_url('gallery/trip/' . $trip['trip_id']) ?>"
-                    class="trip-filter-btn <?= ($activeTrip == $trip['trip_id']) ? 'active' : '' ?>">
-                    <i class="fas fa-hiking"></i> <?= esc($trip['title']) ?>
-                </a>
+            <?php foreach ($albums as $album): ?>
+                <?php if (!empty($album['album'])): ?>
+                    <a href="<?= base_url('gallery?album=' . urlencode($album['album'])) ?>"
+                        class="album-tab <?= (isset($activeAlbum) && $activeAlbum === $album['album']) ? 'active' : '' ?>">
+                        <i class="fas fa-folder me-1"></i><?= esc($album['album']) ?>
+                    </a>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>
 <?php endif; ?>
 
 
-<!-- ══════════════════════════════════════════
-     ACTIVE TRIP INFO
-══════════════════════════════════════════ -->
-<?php if (!empty($selectedTrip)): ?>
-    <div class="trip-info-card">
-        <div>
-            <h3><i class="fas fa-flag-checkered me-2"></i><?= esc($selectedTrip['title']) ?></h3>
-            <p>
-                <i class="fas fa-map-marker-alt me-1"></i><?= esc($selectedTrip['location']) ?>
-                &nbsp;|&nbsp;<i class="fas fa-calendar me-1"></i>Dokumentasi Perjalanan
-            </p>
-        </div>
-        <a href="<?= base_url('gallery') ?>" class="btn-clear">
-            <i class="fas fa-times me-1"></i>Tampilkan Semua
-        </a>
-    </div>
-<?php endif; ?>
 
-
-<!-- ══════════════════════════════════════════
-     ALBUM TABS
-══════════════════════════════════════════ -->
-<?php if (!empty($albums)): ?>
-    <div class="d-flex flex-wrap gap-2 pb-3 mb-4 border-bottom" style="border-color:var(--sand)!important;">
-        <a href="<?= base_url('gallery') . ($activeTrip ? '?trip=' . $activeTrip : '') ?>"
-            class="album-tab <?= !isset($activeAlbum) ? 'active' : '' ?>">
-            <i class="fas fa-th-large me-1"></i>Semua Album
-        </a>
-        <?php foreach ($albums as $album): ?>
-            <?php if (!empty($album['album'])): ?>
-                <a href="<?= base_url('gallery?album=' . urlencode($album['album'])) . ($activeTrip ? '&trip=' . $activeTrip : '') ?>"
-                    class="album-tab <?= (isset($activeAlbum) && $activeAlbum === $album['album']) ? 'active' : '' ?>">
-                    <i class="fas fa-folder me-1"></i><?= esc($album['album']) ?>
-                </a>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    </div>
-<?php endif; ?>
 
 
 <!-- ══════════════════════════════════════════

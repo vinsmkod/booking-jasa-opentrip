@@ -528,6 +528,12 @@
     <?php endif; ?>
 
     <!-- Title Section -->
+    <?php
+    $quota = $schedule['quota'] ?? 0;
+    $available = $schedule['available'] ?? 0;
+    $booked = $quota - $available;
+    $percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
+    ?>
     <div class="title-section">
         <h1 class="trip-title"><?= esc($schedule['title']) ?></h1>
         <div class="trip-meta">
@@ -541,7 +547,7 @@
             </div>
             <div class="meta-item">
                 <i class="fas fa-users"></i>
-                <span><?= esc($schedule['available']) ?> / <?= esc($schedule['quota']) ?> Quota</span>
+                <span><?= $booked ?> / <?= esc($schedule['quota']) ?> Pendaftar</span>
             </div>
         </div>
     </div>
@@ -624,15 +630,9 @@
                 <!-- Quota -->
                 <div class="quota-info">
                     <div class="quota-bar">
-                        <span class="quota-text">Kursi Tersedia</span>
-                        <span class="quota-number"><?= esc($schedule['available']) ?> / <?= esc($schedule['quota']) ?></span>
+                        <span class="quota-text">Pendaftar</span>
+                        <span class="quota-number"><?= $booked ?> / <?= esc($schedule['quota']) ?></span>
                     </div>
-                    <?php
-                    $quota = $schedule['quota'] ?? 0;
-                    $available = $schedule['available'] ?? 0;
-                    $booked = $quota - $available;
-                    $percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
-                    ?>
                     <div class="progress">
                         <div class="progress-bar" style="width: <?= $percent ?>%"></div>
                     </div>

@@ -188,13 +188,12 @@
                                     </p>
                                     <div class="mb-3">
                                         <div class="d-flex justify-content-between small mb-1">
-                                            <span>Kuota Terisi</span>
+                                            <span>Pendaftar</span>
                                             <span><?= $booked ?> / <?= $quota ?></span>
                                         </div>
                                         <div class="progress" style="height:6px;">
                                             <div class="progress-bar" style="width:<?= $percent ?>%;background-color:var(--rust);"></div>
                                         </div>
-                                        <small class="text-muted mt-1 d-block">Sisa kuota: <?= $available ?> orang</small>
                                     </div>
                                     <?php if ($available == 0): ?>
                                         <button class="btn btn-secondary w-100" disabled><i class="fas fa-ban me-2"></i>Trip Full</button>
@@ -233,7 +232,7 @@
 
 
 <!-- ══════════════════════════════════════════
-     GALLERY — full width (di luar wrapper)
+     GALLERY — full width 
 ══════════════════════════════════════════ -->
 <section class="py-5" style="background:var(--sand);">
     <div class="container">
@@ -289,7 +288,7 @@
 <div class="content-wrapper">
 
     <!-- TESTIMONI -->
-    <section class="py-5">
+    <section class="py-12">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"

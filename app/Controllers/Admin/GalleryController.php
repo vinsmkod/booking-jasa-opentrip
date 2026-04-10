@@ -398,7 +398,7 @@ class GalleryController extends BaseController
             ->where('album', urldecode($album))
             ->paginate(12);
 
-        return view('admin/gallery/album_photos', [
+        return view('admin/gallery/albums_photos', [
             'photos' => $photos,
             'pager'  => $this->galleryModel->pager,
             'albumName' => urldecode($album)

@@ -8,7 +8,6 @@ use App\Models\UserModel;
 use App\Models\PaymentModel;
 use App\Models\ScheduleModel;
 use App\Models\TripModel;
-use App\Models\LoyaltyModel;
 use App\Models\DocumentModel;
 
 class BookingController extends BaseController
@@ -18,7 +17,6 @@ class BookingController extends BaseController
     protected $paymentModel;
     protected $scheduleModel;
     protected $tripModel;
-    protected $loyaltyModel;
     protected $documentModel;
 
     public function __construct()
@@ -28,7 +26,6 @@ class BookingController extends BaseController
         $this->paymentModel  = new PaymentModel();
         $this->scheduleModel = new ScheduleModel();
         $this->tripModel     = new TripModel();
-        $this->loyaltyModel  = new LoyaltyModel();
         $this->documentModel = new DocumentModel();
     }
 
@@ -174,11 +171,11 @@ class BookingController extends BaseController
             // ======================
             // UPDATE KUOTA
             // ======================
-            $newAvailable = $schedule['available'] - $booking['participant'];
-
-            if ($newAvailable < 0) {
-                $newAvailable = 0;
+            if ($schedule['available'] < $booking['participant']) {
+                throw new \Exception('Gagal konfirmasi: Sisa kuota tidak mencukupi (' . $schedule['available'] . ' sisa)');
             }
+
+            $newAvailable = $schedule['available'] - $booking['participant'];
 
             $this->scheduleModel->update($schedule['schedule_id'], [
                 'available'  => $newAvailable,
@@ -191,34 +188,6 @@ class BookingController extends BaseController
                 ]);
             }
 
-            // ======================
-            // LOYALTY POINT
-            // ======================
-            $existing = $this->loyaltyModel
-                ->where('booking_id', $booking['booking_id'])
-                ->first();
-
-            if (!$existing) {
-                $points = 10;
-
-                $this->loyaltyModel->insert([
-                    'user_id'     => $booking['user_id'],
-                    'booking_id'  => $booking['booking_id'],
-                    'points'      => $points,
-                    'description' => 'Reward booking trip',
-                    'created_at'  => date('Y-m-d H:i:s')
-                ]);
-
-                $user = $this->userModel->find($booking['user_id']);
-
-                if ($user) {
-                    $newPoints = ($user['points'] ?? 0) + $points;
-
-                    $this->userModel->update($booking['user_id'], [
-                        'points' => $newPoints
-                    ]);
-                }
-            }
 
             $db->transCommit();
 

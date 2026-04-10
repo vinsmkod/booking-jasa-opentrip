@@ -126,14 +126,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     $routes->post('comment/create', 'Comment::create');
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | LOYALTY
-    |--------------------------------------------------------------------------
-    */
-
-    $routes->get('loyalty', 'LoyaltyController::index');
 });
 
 

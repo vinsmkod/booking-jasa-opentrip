@@ -102,18 +102,14 @@
                                 <?php endif; ?>
                             </p>
 
-                            <!-- PROGRESS -->
                             <div class="mb-4">
                                 <div class="d-flex justify-content-between small mb-1">
-                                    <span>Kuota Terisi</span>
+                                    <span>Pendaftar</span>
                                     <span><?= $booked ?> / <?= $quota ?></span>
                                 </div>
                                 <div class="progress" style="height:6px;">
                                     <div class="progress-bar" style="width:<?= $percent ?>%;background-color:var(--rust);"></div>
                                 </div>
-                                <small class="text-muted mt-1 d-block">
-                                    Sisa kuota: <?= $available ?> orang
-                                </small>
                             </div>
 
                             <!-- BUTTON -->

@@ -17,7 +17,7 @@ Tambah Jadwal
 <th>Trip</th>
 <th>Tanggal</th>
 <th>Quota</th>
-<th>Sisa</th>
+<th>Pendaftar</th>
 <th>Aksi</th>
 </tr>
 </thead>
@@ -31,7 +31,7 @@ Tambah Jadwal
 <td><?= esc($s['title']) ?></td>
 <td><?= date('d M Y', strtotime($s['departure_date'])) ?></td>
 <td><?= $s['quota'] ?></td>
-<td><?= $s['available'] ?></td>
+<td><?= $s['quota'] - $s['available'] ?></td>
 
 <td>
 <a href="/admin/schedules/edit/<?= $s['schedule_id'] ?>" class="btn btn-warning btn-sm">Edit</a>

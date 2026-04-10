@@ -115,11 +115,6 @@
                                         <i class="bi bi-receipt me-2"></i> My Booking
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="/loyalty">
-                                        <i class="bi bi-gift me-2"></i> Loyalty Points
-                                    </a>
-                                </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="/logout">

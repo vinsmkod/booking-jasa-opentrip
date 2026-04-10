@@ -148,7 +148,6 @@ About
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/booking/history">My Booking</a></li>
-                <li><a class="dropdown-item" href="/loyalty">Loyalty Points</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
             </ul>

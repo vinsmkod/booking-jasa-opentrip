@@ -29,7 +29,7 @@ class TripModel extends Model
         $db = \Config\Database::connect();
         return $db->table('bookings')
             ->where('schedule_id', $schedule_id)
-            ->where('status !=', 'cancelled')
+            ->where('status', 'confirmed')
             ->countAllResults();
     }
 
@@ -51,7 +51,7 @@ class TripModel extends Model
                 schedules.available as schedule_quota,
                 (SELECT COUNT(*) FROM bookings 
                  WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status != "cancelled") as total_booked
+                 AND bookings.status = "confirmed") as total_booked
             ')
             ->getCompiledSelect();
 
@@ -96,10 +96,10 @@ class TripModel extends Model
                 schedules.*,
                 (SELECT COUNT(*) FROM bookings 
                  WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status != "cancelled") as total_booked,
+                 AND bookings.status = "confirmed") as total_booked,
                 (schedules.quota - (SELECT COUNT(*) FROM bookings 
                  WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status != "cancelled")) as available
+                 AND bookings.status = "confirmed")) as available
             ')
             ->where('schedules.trip_id', $trip_id)
             ->orderBy('schedules.departure_date', 'ASC')

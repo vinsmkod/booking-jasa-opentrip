@@ -300,6 +300,9 @@
         <?php if (!empty($trips)): ?>
             <?php foreach ($trips as $trip): 
                 $isAvailable = !empty($trip['schedule_id']);
+                $quota = $trip['quota'] ?? 0;
+                $available = $trip['available'] ?? 0;
+                $booked = $quota - $available;
             ?>
                 <div class="trip-card">
                     <!-- Image Section -->
@@ -343,7 +346,7 @@
                         <div class="info-grid">
                             <div class="info-item">
                                 <i class="fas fa-users"></i>
-                                <span><?= !empty($trip['quota']) ? $trip['quota'] . ' orang' : '-' ?></span>
+                                <span><?= !empty($trip['quota']) ? $booked . ' / ' . $trip['quota'] . ' Pendaftar' : '-' ?></span>
                             </div>
                         </div>
 

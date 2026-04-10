@@ -130,7 +130,8 @@ class BookingService
                 $files['payment_proof'] ?? null
             );
 
-            $this->reduceScheduleQuota($schedule, $schedule_id, $participant);
+            // Quota reduction moved to Admin confirmation stage
+            // $this->reduceScheduleQuota($schedule, $schedule_id, $participant);
 
             if ($redeem_point > 0) {
                 $this->deductUserPoints($user_id, $redeem_point);
