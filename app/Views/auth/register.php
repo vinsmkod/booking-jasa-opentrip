@@ -382,8 +382,11 @@
     </div>
 </section>
 
-
 <style>
+.auth-section {
+    min-height: 100vh;
+    background: #ffffff; /* putih polos */
+}
 
 .auth-card {
     background: #fff;
@@ -406,6 +409,4 @@
 }
 </style>
 
-=======
->>>>>>> bb64fb46159ec217bd66bdb334e704928812996a
 <?= $this->endSection() ?>

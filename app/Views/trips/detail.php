@@ -541,7 +541,7 @@
             </div>
             <div class="meta-item">
                 <i class="fas fa-users"></i>
-                <span><?= esc($schedule['available']) ?> / <?= esc($schedule['quota']) ?> Kursi</span>
+                <span><?= esc($schedule['available']) ?> / <?= esc($schedule['quota']) ?> Quota</span>
             </div>
         </div>
     </div>

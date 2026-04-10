@@ -1,5 +1,11 @@
 <?= $this->extend('layouts/main') ?> 
+
+<?= $this->section('styles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/trip.css') ?>">
+<?= $this->endSection() ?>
+ 
 <?= $this->section('content') ?>
+
 
 <div class="container py-3 mt-3">
     <div class="text-center mb-5" data-aos="fade-up">
@@ -139,5 +145,6 @@
             </div>
         <?php endif; ?>
     </div>
-217bd66bdb334e704928812996a
-ion() ?>
+</div>
+
+<?= $this->endSection() ?>
