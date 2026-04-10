@@ -5,16 +5,19 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\TripModel;
 use App\Models\BookingModel;
+use App\Models\DocumentModel;
 
 class AdminController extends BaseController
 {
     protected $tripModel;
     protected $bookingModel;
+    protected $documentModel;
 
     public function __construct()
     {
         $this->tripModel = new TripModel();
         $this->bookingModel = new BookingModel();
+        $this->documentModel = new DocumentModel();
     }
 
     public function index()
@@ -97,7 +100,7 @@ class AdminController extends BaseController
     {
         // Query booking dengan join trip, schedule, users, dan meeting_points
         $bookings = $this->bookingModel
-            ->select('bookings.booking_code, users.name as user_name, trips.title, trips.location, bookings.participant, meeting_points.name as meeting_point, trips.price, trips.type, schedules.departure_date, bookings.status as payment_status')
+            ->select('bookings.booking_id, bookings.booking_code, users.name as user_name, trips.title, trips.location, bookings.participant, meeting_points.name as meeting_point, trips.price, trips.type, schedules.departure_date, bookings.status as payment_status')
             ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
             ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
             ->join('users', 'users.user_id = bookings.user_id', 'left')
@@ -120,6 +123,7 @@ class AdminController extends BaseController
             'Nama Trip',
             'Lokasi',
             'Jumlah Anggota',
+            'Nama-Nama Peserta',
             'Meeting Point',
             'Price',
             'Jenis Trip',
@@ -129,14 +133,35 @@ class AdminController extends BaseController
 
         // Data rows
         foreach ($bookings as $booking) {
+            // Cast numeric fields to prevent leading zeros or incorrect formats
+            $participant = ($booking['participant'] && $booking['participant'] !== '') ? (int)$booking['participant'] : '-';
+            $price = ($booking['price'] && $booking['price'] !== '') ? (int)$booking['price'] : '-';
+            
+            // Get peserta names jika participant > 1
+            $pesertaNames = '-';
+            if ((int)$booking['participant'] > 1) {
+                $documents = $this->documentModel
+                    ->select('name')
+                    ->where('booking_id', $booking['booking_id'])
+                    ->findAll();
+                
+                if (!empty($documents)) {
+                    $names = array_map(function($doc) {
+                        return $doc['name'];
+                    }, $documents);
+                    $pesertaNames = implode(', ', $names);
+                }
+            }
+            
             fputcsv($output, [
                 $booking['booking_code'],
                 $booking['user_name'] ?? '-',
                 $booking['title'] ?? '-',
                 $booking['location'] ?? '-',
-                $booking['participant'] ?? '-',
+                $participant,
+                $pesertaNames,
                 $booking['meeting_point'] ?? '-',
-                $booking['price'] ?? '-',
+                $price,
                 $booking['type'] ?? '-',
                 $booking['departure_date'] ? date('d-m-Y', strtotime($booking['departure_date'])) : '-',
                 $booking['payment_status'] ?? '-'

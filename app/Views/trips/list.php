@@ -139,12 +139,5 @@
             </div>
         <?php endif; ?>
     </div>
-</div>
-
-<script>
-if (typeof AOS !== 'undefined') {
-    AOS.init({ duration: 1000, once: true, offset: 100 });
-}
-</script>
-
-<?= $this->endSection() ?>
+217bd66bdb334e704928812996a
+ion() ?>

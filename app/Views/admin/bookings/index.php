@@ -224,7 +224,7 @@
             <div class="bk-card-body">
                 <?php foreach ($group['docs'] as $doc): ?>
                 <div class="doc-row">
-                    <div class="avatar-sm"><?= strtoupper(substr($doc['name'], 0, 2)) ?></div>
+                    <div class="avatar-sm"><?= strtoupper(substr($doc['name'] ?? '-', 0, 2)) ?></div>
                     <div class="doc-info">
                         <div class="doc-name"><?= esc($doc['name']) ?></div>
                         <div class="doc-meta">

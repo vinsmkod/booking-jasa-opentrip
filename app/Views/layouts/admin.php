@@ -18,14 +18,14 @@
     <!-- Admin Shared CSS (load setelah Bootstrap agar bisa override) -->
     <link rel="stylesheet" href="<?= base_url('assets/css/AdminCss/admin.css') ?>">
 
-    <!-- CSS tambahan dari tiap view (opsional) -->
+    <!-- CSS -->
     <?= $this->renderSection('styles') ?>
 </head>
 
 <body>
 
 <?php
-    // ── Session user (tersedia di semua halaman) ──
+    // ── Session user  ──
     $sessionName  = session()->get('name') ?? 'Admin';
     $initials     = strtoupper(substr($sessionName, 0, 2));
 
@@ -75,7 +75,7 @@
             </a>
             <a href="/admin/bookings" class="nav-link <?= $isActive('admin/bookings') ?>">
                 <i class="fas fa-calendar-check nav-icon"></i>
-                <span class="nav-label">Booking</span>
+                <span class="nav-label">Verifikasi Pembayaran</span>
                 <?php if ($pendingCount > 0): ?>
                     <span class="nav-badge"><?= $pendingCount ?></span>
                 <?php endif; ?>
@@ -120,7 +120,7 @@
 
     <!-- ═══════════════════ TOPBAR ═══════════════════ -->
     <header class="topbar">
-        <button class="topbar-toggle" onclick="toggleSidebar(); return false;" type="button" title="Toggle Sidebar">
+        <button class="topbar-toggle" id="sidebarToggle" type="button" title="Toggle Sidebar">
             <i class="fas fa-bars"></i>
         </button>
 
@@ -162,38 +162,42 @@
     </div>
 
     <!-- ═══════════════════ SIDEBAR OVERLAY ═══════════════════ -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 </div><!-- /layout -->
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-window.toggleSidebar = function() {
-    let sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    if (!sidebar) return;
-    sidebar.classList.toggle('open');
-    if (overlay) overlay.classList.toggle('open');
-    void sidebar.offsetHeight;
-};
-
-window.closeSidebar = function() {
-    let sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    if (sidebar) { sidebar.classList.remove('open'); void sidebar.offsetHeight; }
-    if (overlay) overlay.classList.remove('open');
-};
-
+// Hamburger Menu Toggle - Ultra Simple Version
 document.addEventListener('DOMContentLoaded', function() {
+    const sb = document.getElementById('sidebar');
+    const ov = document.getElementById('sidebarOverlay');
+    const btn = document.getElementById('sidebarToggle');
+    
+    if (!sb || !btn) return;
+    
+    // Button - Toggle sidebar
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        sb.classList.toggle('open');
+        if (ov) ov.classList.toggle('open');
+    });
+    
+    // Overlay - Click to close
+    if (ov) {
+        ov.addEventListener('click', function() {
+            sb.classList.remove('open');
+            ov.classList.remove('open');
+        });
+    }
+    
+    // Nav links - Close on mobile
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) window.closeSidebar();
+            if (window.innerWidth <= 768) {
+                sb.classList.remove('open');
+                if (ov) ov.classList.remove('open');
+            }
         });
-    });
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) window.closeSidebar();
     });
 });
 </script>
