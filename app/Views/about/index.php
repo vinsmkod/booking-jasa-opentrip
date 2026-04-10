@@ -2,20 +2,6 @@
 <?= $this->section('content') ?>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-
-    :root {
-        --ink: #0f0e0d;
-        --paper: #bcccb9;
-        --sand: #e8e2d9;
-        --rust: #2d7d3a;
-        --rust-light: #7fb069;
-        --muted: #8c8780;
-        --card-radius: 12px;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s ease;
-    }
 
     * {
         margin: 0;
@@ -23,9 +9,7 @@
         box-sizing: border-box;
     }
 
-    body {
-        background: var(--paper);
-    }
+    /* body background removed - moved to global bg-paper class */
 
     body {
         font-family: 'Inter', sans-serif;
@@ -332,99 +316,7 @@
         font-size: 0.9rem;
     }
 
-    /* Gallery Section */
-    .gallery-section {
 
-        padding: 80px 0;
-    }
-
-    .gallery-item {
-        position: relative;
-        border-radius: 16px;
-        overflow: hidden;
-        cursor: pointer;
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        transition: transform 0.5s;
-    }
-
-    .gallery-item:hover img {
-        transform: scale(1.1);
-    }
-
-    .gallery-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-        padding: 20px;
-        transform: translateY(100%);
-        transition: transform 0.3s;
-    }
-
-    .gallery-item:hover .gallery-overlay {
-        transform: translateY(0);
-    }
-
-    .gallery-overlay p {
-        color: white;
-        margin: 0;
-        font-size: 0.85rem;
-    }
-
-    /* Testimonial Section */
-    .testimonial-section {
-        padding: 80px 0;
-        background: white;
-        border-radius: 20px;
-        margin-bottom: 70px;
-
-    }
-
-    .testimonial-card {
-        background: #f8fafc;
-        border-radius: 20px;
-        padding: 30px;
-        text-align: center;
-        transition: all 0.3s;
-        height: 100%;
-        margin-bottom: 0px;
-    }
-
-    .testimonial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
-    }
-
-    .testimonial-card i {
-        font-size: 2rem;
-        color: #2d7d3a;
-        opacity: 0.3;
-        margin-bottom: 15px;
-    }
-
-    .testimonial-card p {
-        color: #475569;
-        font-style: italic;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .testimonial-card h6 {
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 5px;
-    }
-
-    .testimonial-card small {
-        color: #64748b;
-        font-size: 0.8rem;
-    }
 
     /* CTA Section */
     .cta-section {
@@ -433,7 +325,8 @@
         text-align: center;
         color: white;
         border-radius: 20px;
-        margin-bottom: 70px;
+        margin-top: 80px;
+        margin-bottom: 10px;
 
     }
 
@@ -686,84 +579,6 @@
                     </div>
                     <h5>Booking Online</h5>
                     <p>Reservasi trip dapat dilakukan secara online kapan saja</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- GALLERY SECTION -->
-<section class="gallery-section">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
-            <div class="about-badge d-inline-block">
-                <i class="fas fa-camera me-1"></i> Galeri
-            </div>
-            <h2 class="fw-bold mt-3">Pengalaman Pendakian</h2>
-            <p class="text-muted">Beberapa momen perjalanan bersama peserta open trip</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4" data-aos="zoom-in" data-aos-duration="800">
-                <div class="gallery-item">
-                    <img src="<?= base_url('assets/images/gunung1.jpeg') ?>" class="img-fluid" alt="Gunung 1">
-                    <div class="gallery-overlay">
-                        <p><i class="fas fa-mountain"></i> Pendakian Gunung Rinjani</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="100">
-                <div class="gallery-item">
-                    <img src="<?= base_url('assets/images/gunung2.jpeg') ?>" class="img-fluid" alt="Gunung 2">
-                    <div class="gallery-overlay">
-                        <p><i class="fas fa-mountain"></i> Puncak Gunung Semeru</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="200">
-                <div class="gallery-item">
-                    <img src="<?= base_url('assets/images/gunung3.jpeg') ?>" class="img-fluid" alt="Gunung 3">
-                    <div class="gallery-overlay">
-                        <p><i class="fas fa-mountain"></i> Sunrise di Gunung Bromo</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- TESTIMONIAL SECTION -->
-<section class="testimonial-section">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
-            <div class="about-badge d-inline-block">
-                <i class="fas fa-comment-dots me-1"></i> Testimoni
-            </div>
-            <h2 class="fw-bold mt-3">Apa Kata Pendaki</h2>
-            <p class="text-muted">Pengalaman nyata dari para peserta open trip</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800">
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left"></i>
-                    <p>"Tripnya seru dan sangat terorganisir! Guide profesional dan pemandangan luar biasa."</p>
-                    <h6>Randy</h6>
-                    <small>Cijambe - Rinjani 2025</small>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left"></i>
-                    <p>"Guide profesional dan perjalanan aman. Pengalaman tak terlupakan bersama komunitas baru."</p>
-                    <h6>Sahar</h6>
-                    <small>Cigadung - Semeru 2024</small>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left"></i>
-                    <p>"Pengalaman pendakian terbaik bersama komunitas baru. Booking mudah, pelayanan ramah!"</p>
-                    <h6>Andi</h6>
-                    <small>Surabaya - Bromo 2025</small>
                 </div>
             </div>
         </div>

@@ -12,9 +12,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Admin Shared CSS -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/admin.css') ?>">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Admin Shared CSS (load setelah Bootstrap agar bisa override) -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/AdminCss/admin.css') ?>">
 
     <!-- CSS tambahan dari tiap view (opsional) -->
     <?= $this->renderSection('styles') ?>
@@ -164,106 +166,36 @@
 
 </div><!-- /layout -->
 
-<script>
-// ═══════════════════════════════════════════════════════════
-// SIDEBAR TOGGLE - Simple & Direct
-// ═══════════════════════════════════════════════════════════
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
 window.toggleSidebar = function() {
-    console.log('%c[TOGGLE] Button Clicked!', 'color: blue; font-weight: bold;');
-    
-    // Try multiple selectors for robustness
-    let sidebar = document.getElementById('sidebar');
-    if (!sidebar) {
-        console.log('%c[TOGGLE] ID selector failed, trying class selector', 'color: orange;');
-        sidebar = document.querySelector('.sidebar');
-    }
-    
+    let sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    
-    console.log('%c[TOGGLE] Sidebar Element:', 'color: green;', sidebar);
-    console.log('%c[TOGGLE] Overlay Element:', 'color: green;', overlay);
-    
-    if (!sidebar) {
-        console.error('ERROR: Sidebar element not found with any selector!');
-        alert('ERROR: Sidebar element not found!');
-        return;
-    }
-    
-    // Check current state BEFORE change
-    const hadOpenClassBefore = sidebar.classList.contains('open');
-    console.log('%c[TOGGLE] BEFORE - Has "open" class:', 'color: orange;', hadOpenClassBefore);
-    
-    // Toggle the class
+    if (!sidebar) return;
     sidebar.classList.toggle('open');
     if (overlay) overlay.classList.toggle('open');
-    
-    // Check new state AFTER change
-    const hasOpenClassAfter = sidebar.classList.contains('open');
-    console.log('%c[TOGGLE] AFTER - Has "open" class:', 'color: red;', hasOpenClassAfter);
-    console.log('%c[TOGGLE] Full class list:', 'color: purple;', sidebar.className);
-    
-    // Force browser to recalculate styles
     void sidebar.offsetHeight;
-    console.log('%c[TOGGLE] Forced style recalculation', 'color: green;');
-    
-    // Verify computed style
-    const computedStyle = window.getComputedStyle(sidebar);
-    console.log('%c[TOGGLE] Computed transform:', 'color: cyan;', computedStyle.transform);
 };
 
 window.closeSidebar = function() {
-    console.log('%c[CLOSE] Called', 'color: blue;');
     let sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebarOverlay') || document.querySelector('.sidebar-overlay');
-    
-    if (sidebar) {
-        sidebar.classList.remove('open');
-        void sidebar.offsetHeight;
-        console.log('%c[CLOSE] Removed open class', 'color: green;');
-    }
+    if (sidebar) { sidebar.classList.remove('open'); void sidebar.offsetHeight; }
     if (overlay) overlay.classList.remove('open');
 };
 
-// Initialize event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('%c[INIT] DOM Content Loaded', 'color: blue; font-weight: bold;');
-    
-    // Close sidebar when clicking nav links (mobile only)
-    const navLinks = document.querySelectorAll('.nav-link');
-    console.log('%c[INIT] Found nav links:', 'color: green;', navLinks.length);
-    
-    navLinks.forEach(link => {
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                console.log('%c[NAV-LINK] Mobile - closing sidebar', 'color: orange;');
-                window.closeSidebar();
-            }
+            if (window.innerWidth <= 768) window.closeSidebar();
         });
     });
-    
-    // Close sidebar on window resize to desktop
     window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            console.log('%c[RESIZE] Desktop width - closing sidebar', 'color: orange;');
-            window.closeSidebar();
-        }
+        if (window.innerWidth > 768) window.closeSidebar();
     });
-    
-    console.log('%c[INIT] Setup complete!', 'color: green; font-weight: bold;');
 });
-
-// Test: log current styles on load
-setTimeout(function() {
-    const sidebar = document.getElementById('sidebar') || document.querySelector('.sidebar');
-    if (sidebar) {
-        const styles = window.getComputedStyle(sidebar);
-        console.log('%c[TEST] Sidebar initial transform:', 'color: cyan; font-size: 14px;', styles.transform);
-        console.log('%c[TEST] Sidebar z-index:', 'color: cyan; font-size: 14px;', styles.zIndex);
-    }
-}, 500);
-
-console.log('%c[INFO] Sidebar toggle script loaded', 'color: blue; font-weight: bold; font-size: 14px;');
 </script>
 
 <!-- JS tambahan dari tiap view (opsional) -->

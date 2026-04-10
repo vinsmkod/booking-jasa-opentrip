@@ -87,10 +87,6 @@
 </section>
 
 <style>
-.auth-section {
-    min-height: 100vh;
-    background: #ffffff; /* putih polos */
-}
 
 .auth-card {
     background: #fff;

@@ -1,380 +1,150 @@
-<?= $this->extend('layouts/main') ?>
+<?= $this->extend('layouts/main') ?> 
 <?= $this->section('content') ?>
 
-<style>
-     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+<div class="container py-3 mt-3">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
+            style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">EXPLORE</span>
+        <h2 class="fw-bold" style="font-family:'Playfair Display',serif;"><?= esc($type ?? 'Semua Trip') ?></h2>
+        <p class="text-muted">Temukan petualangan seru bersama BLNTRK OUTDOOR</p>
+    </div>
 
-     * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-     }
+    <div class="row g-4">
+        <?php if (!empty($trips)): ?>
+            <?php foreach ($trips as $i => $trip): ?>
+                <?php
+                $quota     = $trip['quota'] ?? 0;
+                $available = $trip['available'] ?? 0;
+                $booked    = $quota - $available;
+                $percent   = $quota > 0 ? ($booked / $quota) * 100 : 0;
 
-     body {
-          font-family: 'Inter', sans-serif;
-          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-     }
+                $formattedDate = $day = $monthName = '';
+                if (!empty($trip['departure_date'])) {
+                    $dateObj    = new DateTime($trip['departure_date']);
+                    $monthNames = [1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'Mei',6=>'Jun',7=>'Jul',8=>'Ags',9=>'Sep',10=>'Okt',11=>'Nov',12=>'Des'];
+                    $monthName  = $monthNames[(int)$dateObj->format('n')];
+                    $day        = $dateObj->format('d');
+                    $formattedDate = $dateObj->format('d M Y');
+                }
 
-     .trips-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 40px 20px;
-     }
+                // === TYPE TRIP (AMBIL DARI HOME) ===
+                $tripType = $trip['type'] ?? 'open_trip';
+                $typeConfig = [
+                    'open_trip'    => ['label'=>'Open Trip',    'icon'=>'fa-users', 'bg'=>'#2d6a4f'],
+                    'private_trip' => ['label'=>'Private Trip', 'icon'=>'fa-lock',  'bg'=>'#7b3f00'],
+                    'one_day_trip' => ['label'=>'One Day Trip', 'icon'=>'fa-sun',   'bg'=>'#0a4f7a'],
+                ];
+                $tc = $typeConfig[$tripType] ?? $typeConfig['open_trip'];
+                ?>
 
-     /* Page Header */
-     .page-header {
-          text-align: center;
-          margin-bottom: 50px;
-     }
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<?= $i * 100 ?>">
+                    <div class="card border-0 rounded-3 overflow-hidden h-100 shadow-sm trip-card"
+                        style="transition:all .3s;"
+                        onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'"
+                        onmouseout="this.style.transform='';this.style.boxShadow=''">
 
-     .page-header h2 {
-          font-size: 2.2rem;
-          font-weight: 800;
-          color: #0f172a;
-          position: relative;
-          display: inline-block;
-          margin-bottom: 15px;
-          text-transform: capitalize;
-     }
+                        <!-- IMAGE -->
+                        <div class="trip-image-wrapper position-relative">
+                            <?php if (!empty($trip['image'])): ?>
+                                <img src="<?= base_url('uploads/trips/' . $trip['image']) ?>" class="trip-image" alt="<?= esc($trip['title']) ?>">
+                            <?php else: ?>
+                                <img src="<?= base_url('assets/images/no-image.jpg') ?>" class="trip-image">
+                            <?php endif; ?>
 
-     .page-header h2:after {
-          content: '';
-          position: absolute;
-          bottom: -10px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 60px;
-          height: 4px;
-          background: linear-gradient(135deg, #c4603a, #b5532c);
-          border-radius: 2px;
-     }
+                            <!-- BADGE TYPE -->
+                            <span class="badge position-absolute top-0 start-0 m-3 rounded-pill px-3 py-2 shadow-sm"
+                                style="z-index:2;background-color:<?= $tc['bg'] ?>;color:#fff;font-size:11px;">
+                                <i class="fas <?= $tc['icon'] ?> me-1"></i><?= $tc['label'] ?>
+                            </span>
 
-     .page-header p {
-          color: #64748b;
-          font-size: 1rem;
-          margin-top: 20px;
-     }
+                            <!-- BADGE STATUS -->
+                            <span class="badge position-absolute top-0 end-0 m-3 rounded-pill px-3 py-2 shadow-sm"
+                                style="z-index:2;background-color:<?= $available > 0 ? '#2d6a4f' : '#6c757d' ?>;color:#fff;font-size:11px;">
+                                <i class="fas <?= $available > 0 ? 'fa-check-circle' : 'fa-ban' ?> me-1"></i>
+                                <?= $available > 0 ? 'Tersedia' : 'Full' ?>
+                            </span>
 
-     /* Trip Card */
-     .trip-card {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-     }
+                            <!-- PRICE -->
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3"
+                                style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                                <p class="text-white fs-5 fw-bold mb-0">
+                                    Rp <?= number_format($trip['price'], 0, ',', '.') ?>
+                                </p>
+                            </div>
+                        </div>
 
-     .trip-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
-     }
+                        <!-- BODY -->
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="fw-bold mb-3" style="font-family:'Playfair Display',serif;">
+                                <?= esc($trip['title']) ?>
+                            </h5>
 
-     /* Image Wrapper */
-     .image-wrapper {
-          position: relative;
-          overflow: hidden;
-          height: 220px;
-     }
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-map-marker-alt me-2" style="width:20px;color:var(--rust);"></i>
+                                <?= esc($trip['location']) ?>
+                            </p>
 
-     .image-wrapper img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-     }
+                            <p class="text-muted small mb-3">
+                                <i class="fas fa-calendar-alt me-2" style="width:20px;color:var(--rust);"></i>
+                                <?php if (!empty($trip['departure_date'])): ?>
+                                    <span class="badge bg-success bg-opacity-10 text-success me-2">
+                                        <?= $day . ' ' . $monthName ?>
+                                    </span>
+                                    <span><?= $formattedDate ?></span>
+                                <?php else: ?>
+                                    <span>Jadwal belum tersedia</span>
+                                <?php endif; ?>
+                            </p>
 
-     .trip-card:hover .image-wrapper img {
-          transform: scale(1.08);
-     }
+                            <!-- PROGRESS -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span>Kuota Terisi</span>
+                                    <span><?= $booked ?> / <?= $quota ?></span>
+                                </div>
+                                <div class="progress" style="height:6px;">
+                                    <div class="progress-bar" style="width:<?= $percent ?>%;background-color:var(--rust);"></div>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    Sisa kuota: <?= $available ?> orang
+                                </small>
+                            </div>
 
-     /* Badge Styles */
-     .trip-badge {
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          padding: 5px 12px;
-          border-radius: 50px;
-          font-size: 0.7rem;
-          font-weight: 600;
-          z-index: 2;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-          display: flex;
-          align-items: center;
-          gap: 5px;
-     }
+                            <!-- BUTTON -->
+                            <div class="mt-auto">
+                                <?php if ($available == 0): ?>
+                                    <button class="btn btn-secondary w-100" disabled>
+                                        <i class="fas fa-ban me-2"></i>Trip Full
+                                    </button>
+                                <?php elseif (session()->get('isLoggedIn')): ?>
+                                    <a href="<?= base_url('trips/detail/' . $trip['schedule_id']) ?>" class="btn btn-success w-100">
+                                        <i class="fas fa-eye me-2"></i>Lihat Detail
+                                    </a>
+                                <?php else: ?>
+                                    <a href="<?= base_url('login') ?>" class="btn btn-warning w-100">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login untuk Booking
+                                    </a>
+                                <?php endif; ?>
+                            </div>
 
-     .badge-open-trip {
-          background: linear-gradient(135deg, #c4603a, #b5532c);
-          color: white;
-     }
-
-     .badge-private-trip {
-          background: linear-gradient(135deg, #3b82f6, #2563eb);
-          color: white;
-     }
-
-     .badge-one-day-trip {
-          background: linear-gradient(135deg, #10b981, #059669);
-          color: white;
-     }
-
-     /* Card Body */
-     .card-body-custom {
-          padding: 20px;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-     }
-
-     .card-title {
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin-bottom: 12px;
-          line-height: 1.4;
-     }
-
-     /* Info Items */
-     .info-item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 10px;
-          color: #475569;
-          font-size: 0.85rem;
-     }
-
-     .info-item i {
-          width: 20px;
-          color: #c4603a;
-          font-size: 0.9rem;
-     }
-
-     .price {
-          font-size: 1.3rem;
-          font-weight: 800;
-          color: #c4603a;
-          margin: 12px 0 8px;
-     }
-
-     .quota {
-          display: inline-block;
-          background: #f1f5f9;
-          padding: 4px 12px;
-          border-radius: 50px;
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: #64748b;
-          margin-bottom: 15px;
-     }
-
-     /* Button */
-     .btn-detail {
-          background: linear-gradient(135deg, #c4603a, #b5532c);
-          color: white;
-          border: none;
-          padding: 12px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-align: center;
-          text-decoration: none;
-          display: block;
-          width: 100%;
-     }
-
-     .btn-detail:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(196, 96, 58, 0.3);
-          color: white;
-     }
-
-     .btn-disabled {
-          background: #e2e8f0;
-          color: #94a3b8;
-          cursor: not-allowed;
-          border: none;
-          padding: 12px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          text-align: center;
-          display: block;
-          width: 100%;
-     }
-
-     /* Empty State */
-     .empty-state {
-          text-align: center;
-          padding: 60px 20px;
-          background: white;
-          border-radius: 24px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-     }
-
-     .empty-state i {
-          font-size: 4rem;
-          color: #cbd5e1;
-          margin-bottom: 20px;
-     }
-
-     .empty-state p {
-          color: #64748b;
-          font-size: 1rem;
-          margin-bottom: 0;
-     }
-
-     /* Grid */
-     .trips-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 30px;
-     }
-
-     /* Responsive */
-     @media (max-width: 768px) {
-          .trips-container {
-               padding: 30px 20px;
-          }
-
-          .page-header h2 {
-               font-size: 1.6rem;
-          }
-
-          .trips-grid {
-               grid-template-columns: 1fr;
-               gap: 20px;
-          }
-
-          .image-wrapper {
-               height: 200px;
-          }
-
-          .card-title {
-               font-size: 1.1rem;
-          }
-     }
-</style>
-
-<div class="trips-container">
-     <div class="page-header">
-          <h2><?= esc($type ?? 'Semua Trip') ?></h2>
-          <p>Temukan petualangan seru bersama BLNTRK OUTDOOR</p>
-     </div>
-
-     <div class="trips-grid">
-          <?php if (!empty($trips)): ?>
-               <?php foreach ($trips as $trip): ?>
-                    <div class="trip-card">
-                         <div class="image-wrapper">
-                              <?php if (!empty($trip['image'])): ?>
-                                   <img src="<?= base_url('uploads/trips/' . $trip['image']) ?>"
-                                        alt="<?= esc($trip['title']) ?>"
-                                        loading="lazy">
-                              <?php else: ?>
-                                   <img src="<?= base_url('assets/images/no-image.jpg') ?>"
-                                        alt="No Image"
-                                        loading="lazy">
-                              <?php endif; ?>
-
-                              <!-- Badge berdasarkan kategori trip -->
-                              <div class="trip-badge 
-                            <?php
-                              if (isset($trip['type'])) {
-                                   if ($trip['type'] == 'private_trip') {
-                                        echo 'badge-private-trip';
-                                   } elseif ($trip['type'] == 'one_day_trip') {
-                                        echo 'badge-one-day-trip';
-                                   } else {
-                                        echo 'badge-open-trip';
-                                   }
-                              } else {
-                                   echo 'badge-open-trip';
-                              }
-                              ?>">
-                                   <i class="fas 
-                                <?php
-                                   if (isset($trip['type'])) {
-                                        if ($trip['type'] == 'private_trip') {
-                                             echo 'fa-lock';
-                                        } elseif ($trip['type'] == 'one_day_trip') {
-                                             echo 'fa-sun';
-                                        } else {
-                                             echo 'fa-flag-checkered';
-                                        }
-                                   } else {
-                                        echo 'fa-flag-checkered';
-                                   }
-                                   ?>">
-                                   </i>
-                                   <?php
-                                   if (isset($trip['type'])) {
-                                        if ($trip['type'] == 'private_trip') {
-                                             echo 'Private Trip';
-                                        } elseif ($trip['type'] == 'one_day_trip') {
-                                             echo 'One Day Trip';
-                                        } else {
-                                             echo 'Open Trip';
-                                        }
-                                   } else {
-                                        echo 'Open Trip';
-                                   }
-                                   ?>
-                              </div>
-                         </div>
-
-                         <div class="card-body-custom">
-                              <h5 class="card-title"><?= esc($trip['title']) ?></h5>
-
-                              <div class="info-item">
-                                   <i class="fas fa-map-marker-alt"></i>
-                                   <span><?= esc($trip['location']) ?></span>
-                              </div>
-
-                              <div class="info-item">
-                                   <i class="fas fa-calendar-alt"></i>
-                                   <span>
-                                        <?= !empty($trip['departure_date'])
-                                             ? date('d M Y', strtotime($trip['departure_date']))
-                                             : 'Jadwal belum tersedia' ?>
-                                   </span>
-                              </div>
-
-                              <div class="price">
-                                   Rp <?= number_format($trip['price'], 0, ',', '.') ?>
-                              </div>                                                                                                                                                                                                                                                                                                                                                                                                     
-
-                              <div class="quota">
-                                   <i class="fas fa-users"></i> Kuota: <?= !empty($trip['quota']) ? esc($trip['quota']) : '-' ?> orang
-                              </div>
-
-                              <div class="mt-auto">
-                                   <?php if (!empty($trip['schedule_id'])): ?>
-                                        <a href="<?= base_url('trips/detail/' . $trip['schedule_id']) ?>"
-                                             class="btn-detail">
-                                             <i class="fas fa-eye me-2"></i> Lihat Detail
-                                        </a>
-                                   <?php else: ?>
-                                        <div class="btn-disabled">
-                                             <i class="fas fa-clock me-2"></i> Jadwal Belum Tersedia
-                                        </div>
-                                   <?php endif; ?>
-                              </div>
-                         </div>
+                        </div>
                     </div>
-               <?php endforeach; ?>
-          <?php else: ?>
-               <div class="empty-state">
-                    <i class="fas fa-mountain"></i>
-                    <p>Tidak ada trip tersedia untuk kategori ini.</p>
-               </div>
-          <?php endif; ?>
-     </div>
+                </div>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-mountain fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Tidak ada trip tersedia.</p>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
+
+<script>
+if (typeof AOS !== 'undefined') {
+    AOS.init({ duration: 1000, once: true, offset: 100 });
+}
+</script>
 
 <?= $this->endSection() ?>

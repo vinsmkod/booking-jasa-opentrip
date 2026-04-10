@@ -141,12 +141,6 @@ About
 
     <?php if(session()->get('role')=='customer'): ?>
 
-        <li class="nav-item me-3" style="color:#198754;">
-            ⭐ Points
-            <span class="badge bg-warning text-dark">
-                <?= session()->get('points') ?? 0 ?>
-            </span>
-        </li>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">

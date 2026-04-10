@@ -36,13 +36,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-
-        /* Active underline — tidak ada padanan Bootstrap */
-        .navbar-custom .nav-link.active {
-            font-weight: 600;
-            color: #198754 !important;
-            border-bottom: 2px solid #198754;
-        }
+        `
     </style>
 </head>
 

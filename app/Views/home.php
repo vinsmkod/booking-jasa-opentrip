@@ -1,224 +1,24 @@
 <?= $this->extend('layouts/main') ?>
+
+<?= $this->section('styles') ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/home_.css') ?>">
+<?= $this->endSection() ?>
+ 
 <?= $this->section('content') ?>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-
-:root {
-    --ink: #0f0e0d;
-    --paper: #bcccb9;
-    --sand: #e8e2d9;
-    --rust: #c4603a;
-    --rust-light: #e8886a;
-    --muted: #8c8780;
-    --radius: 12px;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,.1);
-    --transition: .3s ease;
-}
-
-body { background: var(--paper); }
-
-/* UTIL */
-.card-hover {
-    transition: var(--transition);
-}
-.card-hover:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-md);
-}
-
-.img-hover {
-    transition: transform .5s ease;
-}
-.img-hover:hover {
-    transform: scale(1.1);
-}
-
-/* HERO */
-.hero-slider,
-.hero-slide { height: 70vh; }
-
-.hero-slider {
-    overflow: hidden;
-    border-radius: 0 0 70px 70px;
-}
-
-.hero-slide {
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.hero-slide::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(26,158,90,.54), rgba(0,0,0,.7));
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
-    animation: fadeInUp 1s ease;
-}
-
-.hero-content h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-}
-
-/* TRIP */
-.trip-image-wrapper {
-    height: 220px;
-    overflow: hidden;
-}
-
-.trip-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* GALLERY */
-.gallery-slide {
-    height: 500px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.gallery-slide:hover {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-md);
-}
-
-.gallery-slide::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.7), transparent);
-}
-
-.gallery-caption {
-    position: absolute;
-    bottom: 0;
-    padding: 30px;
-    z-index: 2;
-}
-
-.gallery-caption h4 {
-    font-family: 'Playfair Display', serif;
-}
-
-/* LIGHTBOX */
-.home-lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: var(--transition);
-}
-
-.home-lightbox.open {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.home-lightbox-inner {
-    max-width: 900px;
-    text-align: center;
-}
-
-.home-lightbox img {
-    max-width: 100%;
-    max-height: 80vh;
-    border-radius: var(--radius);
-}
-
-/* BUTTON */
-.btn-rust {
-    background: var(--rust);
-    color: #fff;
-    transition: var(--transition);
-}
-.btn-rust:hover {
-    background: #b5532c;
-}
-
-/* ANIM */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* RESPONSIVE */
-@media (max-width:768px){
-    .hero-slider { height: 60vh; }
-    .gallery-slide { height: 350px; }
-}
-</style>
-
-
-
 <!-- ══════════════════════════════════════════
-     HERO SLIDER 
+     HERO STATIC
 ══════════════════════════════════════════ -->
-<section class="hero-slider">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-inner" style="height:70vh;">
-
-            <div class="carousel-item active hero-slide" style="background-image:url('<?= base_url('assets/images/gunung1.jpg') ?>');">
-                <div class="container h-100 d-flex align-items-center">
-                    <div class="hero-content text-white">
-                        <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
-                        <h1 class="fw-bold mb-3">Explore The Mountains</h1>
-                        <p class="lead fw-light mb-4 opacity-90">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
-                            <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
-                        </div>
-                    </div>
-                </div>
+<section class="hero-slider hero-slide d-flex align-items-center" style="background-image:url('<?= base_url('assets/images/gunung4.jpeg') ?>');">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="hero-content text-white">
+            <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
+            <h1 class="fw-bold mb-3">Explore The Mountains</h1>
+            <p class="lead fw-light mb-4 opacity-90">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
+                <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
             </div>
-
-            <div class="carousel-item hero-slide" style="background-image:url('<?= base_url('assets/images/gunung2.jpg') ?>');">
-                <div class="container h-100 d-flex align-items-center">
-                    <div class="hero-content text-white">
-                        <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
-                        <h1 class="fw-bold mb-3">Taklukkan Puncak Tertinggi</h1>
-                        <p class="lead fw-light mb-4 opacity-90">Rasakan pengalaman mendaki bersama guide berpengalaman dan tim yang solid.</p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
-                            <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-item hero-slide" style="background-image:url('<?= base_url('assets/images/gunung2.jpg') ?>');">
-                <div class="container h-100 d-flex align-items-center">
-                    <div class="hero-content text-white">
-                        <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
-                        <h1 class="fw-bold mb-3">Alam Liar Menanti Kamu</h1>
-                        <p class="lead fw-light mb-4 opacity-90">Bergabunglah bersama ratusan pendaki yang telah mempercayai perjalanan mereka kepada kami.</p>
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
-                            <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </section>
@@ -235,7 +35,7 @@ body { background: var(--paper); }
     <section class="py-5">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
-                <h2 class="fw-bold mt-3">Cara Melakukan Pendaftaran Open Trip</h2>
+                <h2 class="fw-bold mt-5">Cara Melakukan Pendaftaran Open Trip</h2>
                 <p class="text-muted">Dengan mengikuti langkah berikut untuk memulai petualangan Anda</p>
             </div>
             <div class="row g-4">
@@ -272,7 +72,7 @@ body { background: var(--paper); }
     <section id="Trip" class="py-5">
         <div class="container">
 
-            <div class="text-center mb-5" data-aos="fade-up">
+            <div class="text-center mb-3" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
                     style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">TRIP</span>
                 <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Trip Tersedia</h2>
@@ -331,6 +131,15 @@ body { background: var(--paper); }
                             $day        = $dateObj->format('d');
                             $formattedDate = $dateObj->format('d M Y');
                         }
+
+                        // Badge tipe trip
+                        $tripType = $trip['type'] ?? 'open_trip';
+                        $typeConfig = [
+                            'open_trip'    => ['label'=>'Open Trip',    'icon'=>'fa-users', 'bg'=>'#2d6a4f'],
+                            'private_trip' => ['label'=>'Private Trip', 'icon'=>'fa-lock',  'bg'=>'#7b3f00'],
+                            'one_day_trip' => ['label'=>'One Day Trip', 'icon'=>'fa-sun',   'bg'=>'#0a4f7a'],
+                        ];
+                        $tc = $typeConfig[$tripType] ?? $typeConfig['open_trip'];
                         ?>
                         <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<?= $i * 100 ?>">
                             <div class="card border-0 rounded-3 overflow-hidden h-100 shadow-sm trip-card"
@@ -338,13 +147,24 @@ body { background: var(--paper); }
                                 onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'"
                                 onmouseout="this.style.transform='';this.style.boxShadow=''">
 
-                                <div class="trip-image-wrapper">
+                                <div class="trip-image-wrapper position-relative">
                                     <?php if (!empty($trip['image'])): ?>
                                         <img src="<?= base_url('uploads/trips/' . $trip['image']) ?>" class="trip-image" alt="<?= esc($trip['title']) ?>">
                                     <?php endif; ?>
-                                    <span class="badge position-absolute top-0 end-0 m-3 rounded-pill px-3 py-2 <?= $available > 0 ? 'bg-rust' : 'bg-secondary' ?>">
+
+                                    <!-- Badge Tipe Trip (kiri atas) -->
+                                    <span class="badge position-absolute top-0 start-0 m-3 rounded-pill px-3 py-2 shadow-sm"
+                                        style="z-index:2;background-color:<?= $tc['bg'] ?>;color:#fff;font-size:11px;">
+                                        <i class="fas <?= $tc['icon'] ?> me-1"></i><?= $tc['label'] ?>
+                                    </span>
+
+                                    <!-- Badge Ketersediaan (kanan atas) -->
+                                    <span class="badge position-absolute top-0 end-0 m-3 rounded-pill px-3 py-2 shadow-sm"
+                                        style="z-index:2;background-color:<?= $available > 0 ? '#2d6a4f' : '#6c757d' ?>;color:#fff;font-size:11px;">
+                                        <i class="fas <?= $available > 0 ? 'fa-check-circle' : 'fa-ban' ?> me-1"></i>
                                         <?= $available > 0 ? 'Tersedia' : 'Full' ?>
                                     </span>
+
                                     <div class="trip-overlay">
                                         <p class="text-white fs-5 fw-bold mb-0">Rp <?= number_format($trip['price'], 0, ',', '.') ?></p>
                                     </div>
@@ -395,7 +215,7 @@ body { background: var(--paper); }
                     <div class="col-12 text-center py-5">
                         <i class="fas fa-mountain fa-3x text-muted mb-3"></i>
                         <?php if (!empty($keyword)): ?>
-                            <p class="text-muted">Tidak ada trip dengan kata kunci "<strong><?= esc($keyword) ?></strong>"</p>
+                            <p class="text-muted">Tidak ada trip dengan kata kunci "<strong><?= esc($keyword) ?>"</strong>"</p>
                             <a href="<?= base_url('/#Trip') ?>" class="btn btn-outline-success mt-3">
                                 <i class="fas fa-arrow-left me-2"></i>Lihat Semua Trip
                             </a>
@@ -404,10 +224,10 @@ body { background: var(--paper); }
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
-            </div>
+            </div><!-- /row trip cards -->
 
-        </div>
-    </section>
+        </div><!-- /container -->
+    </section><!-- /section#Trip -->
 
 </div><!-- /content-wrapper -->
 
@@ -610,11 +430,6 @@ body { background: var(--paper); }
         if (e.key === 'Escape')      { lb.classList.remove('open'); document.body.style.overflow = ''; }
         if (e.key === 'ArrowLeft')   shiftHomePhoto(-1);
         if (e.key === 'ArrowRight')  shiftHomePhoto(1);
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        var el = document.getElementById('heroCarousel');
-        if (el) new bootstrap.Carousel(el, { interval: 5000, ride: 'carousel', wrap: true });
     });
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
