@@ -3,18 +3,16 @@
 <?= $this->section('styles') ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/home_.css') ?>">
 <?= $this->endSection() ?>
- 
+
 <?= $this->section('content') ?>
 
-<!-- ══════════════════════════════════════════
-     HERO STATIC
-══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════ HERO STATIC ══════════════════════════════════════════ -->
 <section class="hero-slider hero-slide d-flex align-items-center" style="background-image:url('<?= base_url('assets/images/gunung4.jpeg') ?>');">
     <div class="container position-relative" style="z-index: 2;">
         <div class="hero-content text-white">
             <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
-            <h1 class="fw-bold mb-3">Explore The Mountains</h1>
-            <p class="lead fw-light mb-4 opacity-90">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
+            <h1 class="fw-bold mb-3 text-white">Explore The Mountains</h1>
+            <p class="lead fw-light mb-4 opacity-90 text-white">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
             <div class="d-flex gap-3 flex-wrap">
                 <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
                 <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
@@ -23,10 +21,6 @@
     </div>
 </section>
 
-
-<!-- ══════════════════════════════════════════
-     KONTEN BAWAH HERO 
-══════════════════════════════════════════ -->
 <div class="content-wrapper">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -41,27 +35,27 @@
             <div class="row g-4">
                 <?php
                 $steps = [
-                    ['icon'=>'fa-mountain',      'title'=>'Pilih Trip',    'desc'=>'Lihat berbagai pilihan jadwal trip pendakian',   'no'=>1, 'delay'=>0],
-                    ['icon'=>'fa-calendar-plus', 'title'=>'Booking Trip',  'desc'=>'Lakukan reservasi trip sesuai jadwal',           'no'=>2, 'delay'=>100],
-                    ['icon'=>'fa-wallet',        'title'=>'Pembayaran',    'desc'=>'Lakukan pembayaran untuk mengamankan slot',      'no'=>3, 'delay'=>200],
-                    ['icon'=>'fa-hiking',        'title'=>'Berangkat',     'desc'=>'Bertemu di meeting point dan mulai pendakian',   'no'=>4, 'delay'=>300],
+                    ['icon' => 'fa-mountain',      'title' => 'Pilih Trip',    'desc' => 'Lihat berbagai pilihan jadwal trip pendakian',   'no' => 1, 'delay' => 0],
+                    ['icon' => 'fa-calendar-plus', 'title' => 'Booking Trip',  'desc' => 'Lakukan reservasi trip sesuai jadwal',           'no' => 2, 'delay' => 100],
+                    ['icon' => 'fa-wallet',        'title' => 'Pembayaran',    'desc' => 'Lakukan pembayaran untuk mengamankan slot',      'no' => 3, 'delay' => 200],
+                    ['icon' => 'fa-hiking',        'title' => 'Berangkat',     'desc' => 'Bertemu di meeting point dan mulai pendakian',   'no' => 4, 'delay' => 300],
                 ];
                 foreach ($steps as $s):
                 ?>
-                <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="<?= $s['delay'] ?>">
-                    <div class="text-center p-4 bg-white rounded-4 h-100 shadow-sm"
-                        style="transition:all .3s;"
-                        onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 10px 25px -10px rgba(0,0,0,.1)'"
-                        onmouseout="this.style.transform='';this.style.boxShadow=''">
-                        <div class="d-flex align-items-center justify-content-center mx-auto mb-3 bg-success rounded-circle" style="width:80px;height:80px;">
-                            <i class="fas <?= $s['icon'] ?> fa-2x text-white"></i>
+                    <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="<?= $s['delay'] ?>">
+                        <div class="text-center p-4 bg-white rounded-4 h-100 shadow-sm"
+                            style="transition:all .3s;"
+                            onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 10px 25px -10px rgba(0,0,0,.1)'"
+                            onmouseout="this.style.transform='';this.style.boxShadow=''">
+                            <div class="d-flex align-items-center justify-content-center mx-auto mb-3 bg-success rounded-circle" style="width:80px;height:80px;">
+                                <i class="fas <?= $s['icon'] ?> fa-2x text-white"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2"><?= $s['title'] ?></h5>
+                            <p class="text-secondary small mb-3"><?= $s['desc'] ?></p>
+                            <div class="d-flex align-items-center justify-content-center mx-auto bg-success rounded-circle text-white fw-bold"
+                                style="width:30px;height:30px;font-size:.8rem;"><?= $s['no'] ?></div>
                         </div>
-                        <h5 class="fw-bold text-dark mb-2"><?= $s['title'] ?></h5>
-                        <p class="text-secondary small mb-3"><?= $s['desc'] ?></p>
-                        <div class="d-flex align-items-center justify-content-center mx-auto bg-success rounded-circle text-white fw-bold"
-                            style="width:30px;height:30px;font-size:.8rem;"><?= $s['no'] ?></div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -126,7 +120,7 @@
                         $formattedDate = $day = $monthName = '';
                         if (!empty($trip['departure_date'])) {
                             $dateObj    = new DateTime($trip['departure_date']);
-                            $monthNames = [1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'Mei',6=>'Jun',7=>'Jul',8=>'Ags',9=>'Sep',10=>'Okt',11=>'Nov',12=>'Des'];
+                            $monthNames = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Ags', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'];
                             $monthName  = $monthNames[(int)$dateObj->format('n')];
                             $day        = $dateObj->format('d');
                             $formattedDate = $dateObj->format('d M Y');
@@ -135,9 +129,9 @@
                         // Badge tipe trip
                         $tripType = $trip['type'] ?? 'open_trip';
                         $typeConfig = [
-                            'open_trip'    => ['label'=>'Open Trip',    'icon'=>'fa-users', 'bg'=>'#2d6a4f'],
-                            'private_trip' => ['label'=>'Private Trip', 'icon'=>'fa-lock',  'bg'=>'#7b3f00'],
-                            'one_day_trip' => ['label'=>'One Day Trip', 'icon'=>'fa-sun',   'bg'=>'#0a4f7a'],
+                            'open_trip'    => ['label' => 'Open Trip',    'icon' => 'fa-users', 'bg' => '#2d6a4f'],
+                            'private_trip' => ['label' => 'Private Trip', 'icon' => 'fa-lock',  'bg' => '#7b3f00'],
+                            'one_day_trip' => ['label' => 'One Day Trip', 'icon' => 'fa-sun',   'bg' => '#0a4f7a'],
                         ];
                         $tc = $typeConfig[$tripType] ?? $typeConfig['open_trip'];
                         ?>
@@ -405,43 +399,75 @@
 
 
 <script>
-    let homePhotos = [], homeCurrent = 0;
+    let homePhotos = [],
+        homeCurrent = 0;
 
     <?php if (!empty($galleryPhotos)): ?>
-    homePhotos = [
-        <?php foreach ($galleryPhotos as $photo): ?>
-        { src: '<?= base_url('uploads/gallery/' . $photo['image']) ?>', title: '<?= addslashes($photo['title'] ?? 'Dokumentasi Perjalanan') ?>', album: '<?= addslashes($photo['album'] ?? 'Momen Tak Terlupakan') ?>' },
-        <?php endforeach; ?>
-    ];
+        homePhotos = [
+            <?php foreach ($galleryPhotos as $photo): ?> {
+                    src: '<?= base_url('uploads/gallery/' . $photo['image']) ?>',
+                    title: '<?= addslashes($photo['title'] ?? 'Dokumentasi Perjalanan') ?>',
+                    album: '<?= addslashes($photo['album'] ?? 'Momen Tak Terlupakan') ?>'
+                },
+            <?php endforeach; ?>
+        ];
     <?php endif; ?>
 
-    function openHomeLightbox(i)  { homeCurrent = i; renderHomeLightbox(); document.getElementById('homeLightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function openHomeLightbox(i) {
+        homeCurrent = i;
+        renderHomeLightbox();
+        document.getElementById('homeLightbox').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
     function closeHomeLightbox(e) {
         if (e && e.target !== document.getElementById('homeLightbox') && !e.target.classList.contains('home-lb-close')) return;
-        document.getElementById('homeLightbox').classList.remove('open'); document.body.style.overflow = '';
+        document.getElementById('homeLightbox').classList.remove('open');
+        document.body.style.overflow = '';
     }
-    function shiftHomePhoto(dir)  { homeCurrent = (homeCurrent + dir + homePhotos.length) % homePhotos.length; renderHomeLightbox(); if (event) event.stopPropagation(); }
-    function renderHomeLightbox() { const p = homePhotos[homeCurrent]; document.getElementById('homeLbImg').src = p.src; document.getElementById('homeLbTitle').textContent = p.title; document.getElementById('homeLbAlbum').textContent = p.album; }
+
+    function shiftHomePhoto(dir) {
+        homeCurrent = (homeCurrent + dir + homePhotos.length) % homePhotos.length;
+        renderHomeLightbox();
+        if (event) event.stopPropagation();
+    }
+
+    function renderHomeLightbox() {
+        const p = homePhotos[homeCurrent];
+        document.getElementById('homeLbImg').src = p.src;
+        document.getElementById('homeLbTitle').textContent = p.title;
+        document.getElementById('homeLbAlbum').textContent = p.album;
+    }
 
     document.addEventListener('keydown', e => {
         const lb = document.getElementById('homeLightbox');
         if (!lb.classList.contains('open')) return;
-        if (e.key === 'Escape')      { lb.classList.remove('open'); document.body.style.overflow = ''; }
-        if (e.key === 'ArrowLeft')   shiftHomePhoto(-1);
-        if (e.key === 'ArrowRight')  shiftHomePhoto(1);
+        if (e.key === 'Escape') {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        if (e.key === 'ArrowLeft') shiftHomePhoto(-1);
+        if (e.key === 'ArrowRight') shiftHomePhoto(1);
     });
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (this.closest('.carousel') || this.hasAttribute('data-bs-slide') || this.hasAttribute('data-bs-slide-to') || href === '#') return;
             e.preventDefault();
             const target = document.querySelector(href);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
     });
 
-    if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true, offset: 100 });
+    if (typeof AOS !== 'undefined') AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+    });
 </script>
 
 <?= $this->endSection() ?>

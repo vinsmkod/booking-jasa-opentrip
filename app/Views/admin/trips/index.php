@@ -1,15 +1,74 @@
 <?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('styles') ?>
+<style>
+    /* PAGINATION */
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        margin: 0;
+        gap: 5px;
+    }
+
+    .pagination li {
+        margin: 0;
+    }
+
+    .pagination li a, .pagination li span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--txt2);
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s;
+        min-width: 32px;
+    }
+
+    .pagination li a:hover {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+        color: var(--txt);
+    }
+
+    .pagination li.active a, .pagination li.active span {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
+
+    .pagination li.disabled a, .pagination li.disabled span {
+        color: var(--txt3);
+        background-color: var(--surface2);
+        pointer-events: none;
+    }
+</style>
+<?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
 
 <!-- Page Header -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
     <div>
         <h4 class="fw-bold mb-1">Kelola Trip</h4>
         <p class="text-muted small mb-0">Tambah, edit, atau hapus trip untuk platform BLNTRK OUTDOOR</p>
     </div>
-    <a href="<?= base_url('admin/trips/create') ?>" class="btn btn-success">
-        <i class="fas fa-plus me-2"></i>Tambah Trip Baru
-    </a>
+    <div class="page-header-right" style="display:flex; gap:12px; align-items:center;">
+        <form action="" method="get" style="display:flex; gap:8px;">
+            <input type="text" name="search" value="<?= esc($search ?? '') ?>" placeholder="Cari Trip, Lokasi..." style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; outline:none; min-width:250px;">
+            <button type="submit" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:13px;"><i class="fas fa-search"></i> Cari</button>
+            <?php if (!empty($search)): ?>
+                <a href="<?= base_url('admin/trips') ?>" style="padding:8px 16px; background:var(--surface2); color:var(--txt); border:1px solid var(--border); border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;"><i class="fas fa-times"></i></a>
+            <?php endif; ?>
+        </form>
+        <a href="<?= base_url('admin/trips/create') ?>" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;"><i class="fas fa-plus" style="margin-right:8px;"></i> Tambah Trip</a>
+    </div>
 </div>
 
 <!-- Notifikasi -->
@@ -40,7 +99,10 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($trips)): ?>
-                        <?php $no = 1; ?>
+                        <?php 
+                            $currentPage = isset($pager) ? $pager->getCurrentPage('trips') : 1;
+                            $no = 1 + (10 * ($currentPage - 1)); 
+                        ?>
                         <?php foreach ($trips as $trip): ?>
                             <tr>
                                 <td class="text-muted"><?= $no++ ?></td>
@@ -84,6 +146,11 @@
             </table>
         </div>
     </div>
+    <?php if (isset($pager)): ?>
+        <div class="card-footer bg-white d-flex justify-content-center pt-4 pb-3 border-top-0">
+            <?= $pager->links('trips', 'default_full') ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?= $this->endSection() ?>

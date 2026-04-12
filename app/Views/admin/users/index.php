@@ -18,14 +18,16 @@
 
 <?= $this->section('content') ?>
 
-<div class="page-header">
+<div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
     <div class="page-header-left">
         <h1>Manajemen Pengguna</h1>
         <p>Kelola akun dan hak akses pengguna</p>
     </div>
-    <a href="<?= base_url('admin/users/create') ?>" class="btn-sm btn-confirm">
-        <i class="fas fa-plus"></i> Tambah User
-    </a>
+    <div class="page-header-right">
+        <a href="<?= base_url('admin/users/create') ?>" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;">
+            <i class="fas fa-plus" style="margin-right:8px;"></i> Tambah User
+        </a>
+    </div>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>

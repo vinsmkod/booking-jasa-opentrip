@@ -115,6 +115,53 @@
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+    gap: 5px;
+}
+
+.pagination li {
+    margin: 0;
+}
+
+.pagination li a, .pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--txt2);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    min-width: 32px;
+}
+
+.pagination li a:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--txt);
+}
+
+.pagination li.active a, .pagination li.active span {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.pagination li.disabled a, .pagination li.disabled span {
+    color: var(--txt3);
+    background-color: var(--surface2);
+    pointer-events: none;
+}
 </style>
 <?= $this->endSection() ?>
 
@@ -196,7 +243,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($galleries)): $no = 1; foreach ($galleries as $g): ?>
+                <?php 
+                    if (!empty($galleries)): 
+                    $currentPage = isset($pager) ? $pager->getCurrentPage() : 1;
+                    $no = 1 + (12 * ($currentPage - 1));
+                    foreach ($galleries as $g): 
+                ?>
                 <tr>
                     <td class="td-no"><?= $no++ ?></td>
                     <td><img src="<?= base_url('uploads/gallery/' . $g['image']) ?>" alt="<?= esc($g['title']) ?>" class="img-thumb"></td>
@@ -224,7 +276,7 @@
     <?php if (!empty($galleries) && isset($pager)): ?>
     <div class="pagination-wrap">
         <div class="pagination-info">Menampilkan <?= count($galleries) ?> dari <?= $pager->getTotal() ?> foto</div>
-        <div><?= $pager->links('default', 'bootstrap') ?></div>
+        <div><?= $pager->links('default', 'default_full') ?></div>
     </div>
     <?php endif; ?>
 </div>
