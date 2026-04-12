@@ -6,34 +6,21 @@
     <title><?= esc($title ?? 'Admin - BLNTRK OUTDOOR') ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Admin Shared CSS (load setelah Bootstrap agar bisa override) -->
     <link rel="stylesheet" href="<?= base_url('assets/css/AdminCss/admin.css') ?>">
 
-    <!-- CSS -->
     <?= $this->renderSection('styles') ?>
 </head>
 
 <body>
 
     <?php
-    // ── Session user  ──
     $sessionName  = session()->get('name') ?? 'Admin';
     $initials     = strtoupper(substr($sessionName, 0, 2));
-
-    // ── Deteksi active nav otomatis ──
-    $uri      = service('uri')->getPath();
-    $isActive = fn(string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
-
-    // ── Badge pending booking ──
+    $uri          = service('uri')->getPath();
+    $isActive     = fn(string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
     $pendingCount = session()->get('pending_booking_count') ?? 0;
     ?>
 
@@ -106,7 +93,6 @@
                     <span class="nav-label">Logout</span>
                 </a>
             </div>
-
         </aside>
 
         <!-- ═══════════════════ TOPBAR ═══════════════════ -->
@@ -114,6 +100,7 @@
             <button class="topbar-toggle" id="sidebarToggle" type="button" title="Toggle Sidebar">
                 <i class="fas fa-bars"></i>
             </button>
+
             <div class="topbar-breadcrumb">
                 admin
                 <i class="fas fa-chevron-right"></i>
@@ -136,11 +123,36 @@
                     <i class="fas fa-download"></i>
                 </a>
                 <div class="topbar-divider"></div>
-                <div class="topbar-user">
-                    <div class="topbar-avatar"><?= esc($initials) ?></div>
-                    <span class="topbar-username"><?= esc($sessionName) ?></span>
-                    <i class="fas fa-chevron-down" style="font-size:9px;color:var(--txt3);"></i>
+
+                <!-- ── USER DROPDOWN ── -->
+                <div class="topbar-user-wrap" id="topbarUserWrap">
+                    <div class="topbar-user" id="topbarUser">
+                        <div class="topbar-avatar"><?= esc($initials) ?></div>
+                        <span class="topbar-username"><?= esc($sessionName) ?></span>
+                        <i class="fas fa-chevron-down topbar-chevron" id="topbarChevron"></i>
+                    </div>
+                    <div class="topbar-dropdown" id="topbarDropdown">
+                        <div class="topbar-dropdown-header">
+                            <div class="topbar-avatar topbar-avatar-lg"><?= esc($initials) ?></div>
+                            <div>
+                                <div class="topbar-dropdown-name"><?= esc($sessionName) ?></div>
+                                <div class="topbar-dropdown-role">Administrator</div>
+                            </div>
+                        </div>
+                        <div class="topbar-dropdown-divider"></div>
+                        <a href="/admin" class="topbar-dropdown-item">
+                            <i class="fas fa-th-large"></i> Dashboard
+                        </a>
+                        <a href="<?= base_url('booking/exportExcel') ?>" class="topbar-dropdown-item">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </a>
+                        <div class="topbar-dropdown-divider"></div>
+                        <a href="/logout" class="topbar-dropdown-item topbar-dropdown-danger">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </header>
 
@@ -165,20 +177,17 @@
 
             if (!sb || !btn) return;
 
+            // ── Sidebar Toggle ──
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-
                 if (window.innerWidth <= 768) {
-                    // Mobile: slide in/out overlay
                     sb.classList.toggle('open');
                     if (ov) ov.classList.toggle('open');
                 } else {
-                    // Desktop: collapse/expand dengan class di layout
                     layout.classList.toggle('sidebar-collapsed');
                 }
             });
 
-            // Overlay click - close sidebar (mobile)
             if (ov) {
                 ov.addEventListener('click', function() {
                     sb.classList.remove('open');
@@ -186,7 +195,6 @@
                 });
             }
 
-            // Nav links - close on mobile
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function() {
                     if (window.innerWidth <= 768) {
@@ -195,10 +203,31 @@
                     }
                 });
             });
+
+            // ── Topbar User Dropdown ──
+            const topbarUser = document.getElementById('topbarUser');
+            const topbarDropdown = document.getElementById('topbarDropdown');
+            const topbarChevron = document.getElementById('topbarChevron');
+
+            if (topbarUser && topbarDropdown) {
+                topbarUser.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = topbarDropdown.classList.toggle('open');
+                    topbarChevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                });
+
+                document.addEventListener('click', function() {
+                    topbarDropdown.classList.remove('open');
+                    topbarChevron.style.transform = 'rotate(0deg)';
+                });
+
+                topbarDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
         });
     </script>
 
-    <!-- JS tambahan dari tiap view (opsional) -->
     <?= $this->renderSection('scripts') ?>
 
 </body>
