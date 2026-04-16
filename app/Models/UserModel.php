@@ -14,7 +14,7 @@ class UserModel extends Model
     protected $updatedField  = 'updated_at';
 
     protected $allowedFields = [
-        'name', 'email', 'password', 'role', 'points', 'avatar'
+        'name', 'email', 'phone', 'password', 'role', 'points', 'avatar', 'reset_token', 'reset_expires'
     ];
 
     public function getAdmins()

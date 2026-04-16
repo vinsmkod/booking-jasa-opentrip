@@ -13,9 +13,10 @@ class CommentModel extends Model
         'user_id',
         'trip_id',
         'comment',
-        'status',
-        'created_at'
+        'status'
     ];
 
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
 }

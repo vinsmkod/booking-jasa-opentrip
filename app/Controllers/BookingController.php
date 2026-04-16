@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\BookingModel;
 use App\Services\BookingService;
 use App\Services\PaymentService;
 use App\Services\DocumentService;
@@ -11,13 +12,17 @@ class BookingController extends BaseController
 {
     protected $bookingService;
     protected $paymentService;
+    protected $documentService;
+    protected $bookingModel;
 
     public function __construct()
     {
-        $this->paymentService = new PaymentService();
-        $this->bookingService = new BookingService(
+        $this->bookingModel      = new BookingModel();
+        $this->paymentService    = new PaymentService();
+        $this->documentService   = new DocumentService();
+        $this->bookingService    = new BookingService(
             $this->paymentService,
-            new DocumentService()
+            $this->documentService
         );
     }
 
@@ -131,4 +136,41 @@ class BookingController extends BaseController
             'bookings' => $bookings
         ]);
     }
+
+    /*
+    =====================================
+    UPLOAD DOCUMENT
+    =====================================
+    */
+
+    public function uploadDocument($bookingId)
+    {
+        $user_id = session()->get('user_id');
+
+        if (!$user_id) {
+            return redirect()->to('/login');
+        }
+
+        $booking = $this->bookingModel
+            ->where('booking_id', $bookingId)
+            ->where('user_id', $user_id)
+            ->first();
+
+        if (!$booking) {
+            return redirect()->back()->with('error', 'Booking tidak ditemukan');
+        }
+
+        $result = $this->documentService->uploadSingleDocument(
+            $bookingId,
+            $this->request->getFile('document'),
+            $this->request->getPost('type') ?? 'ktp'
+        );
+
+        if (!$result['success']) {
+            return redirect()->back()->with('error', $result['message']);
+        }
+
+        return redirect()->back()->with('success', 'Dokumen berhasil diupload');
+    }
+
 }

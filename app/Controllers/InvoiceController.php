@@ -24,11 +24,13 @@ class InvoiceController extends BaseController
                 users.email,
                 trips.title,
                 trips.location,
-                schedules.departure_date
+                schedules.departure_date,
+                payments.status as payment_status
             ')
             ->join('users','users.user_id = bookings.user_id')
             ->join('schedules','schedules.schedule_id = bookings.schedule_id')
             ->join('trips','trips.trip_id = schedules.trip_id')
+            ->join('payments','payments.booking_id = bookings.booking_id','left')
             ->where('bookings.booking_id',$bookingId)
             ->first();
 

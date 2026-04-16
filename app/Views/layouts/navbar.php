@@ -105,11 +105,25 @@
 
                         <!-- Customer dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>
+                            <a class="nav-link text-white dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                                <?php if (session()->get('avatar')): ?>
+                                    <img src="<?= base_url('uploads/avatars/'.session()->get('avatar')) ?>" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover; border: 1px solid rgba(255,255,255,0.3);">
+                                <?php else: ?>
+                                    <i class="bi bi-person-circle me-2"></i>
+                                <?php  endif; ?>
                                 <?= esc(session()->get('name')) ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="/dashboard">
+                                        <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/profile/edit">
+                                        <i class="bi bi-person-gear me-2"></i> Edit Profile
+                                    </a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item" href="/booking/history">
                                         <i class="bi bi-receipt me-2"></i> My Booking

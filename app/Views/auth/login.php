@@ -399,6 +399,9 @@
                         placeholder="Masukkan password" 
                         required
                         autocomplete="current-password">
+                    <div class="text-end mt-2">
+                        <a href="<?= base_url('forgot-password') ?>" class="text-decoration-none text-muted small hover-success" style="transition: color 0.2s;">Lupa password?</a>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit">

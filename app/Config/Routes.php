@@ -71,6 +71,14 @@ $routes->post('register', 'AuthController::processRegister');
 
 $routes->get('logout', 'AuthController::logout');
 
+$routes->get('forgot-password', 'AuthController::forgotPassword');
+$routes->post('forgot-password', 'AuthController::processForgotPassword');
+$routes->get('reset-password/(:any)', 'AuthController::resetPassword/$1');
+$routes->post('reset-password', 'AuthController::processResetPassword');
+
+$routes->get('profile/edit', 'ProfileController::edit');
+$routes->post('profile/update', 'ProfileController::update');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -97,7 +105,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     $routes->get('booking/status', 'BookingController::status');
 
-    $routes->post('booking/upload-document/(:num)', 'DocumentController::upload/$1');
+    $routes->post('booking/upload-document/(:num)', 'BookingController::uploadDocument/$1');
 
 
     /*

@@ -100,11 +100,12 @@ class AdminController extends BaseController
     {
         // Query booking dengan join trip, schedule, users, dan meeting_points
         $bookings = $this->bookingModel
-            ->select('bookings.booking_id, bookings.booking_code, users.name as user_name, trips.title, trips.location, bookings.participant, meeting_points.name as meeting_point, trips.price, trips.type, schedules.departure_date, bookings.status as payment_status')
+            ->select('bookings.booking_id, bookings.booking_code, users.name as user_name, trips.title, trips.location, bookings.participant, meeting_points.name as meeting_point, trips.price, trips.type, schedules.departure_date, payments.status as payment_status')
             ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
             ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
             ->join('users', 'users.user_id = bookings.user_id', 'left')
             ->join('meeting_points', 'meeting_points.meeting_point_id = bookings.meeting_point_id', 'left')
+            ->join('payments', 'payments.booking_id = bookings.booking_id', 'left')
             ->orderBy('bookings.booking_id', 'DESC')
             ->findAll();
 

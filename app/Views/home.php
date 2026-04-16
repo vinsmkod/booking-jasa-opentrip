@@ -310,8 +310,8 @@
                                 <div class="d-flex align-items-center gap-3 mt-auto">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white overflow-hidden flex-shrink-0"
                                         style="width:45px;height:45px;background:linear-gradient(135deg,var(--rust),var(--rust-light));font-size:1.1rem;">
-                                        <?php if (!empty($c['profile_image'])): ?>
-                                            <img src="<?= base_url('uploads/profiles/' . $c['profile_image']) ?>" alt="<?= esc($c['name']) ?>" style="width:100%;height:100%;object-fit:cover;">
+                                        <?php if (!empty($c['avatar'])): ?>
+                                            <img src="<?= base_url('uploads/avatars/' . $c['avatar']) ?>" alt="<?= esc($c['name']) ?>" style="width:100%;height:100%;object-fit:cover;">
                                         <?php else: ?>
                                             <?= strtoupper(substr($c['name'], 0, 1)) ?>
                                         <?php endif; ?>

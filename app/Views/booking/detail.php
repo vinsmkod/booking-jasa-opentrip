@@ -124,6 +124,29 @@
                     </div>
                 </div>
                 <div class="info-item">
+                    <div class="info-label">Status Pembayaran</div>
+                    <div class="info-value">
+                        <?php $ps = $payment['status'] ?? ''; ?>
+                        <?php if ($ps === 'pending'): ?>
+                            <span class="badge-status badge-pending">
+                                <i class="fas fa-hourglass-half"></i> Menunggu Verifikasi
+                            </span>
+                        <?php elseif ($ps === 'verified'): ?>
+                            <span class="badge-status badge-confirmed">
+                                <i class="fas fa-check-circle"></i> Terverifikasi
+                            </span>
+                        <?php elseif ($ps === 'rejected'): ?>
+                            <span class="badge-status badge-cancelled">
+                                <i class="fas fa-times-circle"></i> Ditolak
+                            </span>
+                        <?php else: ?>
+                            <span class="badge-status" style="background:#f1f5f9; color:#64748b;">
+                                <i class="fas fa-minus-circle"></i> Belum Bayar
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="info-item">
                     <div class="info-label">Meeting Point</div>
                     <div class="info-value">
                         <?php if (!empty($booking['meeting_point_name'])): ?>

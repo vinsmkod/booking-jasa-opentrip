@@ -342,23 +342,25 @@
                 <td>Status</td>
                 <td>
                     <?php 
-                        $statusRaw = strtolower(trim($booking['status']));
-                        $statusText = '';
+                        $pStatus = strtolower(trim($booking['payment_status'] ?? ''));
+                        $bStatus = strtolower(trim($booking['status'] ?? ''));
+                        
+                        $statusText = 'MENUNGGU VERIFIKASI';
                         $statusClass = 'status-pending';
-                        if(in_array($statusRaw, ['paid', 'lunas', 'confirmed', 'settled'])) {
+
+                        if ($pStatus === 'verified') {
                             $statusText = 'LUNAS';
                             $statusClass = 'status-paid';
-                        } elseif(in_array($statusRaw, ['pending', 'menunggu', 'waiting'])) {
-                            $statusText = 'MENUNGGU PEMBAYARAN';
-                            $statusClass = 'status-pending';
-                        } elseif(in_array($statusRaw, ['unpaid', 'belum bayar'])) {
-                            $statusText = 'BELUM LUNAS';
+                        } elseif ($pStatus === 'rejected') {
+                            $statusText = 'PEMBAYARAN DITOLAK';
                             $statusClass = 'status-unpaid';
-                        } elseif(in_array($statusRaw, ['cancelled', 'batal', 'cancel'])) {
+                        } elseif ($bStatus === 'cancelled') {
                             $statusText = 'DIBATALKAN';
                             $statusClass = 'status-cancelled';
-                        } else {
-                            $statusText = strtoupper($booking['status']);
+                        } elseif ($bStatus === 'confirmed') {
+                             // Jika booking terkonfirmasi tapi payment belum diverifikasi secara eksplisit (misal legacy data atau automasi)
+                            $statusText = 'TERKONFIRMASI';
+                            $statusClass = 'status-paid';
                         }
                     ?>
                     <span class="status-badge <?= $statusClass ?>"><?= $statusText ?></span>
