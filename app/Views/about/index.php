@@ -209,8 +209,8 @@
 <!-- CTA SECTION -->
 <section class="cta-section">
     <div class="container" data-aos="zoom-in" data-aos-duration="1000">
-        <h2>Siap Memulai Petualangan?</h2>
-        <p>Temukan jadwal open trip pendakian gunung dan bergabunglah bersama kami.</p>
+        <h2 class="text-white">Siap Memulai Petualangan?</h2>
+        <p class="text-white">Temukan jadwal open trip pendakian gunung dan bergabunglah bersama kami.</p>
         <a href="<?= base_url('trips') ?>" class="btn btn-cta" data-aos="fade-up" data-aos-delay="300">
             <i class="fas fa-arrow-right me-2"></i> Lihat Trip Sekarang
         </a>

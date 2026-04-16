@@ -34,10 +34,12 @@ class BookingController extends BaseController
      */
     public function index()
     {
+        $search = $this->request->getGet('search');
+
         // ======================
-        // BOOKING DATA
+        // BOOKING DATA WITH LATEST
         // ======================
-        $bookings = $this->bookingModel
+        $this->bookingModel
             ->select('
                 bookings.*,
                 users.name as username,
@@ -55,58 +57,87 @@ class BookingController extends BaseController
             ->join('schedules', 'schedules.schedule_id = bookings.schedule_id')
             ->join('trips', 'trips.trip_id = schedules.trip_id')
             ->join('payments', 'payments.booking_id = bookings.booking_id', 'left')
-            ->orderBy('bookings.created_at', 'DESC')
-            ->findAll();
+            ->orderBy('bookings.created_at', 'DESC');
+
+        if (!empty($search)) {
+            $this->bookingModel->groupStart()
+                ->like('bookings.booking_code', $search)
+                ->orLike('users.name', $search)
+                ->orLike('users.email', $search)
+                ->orLike('trips.title', $search)
+                ->groupEnd();
+        }
+
+        $bookings = $this->bookingModel->paginate(10, 'bookings');
+        $pager = $this->bookingModel->pager;
 
         // ======================
         // DOCUMENT DATA
         // ======================
-        $documents = $this->documentModel
-            ->select('
-                documents.*,
-                bookings.booking_code
-            ')
-            ->join('bookings', 'bookings.booking_id = documents.booking_id')
-            ->findAll();
-
-        // ======================
-        // OPTIMASI: MAP BOOKING
-        // ======================
-        $bookingMap = [];
-        foreach ($bookings as $b) {
-            $bookingMap[$b['booking_id']] = $b;
-        }
-
-        // ======================
-        // FORMAT PESERTA
-        // ======================
+        $documents = [];
         $bookingPeserta = [];
+        $docsByBooking = [];
 
-        foreach ($documents as $doc) {
-            $bid = $doc['booking_id'];
+        $bookingIds = array_column($bookings, 'booking_id');
 
-            if (!isset($bookingPeserta[$bid])) {
-                $bk = $bookingMap[$bid] ?? null;
+        if (!empty($bookingIds)) {
+            $documents = $this->documentModel
+                ->select('
+                    documents.*,
+                    bookings.booking_code
+                ')
+                ->join('bookings', 'bookings.booking_id = documents.booking_id')
+                ->whereIn('documents.booking_id', $bookingIds)
+                ->findAll();
 
-                $bookingPeserta[$bid] = [
-                    'booking_code' => $doc['booking_code'] ?? '-',
-                    'trip_title'   => $bk['trip_title'] ?? '-',
-                    'status'       => $bk['status'] ?? 'pending',
-                    'peserta'      => []
-                ];
+            // ======================
+            // OPTIMASI: MAP BOOKING
+            // ======================
+            $bookingMap = [];
+            foreach ($bookings as $b) {
+                $bookingMap[$b['booking_id']] = $b;
             }
 
-            $bookingPeserta[$bid]['peserta'][] = [
-                'name'      => $doc['name'],
-                'gender'    => $doc['gender'],
-                'email'     => $doc['email'],
-                'birthdate' => $doc['birthdate']
-            ];
+            // ======================
+            // FORMAT PESERTA & DOCS
+            // ======================
+            foreach ($documents as $doc) {
+                $bid = $doc['booking_id'];
+
+                if (!isset($docsByBooking[$bid])) {
+                    $docsByBooking[$bid] = [
+                        'booking_code' => $doc['booking_code'] ?? '-',
+                        'docs' => []
+                    ];
+                }
+                $docsByBooking[$bid]['docs'][] = $doc;
+
+                if (!isset($bookingPeserta[$bid])) {
+                    $bk = $bookingMap[$bid] ?? null;
+
+                    $bookingPeserta[$bid] = [
+                        'booking_code' => $doc['booking_code'] ?? '-',
+                        'trip_title'   => $bk['trip_title'] ?? '-',
+                        'status'       => $bk['status'] ?? 'pending',
+                        'peserta'      => []
+                    ];
+                }
+
+                $bookingPeserta[$bid]['peserta'][] = [
+                    'name'      => $doc['name'],
+                    'gender'    => $doc['gender'],
+                    'email'     => $doc['email'],
+                    'birthdate' => $doc['birthdate']
+                ];
+            }
         }
 
         return view('admin/bookings/index', [
             'bookings'       => $bookings,
+            'pager'          => $pager,
+            'search'         => $search,
             'documents'      => $documents,
+            'docsByBooking'  => $docsByBooking,
             'bookingPeserta' => $bookingPeserta
         ]);
     }

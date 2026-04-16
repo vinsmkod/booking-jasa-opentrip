@@ -22,9 +22,21 @@ class TripController extends BaseController
 
     public function index()
     {
-        $data['trips'] = $this->tripModel
-            ->orderBy('trip_id','DESC')
-            ->findAll();
+        $search = $this->request->getGet('search');
+
+        $this->tripModel->orderBy('trip_id', 'DESC');
+
+        if (!empty($search)) {
+            $this->tripModel->groupStart()
+                ->like('title', $search)
+                ->orLike('location', $search)
+                ->orLike('type', $search)
+                ->groupEnd();
+        }
+
+        $data['trips'] = $this->tripModel->paginate(10, 'trips');
+        $data['pager'] = $this->tripModel->pager;
+        $data['search'] = $search;
 
         return view('admin/trips/index', $data);
     }

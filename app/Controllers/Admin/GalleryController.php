@@ -22,26 +22,28 @@ class GalleryController extends BaseController
 
     public function index()
     {
-        $keyword = $this->request->getGet('keyword');
-
-        $query = $this->galleryModel
-            ->orderBy('created_at', 'DESC');
-
-        if ($keyword) {
-            $query->like('title', $keyword);
-        }
-
-        $totalPhotos = $this->galleryModel->countAll();
-
-        $totalAlbums = $this->galleryModel
-            ->select('album')
+        // Get overall stats cleanly using distinct model instances
+        $totalPhotos = (new GalleryModel())->countAllResults();
+        
+        $totalAlbums = (new GalleryModel())
             ->where('album IS NOT NULL')
             ->where('album !=', '')
             ->groupBy('album')
             ->countAllResults();
 
+        // Main gallery list query
+        $keyword = $this->request->getGet('keyword');
+        $this->galleryModel->orderBy('created_at', 'DESC');
+
+        if (!empty($keyword)) {
+            $this->galleryModel->groupStart()
+                ->like('title', $keyword)
+                ->orLike('album', $keyword)
+                ->groupEnd();
+        }
+
         return view('admin/gallery/index', [
-            'galleries'   => $query->paginate(12),
+            'galleries'   => $this->galleryModel->paginate(12),
             'pager'       => $this->galleryModel->pager,
             'keyword'     => $keyword,
             'totalPhotos' => $totalPhotos,
@@ -193,7 +195,7 @@ class GalleryController extends BaseController
         }
 
         $uploadPath = FCPATH . 'uploads/gallery/';
-        
+
         // Pastikan director upload ada
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0755, true);
@@ -463,7 +465,7 @@ class GalleryController extends BaseController
         foreach ($data as $row) {
             // Cast ID to integer to prevent leading zeros
             $galleryId = (int)$row['gallery_id'];
-            
+
             fputcsv($output, [
                 $galleryId,
                 $row['title'] ?? '-',
