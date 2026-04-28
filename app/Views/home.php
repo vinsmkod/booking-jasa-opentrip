@@ -16,7 +16,7 @@
             <div class="d-flex gap-3 flex-wrap">
                 <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
                 <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
-            </div>
+            </div> 
         </div>
     </div>
 </section>
@@ -29,7 +29,7 @@
     <section class="py-5">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
-                <h2 class="fw-bold mt-5">Cara Melakukan Pendaftaran Open Trip</h2>
+                <h2 class="fw-bold mt-5">Cara Melakukan Pendaftaran Trip</h2>
                 <p class="text-muted">Dengan mengikuti langkah berikut untuk memulai petualangan Anda</p>
             </div>
             <div class="row g-4">
