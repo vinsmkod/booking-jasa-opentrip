@@ -18,7 +18,7 @@ class TripModel extends Model
         'status',
         'type',
         'quota',
-        'whats/app_group',
+        'whatsapp_group',
     ];
 
     /**

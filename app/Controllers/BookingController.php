@@ -455,7 +455,7 @@ class BookingController extends BaseController
                     ->findAll();
 
                 if (!empty($documents)) {
-                    $names        = array_map(fn($doc) => $doc['name'], $documents);
+                    $names        = array_map(fn ($doc) => $doc['name'], $documents);
                     $pesertaNames = implode(', ', $names);
                 }
             }
