@@ -529,14 +529,14 @@
                 <div style="flex: 1;">
                     <?php
                     $error = session()->getFlashdata('error');
-                    if (is_array($error)) {
-                        foreach ($error as $err) {
-                            echo '<div>' . esc($err) . '</div>';
-                        }
-                    } else {
-                        echo esc($error);
-                    }
-                    ?>
+        if (is_array($error)) {
+            foreach ($error as $err) {
+                echo '<div>' . esc($err) . '</div>';
+            }
+        } else {
+            echo esc($error);
+        }
+?>
                 </div>
             </div>
         </div>
@@ -589,10 +589,10 @@
                         Ketik nama baru atau pilih dari album yang sudah ada
                     </span>
                     <datalist id="album-list">
-                        <?php if (!empty($albums)): 
+                        <?php if (!empty($albums)):
                             foreach ($albums as $a): ?>
                                 <option value="<?= esc($a['album']) ?>">
-                            <?php endforeach; 
+                            <?php endforeach;
                         endif; ?>
                     </datalist>
                 </div>

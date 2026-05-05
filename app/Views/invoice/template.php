@@ -341,28 +341,28 @@
             <tr>
                 <td>Status</td>
                 <td>
-                    <?php 
+                    <?php
                         $pStatus = strtolower(trim($booking['payment_status'] ?? ''));
-                        $bStatus = strtolower(trim($booking['status'] ?? ''));
-                        
-                        $statusText = 'MENUNGGU VERIFIKASI';
-                        $statusClass = 'status-pending';
+                $bStatus = strtolower(trim($booking['status'] ?? ''));
 
-                        if ($pStatus === 'verified') {
-                            $statusText = 'LUNAS';
-                            $statusClass = 'status-paid';
-                        } elseif ($pStatus === 'rejected') {
-                            $statusText = 'PEMBAYARAN DITOLAK';
-                            $statusClass = 'status-unpaid';
-                        } elseif ($bStatus === 'cancelled') {
-                            $statusText = 'DIBATALKAN';
-                            $statusClass = 'status-cancelled';
-                        } elseif ($bStatus === 'confirmed') {
-                             // Jika booking terkonfirmasi tapi payment belum diverifikasi secara eksplisit (misal legacy data atau automasi)
-                            $statusText = 'TERKONFIRMASI';
-                            $statusClass = 'status-paid';
-                        }
-                    ?>
+                $statusText = 'MENUNGGU VERIFIKASI';
+                $statusClass = 'status-pending';
+
+                if ($pStatus === 'verified') {
+                    $statusText = 'LUNAS';
+                    $statusClass = 'status-paid';
+                } elseif ($pStatus === 'rejected') {
+                    $statusText = 'PEMBAYARAN DITOLAK';
+                    $statusClass = 'status-unpaid';
+                } elseif ($bStatus === 'cancelled') {
+                    $statusText = 'DIBATALKAN';
+                    $statusClass = 'status-cancelled';
+                } elseif ($bStatus === 'confirmed') {
+                    // Jika booking terkonfirmasi tapi payment belum diverifikasi secara eksplisit (misal legacy data atau automasi)
+                    $statusText = 'TERKONFIRMASI';
+                    $statusClass = 'status-paid';
+                }
+                ?>
                     <span class="status-badge <?= $statusClass ?>"><?= $statusText ?></span>
                 </td>
             </tr>

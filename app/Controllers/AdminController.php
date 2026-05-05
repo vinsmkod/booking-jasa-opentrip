@@ -137,7 +137,7 @@ class AdminController extends BaseController
             // Cast numeric fields to prevent leading zeros or incorrect formats
             $participant = ($booking['participant'] && $booking['participant'] !== '') ? (int)$booking['participant'] : '-';
             $price = ($booking['price'] && $booking['price'] !== '') ? (int)$booking['price'] : '-';
-            
+
             // Get peserta names jika participant > 1
             $pesertaNames = '-';
             if ((int)$booking['participant'] > 1) {
@@ -145,15 +145,15 @@ class AdminController extends BaseController
                     ->select('name')
                     ->where('booking_id', $booking['booking_id'])
                     ->findAll();
-                
+
                 if (!empty($documents)) {
-                    $names = array_map(function($doc) {
+                    $names = array_map(function ($doc) {
                         return $doc['name'];
                     }, $documents);
                     $pesertaNames = implode(', ', $names);
                 }
             }
-            
+
             fputcsv($output, [
                 $booking['booking_code'],
                 $booking['user_name'] ?? '-',

@@ -172,9 +172,9 @@
 </div>
 
 <!-- Featured Popular Trip -->
-<?php if (!empty($popularTrips) && isset($popularTrips[0])): 
+<?php if (!empty($popularTrips) && isset($popularTrips[0])):
     $topTrip = $popularTrips[0];
-?>
+    ?>
 <div class="featured-trip">
     <div class="featured-trip-content">
         <div class="featured-trip-label">
@@ -219,7 +219,7 @@
                             'batal'   => 'pill-danger',
                             default   => 'pill-info'
                         };
-                    ?>
+                        ?>
                     <tr>
                         <td class="td-mono">#BK-<?= str_pad($b['id'], 3, '0', STR_PAD_LEFT) ?></td>
                         <td><?= esc($b['nama']) ?></td>
@@ -227,7 +227,8 @@
                         <td><span class="pill <?= $pill ?>"><?= ucfirst($b['status']) ?></span></td>
                         <td class="td-right">Rp <?= number_format($b['total_price'], 0, ',', '.') ?></td>
                     </tr>
-                    <?php endforeach; else: ?>
+                    <?php endforeach;
+                    else: ?>
                     <tr><td colspan="5">
                         <div class="empty-state">
                             <i class="fas fa-inbox"></i>
@@ -250,7 +251,7 @@
                     $max = max(array_column($popularTrips, 'total_booking'));
                     foreach ($popularTrips as $t):
                         $pct = $max > 0 ? round($t['total_booking'] / $max * 100) : 0;
-                ?>
+                        ?>
                 <div>
                     <div class="bar-meta">
                         <span class="bar-name"><?= esc($t['nama_trip']) ?></span>
@@ -260,7 +261,8 @@
                         <div class="bar-fill" style="width:<?= $pct ?>%;"></div>
                     </div>
                 </div>
-                <?php endforeach; else: ?>
+                <?php endforeach;
+                else: ?>
                 <div class="empty-state">
                     <i class="fas fa-chart-bar"></i>
                     <p>Belum ada data.</p>

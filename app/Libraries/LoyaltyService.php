@@ -19,7 +19,9 @@ class LoyaltyService
 
         $user = $this->userModel->find($userId);
 
-        if (!$user) return false;
+        if (!$user) {
+            return false;
+        }
 
         $totalPoints = $user['points'] + $pointsEarned;
 
@@ -33,8 +35,12 @@ class LoyaltyService
 
     private function calculateLevel($points)
     {
-        if ($points >= 1000) return 'Gold';
-        if ($points >= 500) return 'Silver';
+        if ($points >= 1000) {
+            return 'Gold';
+        }
+        if ($points >= 500) {
+            return 'Silver';
+        }
         return 'Bronze';
     }
 }

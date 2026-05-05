@@ -70,8 +70,19 @@
             <p class="text-muted">Masukkan password baru untuk akun Anda</p>
         </div>
 
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger">
+                <?php
+                $errors = session()->getFlashdata('error');
+            if (is_array($errors)) {
+                foreach ($errors as $e) {
+                    echo '<span style="display: block;">' . esc($e) . '</span>';
+                }
+            } else {
+                echo esc($errors);
+            }
+?>
+            </div>
         <?php endif; ?>
 
         <form action="<?= base_url('reset-password') ?>" method="post">
@@ -80,12 +91,12 @@
 
             <div class="mb-3">
                 <label class="form-label fw-bold small text-uppercase">Password Baru</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required minlength="6">
+                <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold small text-uppercase">Konfirmasi Password</label>
-                <input type="password" id="confirm_password" class="form-control" placeholder="••••••••" required minlength="6">
+                <input type="password" name="password_confirm" id="confirm_password" class="form-control" placeholder="••••••••" required>
                 <div id="passwordError" class="text-danger small mt-1" style="display:none;">Password tidak cocok</div>
             </div>
 

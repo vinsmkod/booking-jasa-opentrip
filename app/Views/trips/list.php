@@ -27,7 +27,7 @@
                 $formattedDate = $day = $monthName = '';
                 if (!empty($trip['departure_date'])) {
                     $dateObj    = new DateTime($trip['departure_date']);
-                    $monthNames = [1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'Mei',6=>'Jun',7=>'Jul',8=>'Ags',9=>'Sep',10=>'Okt',11=>'Nov',12=>'Des'];
+                    $monthNames = [1 => 'Jan',2 => 'Feb',3 => 'Mar',4 => 'Apr',5 => 'Mei',6 => 'Jun',7 => 'Jul',8 => 'Ags',9 => 'Sep',10 => 'Okt',11 => 'Nov',12 => 'Des'];
                     $monthName  = $monthNames[(int)$dateObj->format('n')];
                     $day        = $dateObj->format('d');
                     $formattedDate = $dateObj->format('d M Y');
@@ -36,9 +36,9 @@
                 // === TYPE TRIP (AMBIL DARI HOME) ===
                 $tripType = $trip['type'] ?? 'open_trip';
                 $typeConfig = [
-                    'open_trip'    => ['label'=>'Open Trip',    'icon'=>'fa-users', 'bg'=>'#2d6a4f'],
-                    'private_trip' => ['label'=>'Private Trip', 'icon'=>'fa-lock',  'bg'=>'#7b3f00'],
-                    'one_day_trip' => ['label'=>'One Day Trip', 'icon'=>'fa-sun',   'bg'=>'#0a4f7a'],
+                    'open_trip'    => ['label' => 'Open Trip',    'icon' => 'fa-users', 'bg' => '#2d6a4f'],
+                    'private_trip' => ['label' => 'Private Trip', 'icon' => 'fa-lock',  'bg' => '#7b3f00'],
+                    'one_day_trip' => ['label' => 'One Day Trip', 'icon' => 'fa-sun',   'bg' => '#0a4f7a'],
                 ];
                 $tc = $typeConfig[$tripType] ?? $typeConfig['open_trip'];
                 ?>

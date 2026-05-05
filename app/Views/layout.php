@@ -129,9 +129,9 @@ BLNTRK OUTDOOR
 
 <ul class="navbar-nav ms-auto align-items-lg-center">
 
-<?php if(session()->get('user_id')): ?>
+<?php if (session()->get('user_id')): ?>
 
-<?php if(session()->get('role') == 'admin'): ?>
+<?php if (session()->get('role') == 'admin'): ?>
 <li class="nav-item">
 <a href="/admin/dashboard" class="nav-link">
 Dashboard

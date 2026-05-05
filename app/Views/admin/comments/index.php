@@ -60,7 +60,8 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($comments)): $no = 1; foreach ($comments as $c): $s = $c['status'] ?? 'pending'; ?>
+                <?php if (!empty($comments)): $no = 1;
+                    foreach ($comments as $c): $s = $c['status'] ?? 'pending'; ?>
                 <tr>
                     <td class="td-no"><?= $no++ ?></td>
                     <td>
@@ -93,7 +94,8 @@
                         </div>
                     </td>
                 </tr>
-                <?php endforeach; else: ?>
+                <?php endforeach;
+else: ?>
                 <tr>
                     <td colspan="7">
                         <div class="empty-state">

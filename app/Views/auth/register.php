@@ -284,20 +284,25 @@
         </div>
 
         <!-- Flash message -->
-        <?php if(session()->getFlashdata('error')): ?>
+        <?php if (session()->getFlashdata('error')): ?>
         <div class="alert alert-danger">
             <i class="fas fa-exclamation-circle"></i>
             <div>
                 <?php
-                foreach(session()->getFlashdata('error') as $e) {
+                $errors = session()->getFlashdata('error');
+            if (is_array($errors)) {
+                foreach ($errors as $e) {
                     echo '<span style="display: block;">' . esc($e) . '</span>';
                 }
-                ?>
+            } else {
+                echo esc($errors);
+            }
+?>
             </div>
         </div>
         <?php endif; ?>
 
-        <?php if(session()->getFlashdata('success')): ?>
+        <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success">
             <i class="fas fa-check-circle"></i>
             <span><?= esc(session()->getFlashdata('success')) ?></span>

@@ -88,11 +88,11 @@
             <!-- Payment Status -->
             <div class="section-title">✅ Payment Status</div>
             <div style="margin-bottom: 28px;">
-                <?php if(($booking['payment_status'] ?? '') === 'pending'): ?>
+                <?php if (($booking['payment_status'] ?? '') === 'pending'): ?>
                     <span class="badge-status badge-pending">
                         <i class="fas fa-hourglass-half"></i> Menunggu Pembayaran
                     </span>
-                <?php elseif(($booking['payment_status'] ?? '') === 'verified' || ($booking['payment_status'] ?? '') === 'paid'): ?>
+                <?php elseif (($booking['payment_status'] ?? '') === 'verified' || ($booking['payment_status'] ?? '') === 'paid'): ?>
                     <span class="badge-status badge-confirmed">
                         <i class="fas fa-check-circle"></i> Pembayaran Diterima
                     </span>

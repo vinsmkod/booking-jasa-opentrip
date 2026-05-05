@@ -169,8 +169,8 @@
             <i class="fas fa-file-pdf"></i> Unduh Invoice
         </a>
 
-        <?php if (($booking['status'] ?? '') === 'confirmed' && !empty($booking['whatsapp_group'])): ?>
-            <a href="<?= esc($booking['whatsapp_group']) ?>" target="_blank" class="btn-success">
+        <?php if (($booking['status'] ?? '') === 'confirmed'): ?>
+            <a href="https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w" target="_blank" class="btn-success">
                 <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp
             </a>
         <?php endif; ?>

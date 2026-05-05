@@ -14,7 +14,7 @@ class UsersSeeder extends Seeder
                 'email' => 'admin1234@gmail.com',
                 'password' => password_hash('admin123', PASSWORD_DEFAULT),
                 'role' => 'admin',
-                'points' => 0   
+                'points' => 0
             ]
         ];
 

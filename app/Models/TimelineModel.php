@@ -10,7 +10,7 @@ class TimelineModel extends Model
     protected $primaryKey = 'id';   // sesuaikan primary key
     protected $returnType = 'array';
     protected $allowedFields = [
-        'year', 
+        'year',
         'event'
     ];
 }

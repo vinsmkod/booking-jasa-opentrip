@@ -92,11 +92,11 @@
         <div class="profile-card">
             <div class="profile-header">
                 <div class="avatar-wrapper">
-                    <?php 
-                        $avatarUrl = !empty($user['avatar']) 
-                            ? base_url('uploads/avatars/'.$user['avatar']) 
+                    <?php
+                        $avatarUrl = !empty($user['avatar'])
+                            ? base_url('uploads/avatars/'.$user['avatar'])
                             : 'https://ui-avatars.com/api/?name='.urlencode($user['name']).'&background=2d7d3a&color=fff&size=200';
-                    ?>
+?>
                     <img src="<?= $avatarUrl ?>" id="avatarPreview" class="avatar-img" alt="Avatar">
                     <label for="avatarInput" class="avatar-upload-label">
                         <i class="fas fa-camera"></i> Ganti Foto
@@ -107,11 +107,11 @@
             <div class="form-section">
                 <h3 class="text-center fw-bold mb-4"><?= esc($user['name']) ?></h3>
 
-                <?php if(session()->getFlashdata('error')): ?>
+                <?php if (session()->getFlashdata('error')): ?>
                     <div class="alert alert-danger mb-4"><?= session()->getFlashdata('error') ?></div>
                 <?php endif; ?>
 
-                <?php if(session()->getFlashdata('success')): ?>
+                <?php if (session()->getFlashdata('success')): ?>
                     <div class="alert alert-success mb-4 text-center"><?= session()->getFlashdata('success') ?></div>
                 <?php endif; ?>
 

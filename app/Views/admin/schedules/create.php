@@ -12,7 +12,7 @@
 
 <select name="trip_id" class="form-control" required>
 
-<?php foreach($trips as $t): ?>
+<?php foreach ($trips as $t): ?>
 
 <option value="<?= $t['trip_id'] ?>">
 <?= esc($t['title']) ?>

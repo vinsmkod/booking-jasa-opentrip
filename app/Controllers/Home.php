@@ -46,8 +46,12 @@ class Home extends BaseController
             $dateB = strtotime($b['departure_date']);
 
             // Jika salah satu null, tempatkan di akhir
-            if ($dateA === false) return 1;
-            if ($dateB === false) return -1;
+            if ($dateA === false) {
+                return 1;
+            }
+            if ($dateB === false) {
+                return -1;
+            }
 
             return $dateA - $dateB;
         });

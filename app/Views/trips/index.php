@@ -298,12 +298,12 @@
     <!-- Trips Grid -->
     <div class="trips-grid">
         <?php if (!empty($trips)): ?>
-            <?php foreach ($trips as $trip): 
+            <?php foreach ($trips as $trip):
                 $isAvailable = !empty($trip['schedule_id']);
                 $quota = $trip['quota'] ?? 0;
                 $available = $trip['available'] ?? 0;
                 $booked = $quota - $available;
-            ?>
+                ?>
                 <div class="trip-card">
                     <!-- Image Section -->
                     <div class="image-section">
@@ -337,8 +337,8 @@
                                 <i class="fas fa-calendar-alt"></i>
                                 <span>
                                     <?= !empty($trip['departure_date'])
-                                        ? date('d M Y', strtotime($trip['departure_date']))
-                                        : 'Belum tersedia' ?>
+                                            ? date('d M Y', strtotime($trip['departure_date']))
+                                            : 'Belum tersedia' ?>
                                 </span>
                             </div>
                         </div>

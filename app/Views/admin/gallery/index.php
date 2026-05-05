@@ -243,12 +243,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    if (!empty($galleries)): 
-                    $currentPage = isset($pager) ? $pager->getCurrentPage() : 1;
-                    $no = 1 + (12 * ($currentPage - 1));
-                    foreach ($galleries as $g): 
-                ?>
+                <?php
+                    if (!empty($galleries)):
+                        $currentPage = isset($pager) ? $pager->getCurrentPage() : 1;
+                        $no = 1 + (12 * ($currentPage - 1));
+                        foreach ($galleries as $g):
+                            ?>
                 <tr>
                     <td class="td-no"><?= $no++ ?></td>
                     <td><img src="<?= base_url('uploads/gallery/' . $g['image']) ?>" alt="<?= esc($g['title']) ?>" class="img-thumb"></td>
@@ -262,7 +262,8 @@
                         </div>
                     </td>
                 </tr>
-                <?php endforeach; else: ?>
+                <?php endforeach;
+                    else: ?>
                 <tr>
                     <td colspan="6">
                         <div class="empty-state"><i class="fas fa-images"></i><p>Belum ada foto</p></div>

@@ -1,5 +1,6 @@
 
 <?php
+
 namespace App\Libraries;
 
 use CodeIgniter\Images\Handlers\GDHandler;

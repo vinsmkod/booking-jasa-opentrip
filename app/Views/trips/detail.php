@@ -530,10 +530,10 @@
     <!-- Title Section -->
     <?php
     $quota = $schedule['quota'] ?? 0;
-    $available = $schedule['available'] ?? 0;
-    $booked = $quota - $available;
-    $percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
-    ?>
+$available = $schedule['available'] ?? 0;
+$booked = $quota - $available;
+$percent = $quota > 0 ? ($booked / $quota) * 100 : 0;
+?>
     <div class="title-section">
         <h1 class="trip-title"><?= esc($schedule['title']) ?></h1>
         <div class="trip-meta">
@@ -663,12 +663,12 @@
                 </p>
 
                 <!-- WhatsApp Group -->
-                <?php if (!empty($schedule['whatsapp_group'])): ?>
+                <?php if (true): ?>
                     <div class="whatsapp-card">
                         <i class="fab fa-whatsapp whatsapp-icon"></i>
                         <h6>Grup Whatsapp</h6>
                         <p>Bergabunglah untuk update dan informasi terbaru</p>
-                        <a href="<?= esc($schedule['whatsapp_group']) ?>" class="btn-outline" target="_blank" rel="noopener">
+                        <a href="https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w" class="btn-outline" target="_blank" rel="noopener">
                             <i class="fab fa-whatsapp"></i> Gabung Grup
                         </a>
                     </div>

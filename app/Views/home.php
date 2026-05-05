@@ -40,8 +40,8 @@
                     ['icon' => 'fa-wallet',        'title' => 'Pembayaran',    'desc' => 'Lakukan pembayaran untuk mengamankan slot',      'no' => 3, 'delay' => 200],
                     ['icon' => 'fa-hiking',        'title' => 'Berangkat',     'desc' => 'Bertemu di meeting point dan mulai pendakian',   'no' => 4, 'delay' => 300],
                 ];
-                foreach ($steps as $s):
-                ?>
+foreach ($steps as $s):
+    ?>
                     <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="<?= $s['delay'] ?>">
                         <div class="text-center p-4 bg-white rounded-4 h-100 shadow-sm"
                             style="transition:all .3s;"
@@ -113,7 +113,7 @@
                 <?php if (!empty($trips)): ?>
                     <?php foreach ($trips as $i => $trip): ?>
                         <?php
-                        $quota     = $trip['quota'] ?? 0;
+            $quota     = $trip['quota'] ?? 0;
                         $available = $trip['available'] ?? 0;
                         $booked    = $quota - $available;
                         $percent   = $quota > 0 ? ($booked / $quota) * 100 : 0;

@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h1 class="mb-4">Manage About Page</h1>
 
-    <?php if(session()->getFlashdata('success')): ?>
+    <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
     <?php endif; ?>
 

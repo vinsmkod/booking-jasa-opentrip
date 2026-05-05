@@ -62,12 +62,12 @@
     <div class="page-header-right" style="display:flex; gap:12px; align-items:center;">
         <form action="" method="get" style="display:flex; gap:8px;">
             <input type="text" name="search" value="<?= esc($search ?? '') ?>" placeholder="Cari Trip, Lokasi..." style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; outline:none; min-width:250px;">
-            <button type="submit" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:13px;"><i class="fas fa-search"></i> Cari</button>
+            <button type="submit" class="btn-primary-sm"><i class="fas fa-search"></i> Cari</button>
             <?php if (!empty($search)): ?>
                 <a href="<?= base_url('admin/trips') ?>" style="padding:8px 16px; background:var(--surface2); color:var(--txt); border:1px solid var(--border); border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;"><i class="fas fa-times"></i></a>
             <?php endif; ?>
         </form>
-        <a href="<?= base_url('admin/trips/create') ?>" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;"><i class="fas fa-plus" style="margin-right:8px;"></i> Tambah Trip</a>
+        <a href="<?= base_url('admin/trips/create') ?>" class="btn-primary-sm"><i class="fas fa-plus" style="margin-right:8px;"></i> Tambah Trip</a>
     </div>
 </div>
 
@@ -99,9 +99,9 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($trips)): ?>
-                        <?php 
+                        <?php
                             $currentPage = isset($pager) ? $pager->getCurrentPage('trips') : 1;
-                            $no = 1 + (10 * ($currentPage - 1)); 
+                        $no = 1 + (10 * ($currentPage - 1));
                         ?>
                         <?php foreach ($trips as $trip): ?>
                             <tr>
@@ -123,13 +123,13 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url('admin/trips/edit/' . $trip['trip_id']) ?>" class="btn btn-warning btn-sm me-1">
-                                        <i class="fas fa-edit me-1"></i>Edit
+                                    <a href="<?= base_url('admin/trips/edit/' . $trip['trip_id']) ?>" class="btn-sm btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <a href="<?= base_url('admin/trips/delete/' . $trip['trip_id']) ?>"
-                                       class="btn btn-danger btn-sm"
+                                       class="btn-sm btn-delete"
                                        onclick="return confirm('Yakin ingin menghapus trip ini?')">
-                                        <i class="fas fa-trash me-1"></i>Hapus
+                                        <i class="fas fa-trash"></i> Hapus
                                     </a>
                                 </td>
                             </tr>

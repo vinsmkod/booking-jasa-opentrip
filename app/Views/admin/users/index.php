@@ -24,7 +24,7 @@
         <p>Kelola akun dan hak akses pengguna</p>
     </div>
     <div class="page-header-right">
-        <a href="<?= base_url('admin/users/create') ?>" style="padding:8px 16px; background:var(--accent); color:#fff; border:none; border-radius:6px; text-decoration:none; display:flex; align-items:center; font-size:13px;">
+        <a href="<?= base_url('admin/users/create') ?>" class="btn-primary-sm">
             <i class="fas fa-plus" style="margin-right:8px;"></i> Tambah User
         </a>
     </div>
@@ -92,11 +92,11 @@
                         </td>
                         <td>
                             <div class="btn-row">
-                                <a href="<?= base_url('admin/users/edit/' . $u['user_id']) ?>" class="btn-sm btn-view">
+                                <a href="<?= base_url('admin/users/edit/' . $u['user_id']) ?>" class="btn-sm btn-edit">
                                     <i class="fas fa-pencil-alt"></i> Edit
                                 </a>
                                 <a href="<?= base_url('admin/users/delete/' . $u['user_id']) ?>"
-                                   class="btn-sm btn-cancel"
+                                   class="btn-sm btn-delete"
                                    onclick="return confirm('Yakin ingin menghapus user ini?')">
                                     <i class="fas fa-trash"></i> Hapus
                                 </a>

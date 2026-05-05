@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('render_backtrace')) {
     function render_backtrace(array $trace)
     {

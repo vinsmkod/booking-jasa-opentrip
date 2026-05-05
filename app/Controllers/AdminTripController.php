@@ -162,7 +162,7 @@ class AdminTripController extends BaseController
             // Cast numeric fields to remove leading zeros
             $tripId = (int)$trip['trip_id'];
             $price = ($trip['price'] && $trip['price'] !== '') ? (int)$trip['price'] : '0';
-            
+
             echo $tripId . "\t";
             echo ($trip['title'] ?? '-') . "\t";
             echo ($trip['location'] ?? '-') . "\t";

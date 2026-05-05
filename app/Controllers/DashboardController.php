@@ -6,73 +6,15 @@ use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\BookingModel;
 use App\Models\TripModel;
+
 class DashboardController extends BaseController
 {
+    // =========================================================
+    // PUBLIK — Dashboard Pelanggan
+    // =========================================================
+
     public function index()
     {
-        $role = session()->get('role');
-
-        // Kalau admin
-        if ($role === 'admin') {
-
-    $tripModel    = new TripModel();
-    $bookingModel = new BookingModel();
-    $userModel    = new UserModel();
-
-    $db = \Config\Database::connect();
-    
-    // Get recent bookings - simple query
-    $recentBookings = [];
-    try {
-        $recentBookings = $db->query("
-            SELECT 
-                b.booking_id as id,
-                COALESCE(u.name, 'Unknown') as nama,
-                COALESCE(t.title, 'Unknown Trip') as nama_trip,
-                COALESCE(b.status, 'pending') as status,
-                COALESCE(b.total_price, 0) as total_price
-            FROM bookings b
-            LEFT JOIN users u ON u.user_id = b.user_id
-            LEFT JOIN schedules s ON s.schedule_id = b.schedule_id
-            LEFT JOIN trips t ON t.trip_id = s.trip_id
-            ORDER BY b.booking_id DESC
-            LIMIT 10
-        ")->getResultArray();
-    } catch (\Exception $e) {
-        $recentBookings = [];
-    }
-
-    // Get popular trips - simple query
-    $popularTrips = [];
-    try {
-        $popularTrips = $db->query("
-            SELECT 
-                t.trip_id as id,
-                t.title as nama_trip,
-                COUNT(DISTINCT b.booking_id) as total_booking
-            FROM trips t
-            LEFT JOIN schedules s ON s.trip_id = t.trip_id
-            LEFT JOIN bookings b ON b.schedule_id = s.schedule_id AND b.status != 'batal'
-            GROUP BY t.trip_id
-            HAVING COUNT(b.booking_id) > 0
-            ORDER BY total_booking DESC
-            LIMIT 5
-        ")->getResultArray();
-    } catch (\Exception $e) {
-        $popularTrips = [];
-    }
-
-    return view('admin/dashboard', [
-        'totalTrips'     => $tripModel->countAll(),
-        'totalBookings'  => $bookingModel->countAll(),
-        'totalUsers'     => $userModel->countAll(),
-        'totalRevenue'   => $bookingModel->selectSum('total_price')->get()->getRow()->total_price ?? 0,
-        'popularTrips'   => $popularTrips,
-        'recentBookings' => $recentBookings
-    ]);
-}
-
-        // Kalau customer
         $userId = session()->get('user_id');
 
         $userModel    = new UserModel();
@@ -90,6 +32,65 @@ class DashboardController extends BaseController
         return view('dashboard/index', [
             'totalBooking' => $totalBooking,
             'points'       => $points
+        ]);
+    }
+
+    // =========================================================
+    // ADMIN — Dashboard Admin
+    // =========================================================
+
+    public function adminIndex()
+    {
+        $tripModel    = new TripModel();
+        $bookingModel = new BookingModel();
+        $userModel    = new UserModel();
+
+        // Hitung total trip
+        $totalTrips = $tripModel->countAll();
+
+        // Hitung total booking
+        $totalBookings = $bookingModel->countAll();
+
+        // Hitung total user customer
+        $totalUsers = $userModel
+            ->where('role', 'customer')
+            ->countAllResults();
+
+        // Hitung total revenue
+        $revenue = $bookingModel
+            ->selectSum('total_price')
+            ->where('status', 'confirmed')
+            ->first();
+
+        $totalRevenue = $revenue['total_price'] ?? 0;
+
+        // Booking terbaru (8 terakhir)
+        $recentBookings = $bookingModel
+            ->select('bookings.booking_id as id, users.name as nama, trips.title as nama_trip, bookings.status, bookings.total_price, bookings.created_at')
+            ->join('users', 'users.user_id = bookings.user_id', 'left')
+            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
+            ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
+            ->orderBy('bookings.created_at', 'DESC')
+            ->limit(8)
+            ->findAll();
+
+        // Trip terpopuler (top 5 berdasarkan jumlah booking)
+        $popularTrips = $bookingModel
+            ->select('trips.title as nama_trip, COUNT(bookings.booking_id) as total_booking')
+            ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
+            ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
+            ->groupBy('trips.trip_id')
+            ->orderBy('total_booking', 'DESC')
+            ->limit(5)
+            ->findAll();
+
+        return view('admin/dashboard', [
+            'totalTrips'     => $totalTrips,
+            'totalBookings'  => $totalBookings,
+            'totalUsers'     => $totalUsers,
+            'totalRevenue'   => $totalRevenue,
+            'recentBookings' => $recentBookings,
+            'popularTrips'   => $popularTrips,
         ]);
     }
 }

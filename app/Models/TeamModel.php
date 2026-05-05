@@ -10,8 +10,8 @@ class TeamModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $allowedFields = [
-        'name', 
-        'role', 
+        'name',
+        'role',
         'photo'
     ];
 }

@@ -129,7 +129,7 @@
                                             $icon = 'fas fa-info-circle';
                                             $text = esc($b['status'] ?? 'Unknown');
                                     }
-                                    ?>
+                            ?>
                                     <span class="badge-status <?= $badge ?>">
                                         <i class="<?= $icon ?>"></i> <?= $text ?>
                                     </span>

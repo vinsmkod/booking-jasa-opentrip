@@ -362,14 +362,14 @@
             </div>
 
             <!-- Flash message -->
-            <?php if(session()->getFlashdata('error')): ?>
+            <?php if (session()->getFlashdata('error')): ?>
             <div class="alert alert-danger">
                 <i class="fas fa-exclamation-circle"></i>
                 <span><?= esc(session()->getFlashdata('error')) ?></span>
             </div>
             <?php endif; ?>
 
-            <?php if(session()->getFlashdata('success')): ?>
+            <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success">
                 <i class="fas fa-check-circle"></i>
                 <span><?= esc(session()->getFlashdata('success')) ?></span>

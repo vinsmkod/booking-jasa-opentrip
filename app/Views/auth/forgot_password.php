@@ -71,11 +71,11 @@
             <p class="text-muted">Masukkan email Anda untuk menerima link reset password</p>
         </div>
 
-        <?php if(session()->getFlashdata('error')): ?>
+        <?php if (session()->getFlashdata('error')): ?>
             <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
         <?php endif; ?>
 
-        <?php if(session()->getFlashdata('success')): ?>
+        <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
         <?php endif; ?>
 

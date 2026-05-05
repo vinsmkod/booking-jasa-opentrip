@@ -20,7 +20,7 @@
     $sessionName  = session()->get('name') ?? 'Admin';
     $initials     = strtoupper(substr($sessionName, 0, 2));
     $uri          = service('uri')->getPath();
-    $isActive     = fn(string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
+    $isActive     = fn (string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
     $pendingCount = session()->get('pending_booking_count') ?? 0;
     ?>
 
@@ -71,14 +71,6 @@
                 <a href="/admin/gallery" class="nav-link <?= $isActive('admin/gallery') ?>">
                     <i class="fas fa-images nav-icon"></i>
                     <span class="nav-label">Galeri</span>
-                </a>
-                <a href="/admin/itinerary" class="nav-link <?= $isActive('admin/itinerary') ?>">
-                    <i class="fas fa-route nav-icon"></i>
-                    <span class="nav-label">Itinerary</span>
-                </a>
-                <a href="/admin/includes" class="nav-link <?= $isActive('admin/includes') ?>">
-                    <i class="fas fa-box-open nav-icon"></i>
-                    <span class="nav-label">Paket Include</span>
                 </a>
             </nav>
 

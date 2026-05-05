@@ -188,15 +188,19 @@ textarea.form-control {
     margin-bottom: 16px;
 }
 
-.meeting-point-item {
+.meeting-point-item, .include-item, .itinerary-item {
     display: flex;
     gap: 12px;
     margin-bottom: 12px;
     align-items: flex-end;
 }
 
-.meeting-point-item input {
+.meeting-point-item input, .include-item input, .itinerary-item input {
     flex: 1;
+}
+
+.itinerary-time {
+    flex: 0 0 120px !important;
 }
 
 .btn-remove {
@@ -362,8 +366,8 @@ textarea.form-control {
                     <div>
                         <label class="form-label"><i class="fas fa-list" style="margin-right:6px;color:#2d7d3a;"></i>Kategori Trip</label>
                         <div class="radio-group">
-                            <?php $types = ['one_day_trip'=>'One Day Trip','open_trip'=>'Open Trip','private_trip'=>'Private Trip']; ?>
-                            <?php foreach($types as $key=>$label): ?>
+                            <?php $types = ['one_day_trip' => 'One Day Trip','open_trip' => 'Open Trip','private_trip' => 'Private Trip']; ?>
+                            <?php foreach ($types as $key => $label): ?>
                             <label class="radio-item">
                                 <input type="radio" name="type" value="<?= $key ?>" <?= $trip['type'] == $key ? 'checked' : '' ?> required>
                                 <label style="margin:0;cursor:pointer;font-weight:500;"><?= $label ?></label>
@@ -396,7 +400,7 @@ textarea.form-control {
                     <div class="image-preview-section">
                         <label class="form-label"><i class="fas fa-image" style="margin-right:6px;color:#2d7d3a;"></i>Gambar Saat Ini</label>
                         <div style="margin-top:12px;">
-                            <?php if($trip['image']): ?>
+                            <?php if ($trip['image']): ?>
                                 <div class="image-preview">
                                     <img src="/uploads/<?= $trip['image']; ?>" alt="<?= esc($trip['title']) ?>">
                                 </div>
@@ -425,8 +429,8 @@ textarea.form-control {
                         <label class="form-label"><i class="fas fa-map-pin" style="margin-right:6px;color:#2d7d3a;"></i>Meeting Points</label>
                         
                         <div id="meetingPointsContainer">
-                            <?php if(!empty($meetingPoints)): ?>
-                                <?php foreach($meetingPoints as $i => $mp): ?>
+                            <?php if (!empty($meetingPoints)): ?>
+                                <?php foreach ($meetingPoints as $i => $mp): ?>
                                 <div class="meeting-point-item">
                                     <input type="hidden" name="meeting_point_id[]" value="<?= esc($mp['meeting_point_id'] ?? ''); ?>">
                                     <input type="text" name="meeting_points[]" class="form-control" value="<?= esc($mp['name']); ?>" placeholder="Contoh: Stasiun Bandung" required>
@@ -442,6 +446,55 @@ textarea.form-control {
                             <i class="fas fa-plus"></i> Tambah Titik Meeting
                         </button>
                         <span class="help-text" style="display:block;margin-top:12px;">Kelola semua titik pertemuan untuk trip ini</span>
+                    </div>
+                </div>
+
+                <!-- Paket Include -->
+                <div class="form-group form-row full">
+                    <div class="meeting-points-section">
+                        <label class="form-label"><i class="fas fa-box-open" style="margin-right:6px;color:#2d7d3a;"></i>Paket Include</label>
+                        
+                        <div id="includesContainer">
+                            <?php if (!empty($includes)): ?>
+                                <?php foreach ($includes as $inc): ?>
+                                <div class="include-item">
+                                    <input type="text" name="includes[]" class="form-control" value="<?= esc($inc['title']); ?>" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
+                                    <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+
+                        <button type="button" class="btn-add-row" onclick="addInclude()" style="margin-top:12px;">
+                            <i class="fas fa-plus"></i> Tambah Include
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Itinerary -->
+                <div class="form-group form-row full">
+                    <div class="meeting-points-section">
+                        <label class="form-label"><i class="fas fa-route" style="margin-right:6px;color:#2d7d3a;"></i>Itinerary / Jadwal Kegiatan</label>
+                        
+                        <div id="itineraryContainer">
+                            <?php if (!empty($itineraries)): ?>
+                                <?php foreach ($itineraries as $itn): ?>
+                                <div class="itinerary-item">
+                                    <input type="time" name="itinerary_time[]" class="form-control itinerary-time" value="<?= esc($itn['time']); ?>" required>
+                                    <input type="text" name="itinerary_activity[]" class="form-control" value="<?= esc($itn['activity']); ?>" placeholder="Contoh: Berkumpul di Meeting Point" required>
+                                    <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+
+                        <button type="button" class="btn-add-row" onclick="addItinerary()" style="margin-top:12px;">
+                            <i class="fas fa-plus"></i> Tambah Jadwal
+                        </button>
                     </div>
                 </div>
 
@@ -474,8 +527,39 @@ function addMeetingPoint() {
     container.appendChild(newItem);
 }
 
+function addInclude() {
+    const container = document.getElementById('includesContainer');
+    const newItem = document.createElement('div');
+    newItem.className = 'include-item';
+    newItem.innerHTML = `
+        <input type="text" name="includes[]" class="form-control" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
+        <button type="button" class="btn-remove" onclick="removeRow(this)">
+            <i class="fas fa-trash"></i> Hapus
+        </button>
+    `;
+    container.appendChild(newItem);
+}
+
+function addItinerary() {
+    const container = document.getElementById('itineraryContainer');
+    const newItem = document.createElement('div');
+    newItem.className = 'itinerary-item';
+    newItem.innerHTML = `
+        <input type="time" name="itinerary_time[]" class="form-control itinerary-time" required>
+        <input type="text" name="itinerary_activity[]" class="form-control" placeholder="Contoh: Berkumpul di Meeting Point" required>
+        <button type="button" class="btn-remove" onclick="removeRow(this)">
+            <i class="fas fa-trash"></i> Hapus
+        </button>
+    `;
+    container.appendChild(newItem);
+}
+
 function removeMeetingPoint(btn) {
     btn.closest('.meeting-point-item').remove();
+}
+
+function removeRow(btn) {
+    btn.parentElement.remove();
 }
 </script>
 

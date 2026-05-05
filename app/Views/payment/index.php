@@ -11,7 +11,7 @@
                 <!-- Info Booking -->
                 <p><strong>Kode Booking:</strong> <?= esc($booking['booking_code']) ?></p>
                 <p><strong>Trip:</strong> <?= esc($trip['title']) ?> (<?= esc($trip['location']) ?>)</p>
-                <p><strong>Total Harga:</strong> Rp <?= number_format($booking['total_price'],0,',','.') ?></p>
+                <p><strong>Total Harga:</strong> Rp <?= number_format($booking['total_price'], 0, ',', '.') ?></p>
 
                 <form method="post" action="/payment/process">
                     <?= csrf_field() ?>

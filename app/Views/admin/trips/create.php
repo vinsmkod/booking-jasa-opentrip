@@ -127,15 +127,19 @@ textarea.form-control {
     margin-bottom: 16px;
 }
 
-.meeting-point-item {
+.meeting-point-item, .include-item, .itinerary-item {
     display: flex;
     gap: 12px;
     margin-bottom: 12px;
     align-items: flex-end;
 }
 
-.meeting-point-item input {
+.meeting-point-item input, .include-item input, .itinerary-item input {
     flex: 1;
+}
+
+.itinerary-time {
+    flex: 0 0 120px !important;
 }
 
 .btn-remove {
@@ -352,6 +356,47 @@ textarea.form-control {
                     </div>
                 </div>
 
+                <!-- Paket Include -->
+                <div class="form-group form-row full">
+                    <div class="meeting-points-section">
+                        <label class="form-label"><i class="fas fa-box-open" style="margin-right:6px;color:#2d7d3a;"></i>Paket Include</label>
+                        
+                        <div id="includesContainer">
+                            <div class="include-item">
+                                <input type="text" name="includes[]" class="form-control" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
+                                <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-add-row" onclick="addInclude()">
+                            <i class="fas fa-plus"></i> Tambah Include
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Itinerary -->
+                <div class="form-group form-row full">
+                    <div class="meeting-points-section">
+                        <label class="form-label"><i class="fas fa-route" style="margin-right:6px;color:#2d7d3a;"></i>Itinerary / Jadwal Kegiatan</label>
+                        
+                        <div id="itineraryContainer">
+                            <div class="itinerary-item">
+                                <input type="time" name="itinerary_time[]" class="form-control itinerary-time" required>
+                                <input type="text" name="itinerary_activity[]" class="form-control" placeholder="Contoh: Berkumpul di Meeting Point" required>
+                                <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-add-row" onclick="addItinerary()">
+                            <i class="fas fa-plus"></i> Tambah Jadwal
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Action Buttons -->
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">
@@ -381,8 +426,39 @@ function addMeetingPoint() {
     container.appendChild(newItem);
 }
 
+function addInclude() {
+    const container = document.getElementById('includesContainer');
+    const newItem = document.createElement('div');
+    newItem.className = 'include-item';
+    newItem.innerHTML = `
+        <input type="text" name="includes[]" class="form-control" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
+        <button type="button" class="btn-remove" onclick="removeRow(this)">
+            <i class="fas fa-trash"></i> Hapus
+        </button>
+    `;
+    container.appendChild(newItem);
+}
+
+function addItinerary() {
+    const container = document.getElementById('itineraryContainer');
+    const newItem = document.createElement('div');
+    newItem.className = 'itinerary-item';
+    newItem.innerHTML = `
+        <input type="time" name="itinerary_time[]" class="form-control itinerary-time" required>
+        <input type="text" name="itinerary_activity[]" class="form-control" placeholder="Contoh: Berkumpul di Meeting Point" required>
+        <button type="button" class="btn-remove" onclick="removeRow(this)">
+            <i class="fas fa-trash"></i> Hapus
+        </button>
+    `;
+    container.appendChild(newItem);
+}
+
 function removeMeetingPoint(btn) {
     btn.closest('.meeting-point-item').remove();
+}
+
+function removeRow(btn) {
+    btn.parentElement.remove();
 }
 </script>
 

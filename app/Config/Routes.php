@@ -45,16 +45,16 @@ $routes->get('about', 'AboutController::index');
 |--------------------------------------------------------------------------
 */
 
-$routes->get('trips', 'Trips::index');
+$routes->get('trips', 'TripController::index');
 
 /* DETAIL TRIP */
-$routes->get('trips/detail/(:num)', 'Trips::detail/$1');
+$routes->get('trips/detail/(:num)', 'TripController::detail/$1');
 
-$routes->get('trips/open_trip', 'Trips::byType/open_trip');
-$routes->get('trips/one_day_trip', 'Trips::byType/one_day_trip');
-$routes->get('trips/private_trip', 'Trips::byType/private_trip');
+$routes->get('trips/open_trip', 'TripController::byType/open_trip');
+$routes->get('trips/one_day_trip', 'TripController::byType/one_day_trip');
+$routes->get('trips/private_trip', 'TripController::byType/private_trip');
 
-$routes->get('trips/type/(:segment)', 'Trips::byType/$1');
+$routes->get('trips/type/(:segment)', 'TripController::byType/$1');
 
 
 /*
@@ -154,8 +154,8 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('/', 'DashboardController::index');
-    $routes->get('dashboard', 'DashboardController::index');
+    $routes->get('/', '\App\Controllers\DashboardController::adminIndex');
+    $routes->get('dashboard', '\App\Controllers\DashboardController::adminIndex');
 
 
     /*
@@ -164,15 +164,15 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('trips', 'TripController::index');
+    $routes->get('trips', '\App\Controllers\TripController::adminIndex');
 
-    $routes->get('trips/create', 'TripController::create');
-    $routes->post('trips/store', 'TripController::store');
+    $routes->get('trips/create', '\App\Controllers\TripController::create');
+    $routes->post('trips/store', '\App\Controllers\TripController::store');
 
-    $routes->get('trips/edit/(:num)', 'TripController::edit/$1');
-    $routes->post('trips/update/(:num)', 'TripController::update/$1');
+    $routes->get('trips/edit/(:num)', '\App\Controllers\TripController::edit/$1');
+    $routes->post('trips/update/(:num)', '\App\Controllers\TripController::update/$1');
 
-    $routes->get('trips/delete/(:num)', 'TripController::delete/$1');
+    $routes->get('trips/delete/(:num)', '\App\Controllers\TripController::delete/$1');
 
 
     /*
@@ -198,13 +198,13 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('bookings', 'BookingController::index');
+    $routes->get('bookings', '\App\Controllers\BookingController::adminIndex');
 
-    $routes->get('bookings/detail/(:num)', 'BookingController::detail/$1');
+    $routes->get('bookings/detail/(:num)', '\App\Controllers\BookingController::detail/$1');
 
-    $routes->get('bookings/confirm/(:num)', 'BookingController::confirm/$1');
+    $routes->get('bookings/confirm/(:num)', '\App\Controllers\BookingController::confirm/$1');
 
-    $routes->get('bookings/cancel/(:num)', 'BookingController::cancel/$1');
+    $routes->get('bookings/cancel/(:num)', '\App\Controllers\BookingController::cancel/$1');
 
 
     /*
@@ -224,41 +224,7 @@ $routes->group('admin', [
     $routes->get('users/delete/(:num)', 'UsersController::delete/$1');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | INCLUDE MANAGEMENT
-    |--------------------------------------------------------------------------
-    */
 
-    $routes->get('includes', 'Includes::index');
-
-    $routes->get('includes/create', 'Includes::create');
-    $routes->post('includes/store', 'Includes::store');
-    $routes->post('includes/store-batch', 'Includes::storeBatch');
-
-    $routes->get('includes/edit/(:num)', 'Includes::edit/$1');
-    $routes->post('includes/update/(:num)', 'Includes::update/$1');
-    $routes->post('includes/update-batch', 'Includes::updateBatch');
-
-    $routes->get('includes/delete/(:num)', 'Includes::delete/$1');
-
-    /*
-    |--------------------------------------------------------------------------
-    | ITINERARY MANAGEMENT
-    |--------------------------------------------------------------------------
-    */
-
-    $routes->get('itinerary', 'ItineraryController::index');
-
-    $routes->get('itinerary/create', 'ItineraryController::create');
-    $routes->post('itinerary/store', 'ItineraryController::store');
-    $routes->post('itinerary/store-batch', 'ItineraryController::storeBatch');
-
-    $routes->get('itinerary/edit/(:num)', 'ItineraryController::edit/$1');
-    $routes->post('itinerary/update/(:num)', 'ItineraryController::update/$1');
-    $routes->post('itinerary/update-batch', 'ItineraryController::updateBatch');
-
-    $routes->get('itinerary/delete/(:num)', 'ItineraryController::delete/$1');
 
     /*
 |--------------------------------------------------------------------------
@@ -266,24 +232,24 @@ $routes->group('admin', [
 |--------------------------------------------------------------------------
 */
 
-    $routes->get('gallery', 'GalleryController::index');
+    $routes->get('gallery', '\App\Controllers\GalleryController::adminIndex');
 
-    $routes->get('gallery/create', 'GalleryController::create');
-    $routes->post('gallery/store', 'GalleryController::store');
+    $routes->get('gallery/create', '\App\Controllers\GalleryController::create');
+    $routes->post('gallery/store', '\App\Controllers\GalleryController::store');
 
-    $routes->get('gallery/edit/(:num)', 'GalleryController::edit/$1');
+    $routes->get('gallery/edit/(:num)', '\App\Controllers\GalleryController::edit/$1');
 
     /* FIX UPDATE */
-    $routes->post('gallery/update/(:num)', 'GalleryController::update/$1');
+    $routes->post('gallery/update/(:num)', '\App\Controllers\GalleryController::update/$1');
 
-    $routes->get('gallery/delete/(:num)', 'GalleryController::delete/$1');
+    $routes->get('gallery/delete/(:num)', '\App\Controllers\GalleryController::delete/$1');
 
-    $routes->get('gallery/albums', 'GalleryController::albums');
-    $routes->get('gallery/album/(:any)', 'GalleryController::album/$1');
+    $routes->get('gallery/albums', '\App\Controllers\GalleryController::albums');
+    $routes->get('gallery/album/(:any)', '\App\Controllers\GalleryController::album/$1');
 
-    $routes->post('gallery/bulk-delete', 'GalleryController::bulkDelete');
+    $routes->post('gallery/bulk-delete', '\App\Controllers\GalleryController::bulkDelete');
 
-    $routes->get('gallery/export', 'GalleryController::export');
+    $routes->get('gallery/export', '\App\Controllers\GalleryController::export');
 
     /*
     |--------------------------------------------------------------------------
@@ -291,13 +257,13 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('comments', 'Comments::index');
+    $routes->get('comments', '\App\Controllers\Comment::adminIndex');
 
-    $routes->get('comments/approve/(:num)', 'Comments::approve/$1');
+    $routes->get('comments/approve/(:num)', '\App\Controllers\Comment::approve/$1');
 
-    $routes->get('comments/reject/(:num)', 'Comments::reject/$1');
+    $routes->get('comments/reject/(:num)', '\App\Controllers\Comment::reject/$1');
 
-    $routes->get('comments/delete/(:num)', 'Comments::delete/$1');
+    $routes->get('comments/delete/(:num)', '\App\Controllers\Comment::delete/$1');
 
 
     /*
@@ -306,9 +272,9 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('export/bookings', 'BookingController::exportExcel');
+    $routes->get('export/bookings', '\App\Controllers\BookingController::exportExcel');
 
-    $routes->get('export/bookings/pdf', 'BookingController::exportPdf');
+    $routes->get('export/bookings/pdf', '\App\Controllers\BookingController::exportPdf');
 
 
     /*
@@ -317,9 +283,11 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('about', 'AboutController::index');
+    $routes->get('about', '\App\Controllers\AboutController::adminIndex');
 
-    $routes->post('about/update', 'AboutController::update');
+    $routes->get('about/edit', '\App\Controllers\AboutController::edit');
+
+    $routes->post('about/update', '\App\Controllers\AboutController::update');
 });
 
 
@@ -352,7 +320,7 @@ $routes->post('payment/webhook', 'PaymentController::webhook');
 |--------------------------------------------------------------------------
 */
 
-$routes->get('booking/exportExcel', 'AdminController::exportExcel');
+$routes->get('booking/exportExcel', 'BookingController::exportExcel');
 
 
 /*

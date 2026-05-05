@@ -16,7 +16,7 @@ class UsersController extends BaseController
 
     public function index()
     {
-        $data['users'] = $this->usersModel->orderBy('user_id','ASC')->findAll();
+        $data['users'] = $this->usersModel->orderBy('user_id', 'ASC')->findAll();
         return view('admin/users/index', $data);
     }
 
@@ -31,14 +31,14 @@ class UsersController extends BaseController
         $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
 
         $file = $this->request->getFile('avatar');
-        if($file && $file->isValid() && !$file->hasMoved()){
+        if ($file && $file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
             $file->move(WRITEPATH.'uploads', $newName);
             $post['avatar'] = $newName;
         }
 
         $this->usersModel->insert($post);
-        return redirect()->to('/admin/users')->with('success','User berhasil ditambahkan');
+        return redirect()->to('/admin/users')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -51,26 +51,26 @@ class UsersController extends BaseController
     {
         $post = $this->request->getPost();
 
-        if(!empty($post['password'])){
+        if (!empty($post['password'])) {
             $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         } else {
             unset($post['password']);
         }
 
         $file = $this->request->getFile('avatar');
-        if($file && $file->isValid() && !$file->hasMoved()){
+        if ($file && $file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
             $file->move(WRITEPATH.'uploads', $newName);
             $post['avatar'] = $newName;
         }
 
         $this->usersModel->update($id, $post);
-        return redirect()->to('/admin/users')->with('success','User berhasil diperbarui');
+        return redirect()->to('/admin/users')->with('success', 'User berhasil diperbarui');
     }
 
     public function delete($id)
     {
         $this->usersModel->delete($id);
-        return redirect()->to('/admin/users')->with('success','User berhasil dihapus');
+        return redirect()->to('/admin/users')->with('success', 'User berhasil dihapus');
     }
 }

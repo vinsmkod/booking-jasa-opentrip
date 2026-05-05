@@ -81,6 +81,37 @@ class AuthController extends BaseController
     */
     public function processRegister()
     {
+        $rules = [
+            'name'             => 'required',
+            'email'            => 'required|valid_email|is_unique[users.email]',
+            'password'         => 'required|min_length[8]|regex_match[/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/]',
+            'password_confirm' => 'required|matches[password]'
+        ];
+
+        $errors = [
+            'name' => [
+                'required' => 'Nama lengkap wajib diisi.'
+            ],
+            'email' => [
+                'required'    => 'Email wajib diisi.',
+                'valid_email' => 'Format email tidak valid.',
+                'is_unique'   => 'Email sudah terdaftar.'
+            ],
+            'password' => [
+                'required'    => 'Password wajib diisi.',
+                'min_length'  => 'Password minimal 8 karakter.',
+                'regex_match' => 'Password harus mengandung kombinasi huruf, angka, dan karakter spesial (!@#$%^&*).'
+            ],
+            'password_confirm' => [
+                'required' => 'Konfirmasi password wajib diisi.',
+                'matches'  => 'Konfirmasi password tidak sesuai.'
+            ]
+        ];
+
+        if (!$this->validate($rules, $errors)) {
+            return redirect()->back()->withInput()->with('error', $this->validator->getErrors());
+        }
+
         $data = [
             'name'     => $this->request->getPost('name'),
             'email'    => $this->request->getPost('email'),
@@ -148,7 +179,7 @@ class AuthController extends BaseController
 
             // Kirim email (Simulasi)
             $resetLink = base_url("reset-password/{$token}");
-            
+
             // CodeIgniter Email Service
             $emailService = \Config\Services::email();
             $emailService->setTo($email);
@@ -193,6 +224,27 @@ class AuthController extends BaseController
     {
         $token    = $this->request->getPost('token');
         $password = $this->request->getPost('password');
+
+        $rules = [
+            'password'         => 'required|min_length[8]|regex_match[/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/]',
+            'password_confirm' => 'required|matches[password]'
+        ];
+
+        $errors = [
+            'password' => [
+                'required'    => 'Password baru wajib diisi.',
+                'min_length'  => 'Password minimal 8 karakter.',
+                'regex_match' => 'Password harus mengandung kombinasi huruf, angka, dan karakter spesial (!@#$%^&*).'
+            ],
+            'password_confirm' => [
+                'required' => 'Konfirmasi password wajib diisi.',
+                'matches'  => 'Konfirmasi password tidak sesuai.'
+            ]
+        ];
+
+        if (!$this->validate($rules, $errors)) {
+            return redirect()->back()->with('error', $this->validator->getErrors());
+        }
 
         $user = $this->userModel->where('reset_token', $token)
             ->where('reset_expires >=', date('Y-m-d H:i:s'))

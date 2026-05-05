@@ -5,7 +5,7 @@
 
 <h3 class="mb-4">Kelola Jadwal Trip</h3>
 
-<a href="/admin/schedules/create" class="btn btn-primary mb-3">
+<a href="/admin/schedules/create" class="btn-primary-sm">
 Tambah Jadwal
 </a>
 
@@ -24,7 +24,8 @@ Tambah Jadwal
 
 <tbody>
 
-<?php $no=1; foreach($schedules as $s): ?>
+<?php $no = 1;
+foreach ($schedules as $s): ?>
 
 <tr>
 <td><?= $no++ ?></td>
@@ -34,11 +35,11 @@ Tambah Jadwal
 <td><?= $s['quota'] - $s['available'] ?></td>
 
 <td>
-<a href="/admin/schedules/edit/<?= $s['schedule_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+<a href="/admin/schedules/edit/<?= $s['schedule_id'] ?>" class="btn-sm btn-edit"><i class="fas fa-edit"></i> Edit</a>
 
 <a href="/admin/schedules/delete/<?= $s['schedule_id'] ?>"
 onclick="return confirm('Hapus jadwal?')"
-class="btn btn-danger btn-sm">Hapus</a>
+class="btn-sm btn-delete"><i class="fas fa-trash"></i> Hapus</a>
 </td>
 
 </tr>

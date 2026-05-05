@@ -17,7 +17,9 @@ class ProfileController extends BaseController
     public function edit()
     {
         $userId = session()->get('user_id');
-        if (!$userId) return redirect()->to('/login');
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
 
         $user = $this->userModel->find($userId);
 
@@ -29,7 +31,9 @@ class ProfileController extends BaseController
     public function update()
     {
         $userId = session()->get('user_id');
-        if (!$userId) return redirect()->to('/login');
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
 
         // Extremely defensive data preparation to avoid CI4 core trim(null) issues on PHP 8.1+
         $nameValue = $this->request->getPost('name') ?? '';
@@ -73,12 +77,14 @@ class ProfileController extends BaseController
             // Delete old avatar if exists
             if (!empty($user['avatar'])) {
                 $oldPath = FCPATH . 'uploads/avatars/' . $user['avatar'];
-                if (file_exists($oldPath)) @unlink($oldPath);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
             }
 
             $avatarName = $avatar->getRandomName();
             $avatar->move(FCPATH . 'uploads/avatars/', $avatarName);
-            
+
             // Sync session
             session()->set('avatar', $avatarName);
         }
@@ -92,7 +98,7 @@ class ProfileController extends BaseController
         if ($this->userModel->update($userId, $data)) {
             // Sync session name
             session()->set('name', $data['name']);
-            
+
             return redirect()->to('/profile/edit')->with('success', 'Profil berhasil diperbarui!');
         }
 
