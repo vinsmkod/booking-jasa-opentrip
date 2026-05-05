@@ -290,9 +290,44 @@
 
 <div class="trips-container">
     <!-- Header -->
-    <div class="header-section">
+    <div class="header-section text-center">
         <h2 class="header-title"><?= esc($type ?? 'Jelajahi Trip') ?></h2>
-        <p class="header-subtitle">Pilih petualangan yang sesuai dengan keinginan Anda</p>
+        <p class="header-subtitle mb-4">Pilih petualangan yang sesuai dengan keinginan Anda</p>
+        
+        <!-- Search Form -->
+        <div class="row justify-content-center mb-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-md-8 col-lg-6 text-start">
+                <form action="" method="get">
+                    <div class="input-group rounded-pill overflow-hidden shadow-sm border border-2"
+                        style="border-color:transparent!important;"
+                        onfocusin="this.style.borderColor='#2d7d3a';"
+                        onfocusout="this.style.borderColor='transparent';">
+                        <span class="input-group-text bg-white border-0 ps-3">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control bg-white border-0 py-3 shadow-none"
+                            name="search"
+                            placeholder="Cari trip berdasarkan nama atau lokasi..."
+                            value="<?= esc($search ?? '') ?>"
+                            autocomplete="off">
+                        <button class="btn btn-success px-4 fw-semibold rounded-0 rounded-end-pill" type="submit">
+                            <i class="fas fa-search me-2"></i>Cari
+                        </button>
+                    </div>
+                    <?php if (!empty($search)): ?>
+                        <div class="mt-2 ms-3">
+                            <small class="text-muted">
+                                <i class="fas fa-search me-1"></i>
+                                Menampilkan hasil untuk: <strong>"<?= esc($search) ?>"</strong>
+                                <a href="<?= current_url() ?>" class="text-decoration-none ms-2 text-success">
+                                    <i class="fas fa-times-circle"></i> Hapus filter
+                                </a>
+                            </small>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Trips Grid -->
@@ -375,8 +410,14 @@
         <?php else: ?>
             <div class="empty-state">
                 <i class="fas fa-mountain"></i>
-                <h3>Tidak Ada Trip Tersedia</h3>
-                <p>Silakan cek kembali nanti untuk melihat koleksi petualangan kami.</p>
+                <?php if (!empty($search)): ?>
+                    <h3>Tidak ada trip dengan kata kunci "<?= esc($search) ?>"</h3>
+                    <p>Coba gunakan kata kunci lain atau lihat semua trip kami.</p>
+                    <a href="<?= current_url() ?>" class="btn btn-outline-success mt-3 rounded-pill px-4">Lihat Semua Trip</a>
+                <?php else: ?>
+                    <h3>Tidak Ada Trip Tersedia</h3>
+                    <p>Silakan cek kembali nanti untuk melihat koleksi petualangan kami.</p>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>

@@ -27,10 +27,14 @@ class TripModel extends Model
     public function getTotalBookings($schedule_id)
     {
         $db = \Config\Database::connect();
-        return $db->table('bookings')
+        $result = $db->table('bookings')
+            ->selectSum('participant')
             ->where('schedule_id', $schedule_id)
             ->where('status', 'confirmed')
-            ->countAllResults();
+            ->get()
+            ->getRow();
+            
+        return $result->participant ?? 0;
     }
 
     /**
@@ -48,10 +52,7 @@ class TripModel extends Model
                 schedules.trip_id,
                 schedules.departure_date,
                 schedules.quota,
-                schedules.available as schedule_quota,
-                (SELECT COUNT(*) FROM bookings 
-                 WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status = "confirmed") as total_booked
+                schedules.available as schedule_quota
             ')
             ->getCompiledSelect();
 
@@ -75,7 +76,7 @@ class TripModel extends Model
                 schedule_data.schedule_id,
                 schedule_data.departure_date,
                 schedule_data.quota,
-                (schedule_data.quota - schedule_data.total_booked) as available
+                schedule_data.schedule_quota as available
             ')
             ->join("({$scheduleWithBookings}) as schedule_data", 'schedule_data.trip_id = trips.trip_id', 'left')
             ->join("({$firstSchedule}) as first_schedule", 'first_schedule.schedule_id = schedule_data.schedule_id', 'inner')
@@ -94,12 +95,7 @@ class TripModel extends Model
         return $db->table('schedules')
             ->select('
                 schedules.*,
-                (SELECT COUNT(*) FROM bookings 
-                 WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status = "confirmed") as total_booked,
-                (schedules.quota - (SELECT COUNT(*) FROM bookings 
-                 WHERE bookings.schedule_id = schedules.schedule_id 
-                 AND bookings.status = "confirmed")) as available
+                (schedules.quota - schedules.available) as total_booked
             ')
             ->where('schedules.trip_id', $trip_id)
             ->orderBy('schedules.departure_date', 'ASC')

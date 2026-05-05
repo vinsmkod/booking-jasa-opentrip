@@ -114,6 +114,41 @@
     .featured-trip-title { font-size: 24px; }
     .featured-trip-stats { gap: 20px; }
 }
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 5px;
+}
+.pagination li a, .pagination li span {
+    display: block;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+.pagination li a:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+.pagination li.active a, .pagination li.active span {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+.pagination li.disabled a, .pagination li.disabled span {
+    background: #f8fafc;
+    color: #cbd5e1;
+    cursor: not-allowed;
+}
 </style>
 <?= $this->endSection() ?>
 
@@ -196,9 +231,17 @@
 
 <div class="content-grid">
     <div class="panel">
-        <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-list-ul"></i> Booking Terbaru</span>
-            <a href="/admin/bookings" class="panel-action">Lihat semua →</a>
+        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="panel-title" style="margin-bottom: 0;"><i class="fas fa-list-ul"></i> Booking Terbaru</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <form action="" method="get" style="display: flex; margin: 0;">
+                    <input type="text" name="search" placeholder="Cari booking..." value="<?= esc($search ?? '') ?>" style="padding: 4px 10px; border: 1px solid #e2e8f0; border-radius: 4px 0 0 4px; outline: none; font-size: 13px;">
+                    <button type="submit" style="padding: 4px 10px; background: #f1f5f9; border: 1px solid #e2e8f0; border-left: none; border-radius: 0 4px 4px 0; cursor: pointer; color: #64748b;"><i class="fas fa-search"></i></button>
+                </form>
+                <a href="/admin/bookings" class="panel-action">Lihat semua →</a>
+            </div>
         </div>
         <div class="panel-body">
             <table class="tbl">
@@ -232,12 +275,22 @@
                     <tr><td colspan="5">
                         <div class="empty-state">
                             <i class="fas fa-inbox"></i>
-                            <p>Belum ada data booking.</p>
+                            <p>Belum ada data booking<?= !empty($search) ? ' untuk pencarian ini' : '' ?>.</p>
+                            <?php if (!empty($search)): ?>
+                                <a href="?" style="font-size: 12px; color: var(--accent); text-decoration: none;">Hapus filter</a>
+                            <?php endif; ?>
                         </div>
                     </td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
+            
+            <!-- Pagination -->
+            <?php if (isset($pager)): ?>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                <?= $pager->links('bookings', 'default_full') ?>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 

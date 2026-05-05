@@ -34,10 +34,20 @@ class TripController extends BaseController
 
     public function index()
     {
-        $trips = $this->tripModel
+        $search = $this->request->getGet('search');
+
+        $this->tripModel
             ->where('status', 'active')
-            ->orderBy('trip_id', 'DESC')
-            ->findAll();
+            ->orderBy('trip_id', 'DESC');
+
+        if (!empty($search)) {
+            $this->tripModel->groupStart()
+                ->like('title', $search)
+                ->orLike('location', $search)
+                ->groupEnd();
+        }
+
+        $trips = $this->tripModel->findAll();
 
         foreach ($trips as &$trip) {
             $schedule = $this->scheduleModel
@@ -59,8 +69,9 @@ class TripController extends BaseController
         }
 
         $data = [
-            'trips' => $trips,
-            'type'  => 'Semua Trip',
+            'trips'  => $trips,
+            'type'   => 'Semua Trip',
+            'search' => $search
         ];
 
         return view('trips/index', $data);
@@ -68,10 +79,20 @@ class TripController extends BaseController
 
     public function byType($type)
     {
-        $trips = $this->tripModel
+        $search = $this->request->getGet('search');
+
+        $this->tripModel
             ->where('type', $type)
-            ->where('status', 'active')
-            ->findAll();
+            ->where('status', 'active');
+
+        if (!empty($search)) {
+            $this->tripModel->groupStart()
+                ->like('title', $search)
+                ->orLike('location', $search)
+                ->groupEnd();
+        }
+
+        $trips = $this->tripModel->findAll();
 
         foreach ($trips as &$trip) {
             $schedule = $this->scheduleModel
@@ -93,8 +114,9 @@ class TripController extends BaseController
         }
 
         $data = [
-            'trips' => $trips,
-            'type'  => $type,
+            'trips'  => $trips,
+            'type'   => $type,
+            'search' => $search
         ];
 
         return view('trips/list', $data);

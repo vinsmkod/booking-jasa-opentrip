@@ -13,6 +13,41 @@
             style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">EXPLORE</span>
         <h2 class="fw-bold" style="font-family:'Playfair Display',serif;"><?= esc($type ?? 'Semua Trip') ?></h2>
         <p class="text-muted">Temukan petualangan seru bersama BLNTRK OUTDOOR</p>
+
+        <!-- Search Form -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8 col-lg-6 text-start">
+                <form action="" method="get">
+                    <div class="input-group rounded-pill overflow-hidden shadow-sm border border-2"
+                        style="border-color:transparent!important;"
+                        onfocusin="this.style.borderColor='#2d7d3a';"
+                        onfocusout="this.style.borderColor='transparent';">
+                        <span class="input-group-text bg-white border-0 ps-3">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control bg-white border-0 py-3 shadow-none"
+                            name="search"
+                            placeholder="Cari trip berdasarkan nama atau lokasi..."
+                            value="<?= esc($search ?? '') ?>"
+                            autocomplete="off">
+                        <button class="btn btn-success px-4 fw-semibold rounded-0 rounded-end-pill" type="submit">
+                            <i class="fas fa-search me-2"></i>Cari
+                        </button>
+                    </div>
+                    <?php if (!empty($search)): ?>
+                        <div class="text-center mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-search me-1"></i>
+                                Menampilkan hasil untuk: <strong>"<?= esc($search) ?>"</strong>
+                                <a href="<?= current_url() ?>" class="text-decoration-none ms-2 text-success">
+                                    <i class="fas fa-times-circle"></i> Hapus filter
+                                </a>
+                            </small>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="row g-4">
@@ -137,7 +172,13 @@
         <?php else: ?>
             <div class="col-12 text-center py-5">
                 <i class="fas fa-mountain fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Tidak ada trip tersedia.</p>
+                <?php if (!empty($search)): ?>
+                    <h4 class="text-muted">Tidak ada trip dengan kata kunci "<?= esc($search) ?>"</h4>
+                    <p class="text-muted">Coba gunakan kata kunci lain atau lihat semua trip kami.</p>
+                    <a href="<?= current_url() ?>" class="btn btn-outline-success mt-3 rounded-pill px-4">Lihat Semua Trip</a>
+                <?php else: ?>
+                    <p class="text-muted">Tidak ada trip tersedia.</p>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>

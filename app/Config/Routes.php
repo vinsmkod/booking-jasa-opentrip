@@ -35,9 +35,7 @@ $routes->get('/', 'Home::index');
 $routes->get('gallery', 'GalleryController::index');
 $routes->get('gallery/trip/(:num)', 'GalleryController::filterByTrip/$1');
 $routes->get('gallery/album/(:any)', 'GalleryController::filterByAlbum/$1');
-
 $routes->get('about', 'AboutController::index');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -277,17 +275,7 @@ $routes->group('admin', [
     $routes->get('export/bookings/pdf', '\App\Controllers\BookingController::exportPdf');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ABOUT MANAGEMENT
-    |--------------------------------------------------------------------------
-    */
 
-    $routes->get('about', '\App\Controllers\AboutController::adminIndex');
-
-    $routes->get('about/edit', '\App\Controllers\AboutController::edit');
-
-    $routes->post('about/update', '\App\Controllers\AboutController::update');
 });
 
 

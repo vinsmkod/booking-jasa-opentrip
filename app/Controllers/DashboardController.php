@@ -64,15 +64,28 @@ class DashboardController extends BaseController
 
         $totalRevenue = $revenue['total_price'] ?? 0;
 
-        // Booking terbaru (8 terakhir)
-        $recentBookings = $bookingModel
+        $search = $this->request->getGet('search');
+
+        // Booking terbaru (10 per halaman, dengan fitur pencarian)
+        $bookingBuilder = $bookingModel
             ->select('bookings.booking_id as id, users.name as nama, trips.title as nama_trip, bookings.status, bookings.total_price, bookings.created_at')
             ->join('users', 'users.user_id = bookings.user_id', 'left')
             ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')
-            ->join('trips', 'trips.trip_id = schedules.trip_id', 'left')
+            ->join('trips', 'trips.trip_id = schedules.trip_id', 'left');
+
+        if (!empty($search)) {
+            $bookingBuilder->groupStart()
+                ->like('users.name', $search)
+                ->orLike('trips.title', $search)
+                ->orLike('bookings.status', $search)
+                ->orLike('bookings.booking_id', $search)
+                ->groupEnd();
+        }
+
+        $recentBookings = $bookingBuilder
             ->orderBy('bookings.created_at', 'DESC')
-            ->limit(8)
-            ->findAll();
+            ->paginate(10, 'bookings');
+        $pager = $bookingModel->pager;
 
         // Trip terpopuler (top 5 berdasarkan jumlah booking)
         $popularTrips = $bookingModel
@@ -91,6 +104,8 @@ class DashboardController extends BaseController
             'totalRevenue'   => $totalRevenue,
             'recentBookings' => $recentBookings,
             'popularTrips'   => $popularTrips,
+            'pager'          => $pager,
+            'search'         => $search
         ]);
     }
 }

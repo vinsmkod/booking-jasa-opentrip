@@ -10,7 +10,7 @@
 <section class="hero-slider hero-slide d-flex align-items-center" style="background-image:url('<?= base_url('assets/images/gunung4.jpeg') ?>');">
     <div class="container position-relative" style="z-index: 2;">
         <div class="hero-content text-white">
-            <span class="badge bg-rust rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
+            <span class="badge bg-success rounded-pill fw-semibold text-uppercase mb-3 px-4 py-2" style="letter-spacing:.3em;font-size:12px;">OPEN TRIP 2025</span>
             <h1 class="fw-bold mb-3 text-white">Explore The Mountains</h1>
             <p class="lead fw-light mb-4 opacity-90 text-white">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
             <div class="d-flex gap-3 flex-wrap">
@@ -68,7 +68,7 @@ foreach ($steps as $s):
 
             <div class="text-center mb-3" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">TRIP</span>
+                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,125,58,.1);color:#2d7d3a;">TRIP</span>
                 <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Trip Tersedia</h2>
                 <p class="text-muted">Pilih destinasi pendakian favorit Anda dan mulai petualangan</p>
             </div>
@@ -79,17 +79,17 @@ foreach ($steps as $s):
                     <form action="<?= base_url('/#Trip') ?>" method="get">
                         <div class="input-group rounded-pill overflow-hidden shadow-sm border border-2"
                             style="border-color:transparent!important;"
-                            onfocusin="this.style.borderColor='var(--rust)';"
+                            onfocusin="this.style.borderColor='#2d7d3a';"
                             onfocusout="this.style.borderColor='transparent';">
                             <span class="input-group-text bg-white border-0 ps-3">
                                 <i class="fas fa-search text-muted"></i>
                             </span>
-                            <input type="text" class="form-control bg-white border-0 py-3"
+                            <input type="text" class="form-control bg-white border-0 py-3 shadow-none"
                                 name="search"
                                 placeholder="Cari trip berdasarkan nama atau lokasi..."
                                 value="<?= esc($keyword ?? '') ?>"
                                 autocomplete="off">
-                            <button class="btn btn-rust px-4 fw-semibold rounded-0 rounded-end-pill" type="submit">
+                            <button class="btn btn-success px-4 fw-semibold rounded-0 rounded-end-pill" type="submit">
                                 <i class="fas fa-search me-2"></i>Cari
                             </button>
                         </div>
@@ -98,7 +98,7 @@ foreach ($steps as $s):
                                 <small class="text-muted">
                                     <i class="fas fa-search me-1"></i>
                                     Menampilkan hasil untuk: <strong>"<?= esc($keyword) ?>"</strong>
-                                    <a href="<?= base_url('/#Trip') ?>" class="text-decoration-none ms-2" style="color:var(--rust);">
+                                    <a href="<?= base_url('/#Trip') ?>" class="text-decoration-none ms-2 text-success">
                                         <i class="fas fa-times-circle"></i> Hapus filter
                                     </a>
                                 </small>
@@ -167,10 +167,10 @@ foreach ($steps as $s):
                                 <div class="card-body p-4">
                                     <h5 class="fw-bold mb-3" style="font-family:'Playfair Display',serif;"><?= esc($trip['title']) ?></h5>
                                     <p class="text-muted small mb-2">
-                                        <i class="fas fa-map-marker-alt me-2" style="width:20px;color:var(--rust);"></i><?= esc($trip['location']) ?>
+                                        <i class="fas fa-map-marker-alt me-2" style="width:20px;color:#2d7d3a;"></i><?= esc($trip['location']) ?>
                                     </p>
                                     <p class="text-muted small mb-3">
-                                        <i class="fas fa-calendar-alt me-2" style="width:20px;color:var(--rust);"></i>
+                                        <i class="fas fa-calendar-alt me-2" style="width:20px;color:#2d7d3a;"></i>
                                         <?php if (!empty($trip['departure_date'])): ?>
                                             <span class="badge bg-success bg-opacity-10 text-success me-2">
                                                 <i class="fas fa-calendar-week me-1"></i><?= $day . ' ' . $monthName ?>
@@ -186,7 +186,7 @@ foreach ($steps as $s):
                                             <span><?= $booked ?> / <?= $quota ?></span>
                                         </div>
                                         <div class="progress" style="height:6px;">
-                                            <div class="progress-bar" style="width:<?= $percent ?>%;background-color:var(--rust);"></div>
+                                            <div class="progress-bar" style="width:<?= $percent ?>%;background-color:#2d7d3a;"></div>
                                         </div>
                                     </div>
                                     <?php if ($available == 0): ?>
@@ -232,7 +232,7 @@ foreach ($steps as $s):
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">DOKUMENTASI</span>
+                style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,125,58,.1);color:#2d7d3a;">DOKUMENTASI</span>
             <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Momen Perjalanan</h2>
             <p class="text-muted">Dokumentasi perjalanan pendakian bersama peserta trip</p>
         </div>
@@ -286,7 +286,7 @@ foreach ($steps as $s):
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">TESTIMONI</span>
+                    style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,125,58,.1);color:#2d7d3a;">TESTIMONI</span>
                 <h2 class="fw-bold" style="font-family:'Playfair Display',serif;">Apa Kata Mereka?</h2>
                 <p class="text-muted">Pengalaman peserta yang telah bergabung bersama kami</p>
             </div>
@@ -299,11 +299,11 @@ foreach ($steps as $s):
                                 style="transition:all .3s;"
                                 onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.1)'"
                                 onmouseout="this.style.transform='';this.style.boxShadow=''">
-                                <i class="fas fa-quote-left fa-2x mb-3" style="color:var(--rust);opacity:.3;"></i>
+                                <i class="fas fa-quote-left fa-2x mb-3" style="color:#2d7d3a;opacity:.3;"></i>
                                 <p class="small lh-lg text-dark mb-4"><?= esc($c['comment']) ?></p>
                                 <div class="d-flex align-items-center gap-3 mt-auto">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white overflow-hidden flex-shrink-0"
-                                        style="width:45px;height:45px;background:linear-gradient(135deg,var(--rust),var(--rust-light));font-size:1.1rem;">
+                                        style="width:45px;height:45px;background:linear-gradient(135deg,#2d7d3a,#1f5428);font-size:1.1rem;">
                                         <?php if (!empty($c['avatar'])): ?>
                                             <img src="<?= base_url('uploads/avatars/' . $c['avatar']) ?>" alt="<?= esc($c['name']) ?>" style="width:100%;height:100%;object-fit:cover;">
                                         <?php else: ?>
