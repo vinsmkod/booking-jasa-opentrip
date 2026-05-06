@@ -77,7 +77,6 @@ class AdminController extends BaseController
             'image'          => $this->uploadImage('image'),
         ];
 
-        // Hapus key image kalau tidak ada file baru supaya tidak overwrite dengan null
         if ($updateData['image'] === null) {
             unset($updateData['image']);
         }

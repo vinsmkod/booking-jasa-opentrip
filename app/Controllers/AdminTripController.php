@@ -3,17 +3,17 @@
 namespace App\Controllers;
 
 use App\Models\TripModel;
-use App\Models\ScheduleModel; // ← tambahkan ini
+use App\Models\ScheduleModel;
 
 class AdminTripController extends BaseController
 {
     protected $tripModel;
-    protected $scheduleModel; // ← tambahkan ini
+    protected $scheduleModel; 
 
     public function __construct()
     {
         $this->tripModel     = new TripModel();
-        $this->scheduleModel = new ScheduleModel(); // ← tambahkan ini
+        $this->scheduleModel = new ScheduleModel(); 
     }
 
     // =============================

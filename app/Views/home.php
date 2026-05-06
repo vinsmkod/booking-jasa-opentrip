@@ -196,7 +196,7 @@ foreach ($steps as $s):
                                             <i class="fas fa-eye me-2"></i>Lihat Detail
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?= base_url('login') ?>" class="btn btn-warning w-100">
+                                        <a href="<?= base_url('login') ?>" class="btn btn-success w-100">
                                             <i class="fas fa-sign-in-alt me-2"></i>Login untuk Booking
                                         </a>
                                     <?php endif; ?>

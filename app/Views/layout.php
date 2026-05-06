@@ -154,7 +154,7 @@ Logout
 <?php else: ?>
 
 <li class="nav-item">
-<a href="/login" class="btn btn-warning btn-sm mt-2 mt-lg-0">
+<a href="/login" class="btn btn-success btn-sm mt-2 mt-lg-0">
 Login
 </a>
 </li>

@@ -355,7 +355,7 @@
         text-overflow: ellipsis;
     }
 
-    .preview-item .file-info .text-warning {
+    .preview-item .file-info .text-success {
         color: #fbbf24;
         font-weight: 500;
     }
@@ -701,7 +701,7 @@
                             <div class="file-info">
                                 <strong>${file.name.substring(0, 20)}${file.name.length > 20 ? '...' : ''}</strong><br>
                                 ${(file.size / 1024).toFixed(1)} KB · ${dimensions}<br>
-                                <span class="text-warning">→ ${newDimensions.width} x ${newDimensions.height}</span>
+                                <span class="text-success">→ ${newDimensions.width} x ${newDimensions.height}</span>
                             </div>
                         `;
                     };

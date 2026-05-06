@@ -59,7 +59,7 @@
                             </p>
                             <div class="d-flex gap-2">
                                 <a href="<?= base_url('admin/gallery/edit/' . $photo['gallery_id']) ?>"
-                                    class="btn btn-sm btn-warning flex-grow-1">
+                                    class="btn btn-sm btn-success flex-grow-1">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <a href="<?= base_url('admin/gallery/delete/' . $photo['gallery_id']) ?>"

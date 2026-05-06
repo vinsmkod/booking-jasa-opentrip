@@ -1,9 +1,9 @@
-<?= $this->extend('layouts/main') ?> 
+<?= $this->extend('layouts/main') ?>
 
 <?= $this->section('styles') ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/trip.css') ?>">
 <?= $this->endSection() ?>
- 
+
 <?= $this->section('content') ?>
 
 
@@ -62,7 +62,7 @@
                 $formattedDate = $day = $monthName = '';
                 if (!empty($trip['departure_date'])) {
                     $dateObj    = new DateTime($trip['departure_date']);
-                    $monthNames = [1 => 'Jan',2 => 'Feb',3 => 'Mar',4 => 'Apr',5 => 'Mei',6 => 'Jun',7 => 'Jul',8 => 'Ags',9 => 'Sep',10 => 'Okt',11 => 'Nov',12 => 'Des'];
+                    $monthNames = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Ags', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'];
                     $monthName  = $monthNames[(int)$dateObj->format('n')];
                     $day        = $dateObj->format('d');
                     $formattedDate = $dateObj->format('d M Y');
@@ -158,7 +158,7 @@
                                         <i class="fas fa-eye me-2"></i>Lihat Detail
                                     </a>
                                 <?php else: ?>
-                                    <a href="<?= base_url('login') ?>" class="btn btn-warning w-100">
+                                    <a href="<?= base_url('login') ?>" class="btn btn-success w-100">
                                         <i class="fas fa-sign-in-alt me-2"></i>Login untuk Booking
                                     </a>
                                 <?php endif; ?>

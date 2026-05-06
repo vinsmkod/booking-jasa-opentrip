@@ -66,7 +66,7 @@ class DashboardController extends BaseController
 
         $search = $this->request->getGet('search');
 
-        // Booking terbaru (10 per halaman, dengan fitur pencarian)
+        // Booking terbaru
         $bookingBuilder = $bookingModel
             ->select('bookings.booking_id as id, users.name as nama, trips.title as nama_trip, bookings.status, bookings.total_price, bookings.created_at')
             ->join('users', 'users.user_id = bookings.user_id', 'left')
@@ -87,7 +87,7 @@ class DashboardController extends BaseController
             ->paginate(10, 'bookings');
         $pager = $bookingModel->pager;
 
-        // Trip terpopuler (top 5 berdasarkan jumlah booking)
+        // Trip terpopuler
         $popularTrips = $bookingModel
             ->select('trips.title as nama_trip, COUNT(bookings.booking_id) as total_booking')
             ->join('schedules', 'schedules.schedule_id = bookings.schedule_id', 'left')

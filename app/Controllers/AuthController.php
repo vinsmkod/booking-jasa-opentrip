@@ -145,7 +145,7 @@ class AuthController extends BaseController
     private function redirectByRole($role)
     {
         if ($role === 'admin') {
-            return redirect()->to('/admin/dashboard'); // FIX DI SINI
+            return redirect()->to('/admin/dashboard');
         } elseif ($role === 'customer') {
             return redirect()->to('/');
         } else {

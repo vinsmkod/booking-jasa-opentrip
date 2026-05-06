@@ -22,7 +22,7 @@
     }
     .bg-soft-success { background-color: rgba(25, 135, 84, 0.1); color: #198754; }
     .bg-soft-primary { background-color: rgba(13, 110, 253, 0.1); color: #0d6efd; }
-    .bg-soft-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
+
 </style>
 <?= $this->endSection() ?>
 

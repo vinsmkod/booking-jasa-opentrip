@@ -27,7 +27,7 @@ class BookingModel extends Model
 
     /*
     =====================================
-    GET BOOKING + SEMUA RELASI (1 query)
+    GET BOOKING + SEMUA RELASI
     =====================================
     */
 
@@ -56,7 +56,7 @@ class BookingModel extends Model
 
     /*
     =====================================
-    METHOD LAMA (deprecated, boleh dihapus)
+    METHOD LAMA
     =====================================
     */
 

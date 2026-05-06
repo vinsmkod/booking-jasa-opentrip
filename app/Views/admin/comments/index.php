@@ -80,7 +80,7 @@
                         <?php elseif ($s === 'rejected'): ?>
                             <span class="pill pill-danger"><i class="fas fa-times"></i> Rejected</span>
                         <?php else: ?>
-                            <span class="pill pill-warning"><i class="fas fa-clock"></i> Pending</span>
+                            <span class="pill pill-success"><i class="fas fa-clock"></i> Pending</span>
                         <?php endif; ?>
                     </td>
                     <td class="td-date"><?= date('d M Y', strtotime($c['created_at'])) ?></td>

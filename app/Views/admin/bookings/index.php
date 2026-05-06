@@ -417,7 +417,7 @@
                                 <td>
                                     <?php $s = $b['status'] ?? ''; ?>
                                     <?php if ($s === 'pending'): ?>
-                                        <span class="pill pill-warning">Pending</span>
+                                        <span class="pill pill-success">Pending</span>
                                     <?php elseif ($s === 'confirmed'): ?>
                                         <span class="pill pill-success">Confirmed</span>
                                     <?php elseif ($s === 'cancelled'): ?>
@@ -429,7 +429,7 @@
                                 <td>
                                     <?php $ps = $b['payment_status'] ?? ''; ?>
                                     <?php if ($ps === 'pending'): ?>
-                                        <span class="pill pill-warning">Menunggu</span>
+                                        <span class="pill pill-success">Menunggu</span>
                                     <?php elseif ($ps === 'verified'): ?>
                                         <span class="pill pill-success">Terverifikasi</span>
                                     <?php elseif ($ps === 'rejected'): ?>
@@ -559,7 +559,7 @@
                     <div style="display:flex;align-items:center;gap:8px;">
                         <span style="color:var(--txt3);font-size:11px;"><?= count($bk['peserta']) ?> peserta</span>
                         <?php $s = $bk['status'] ?? ''; ?>
-                        <span class="pill <?= $s === 'confirmed' ? 'pill-success' : ($s === 'pending' ? 'pill-warning' : 'pill-danger') ?>">
+                        <span class="pill <?= $s === 'confirmed' ? 'pill-success' : ($s === 'pending' ? 'pill-success' : 'pill-danger') ?>">
                             <?= ucfirst($s) ?>
                         </span>
                     </div>

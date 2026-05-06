@@ -258,7 +258,7 @@
                     <?php if (!empty($recentBookings)): foreach ($recentBookings as $b):
                         $pill = match($b['status'] ?? '') {
                             'lunas'   => 'pill-success',
-                            'pending' => 'pill-warning',
+                            'pending' => 'pill-success',
                             'batal'   => 'pill-danger',
                             default   => 'pill-info'
                         };

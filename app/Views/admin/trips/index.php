@@ -117,7 +117,7 @@
                                     <?php if ($trip['status'] == 'active'): ?>
                                         <span class="badge bg-success">Active</span>
                                     <?php elseif ($trip['status'] == 'full'): ?>
-                                        <span class="badge bg-warning text-dark">Full</span>
+                                        <span class="badge bg-success text-dark">Full</span>
                                     <?php else: ?>
                                         <span class="badge bg-danger">Cancelled</span>
                                     <?php endif; ?>
