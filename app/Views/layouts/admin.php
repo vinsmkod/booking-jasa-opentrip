@@ -20,7 +20,7 @@
     $sessionName  = session()->get('name') ?? 'Admin';
     $initials     = strtoupper(substr($sessionName, 0, 2));
     $uri          = service('uri')->getPath();
-    $isActive     = fn (string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
+    $isActive     = fn(string $path) => str_contains($uri, trim($path, '/')) ? 'active' : '';
     $pendingCount = session()->get('pending_booking_count') ?? 0;
     ?>
 
@@ -53,32 +53,32 @@
                 </a>
                 <a href="/admin/bookings" class="nav-link <?= $isActive('admin/bookings') ?>">
                     <i class="fas fa-calendar-check nav-icon"></i>
-                    <span class="nav-label">Verifikasi Booking</span>
+                    <span class="nav-label">Kelola Booking</span>
                     <?php if ($pendingCount > 0): ?>
                         <span class="nav-badge"><?= $pendingCount ?></span>
                     <?php endif; ?>
                 </a>
                 <a href="/admin/users" class="nav-link <?= $isActive('admin/users') ?>">
                     <i class="fas fa-users nav-icon"></i>
-                    <span class="nav-label">Pengguna</span>
+                    <span class="nav-label">Kelola Pengguna</span>
                 </a>
                 <a href="/admin/comments" class="nav-link <?= $isActive('admin/comments') ?>">
                     <i class="fas fa-comments nav-icon"></i>
-                    <span class="nav-label">Komentar</span>
+                    <span class="nav-label">Kelola Komentar</span>
                 </a>
 
                 <div class="nav-section-label">Konten</div>
                 <a href="/admin/gallery" class="nav-link <?= $isActive('admin/gallery') ?>">
                     <i class="fas fa-images nav-icon"></i>
-                    <span class="nav-label">Galeri</span>
+                    <span class="nav-label">Kelola Galeri</span>
                 </a>
             </nav>
 
             <div class="sidebar-footer">
                 <div class="nav-section-label">Lainnya</div>
-                <a href="<?= base_url('booking/exportExcel') ?>" class="nav-link">
-                    <i class="fas fa-file-excel nav-icon"></i>
-                    <span class="nav-label">Export Excel</span>
+                <a href="/admin/reports" class="nav-link <?= $isActive('admin/reports') ?>">
+                    <i class="fas fa-chart-bar nav-icon"></i>
+                    <span class="nav-label">Kelola Laporan</span>
                 </a>
                 <a href="/logout" class="nav-link">
                     <i class="fas fa-sign-out-alt nav-icon"></i>
@@ -111,8 +111,8 @@
                         <span class="topbar-notif-dot"></span>
                     <?php endif; ?>
                 </a>
-                <a href="<?= base_url('booking/exportExcel') ?>" class="topbar-btn" title="Export Excel">
-                    <i class="fas fa-download"></i>
+                <a href="/admin/reports" class="topbar-btn" title="Kelola Laporan">
+                    <i class="fas fa-chart-bar"></i>
                 </a>
                 <div class="topbar-divider"></div>
 
@@ -135,8 +135,8 @@
                         <a href="/admin" class="topbar-dropdown-item">
                             <i class="fas fa-th-large"></i> Dashboard
                         </a>
-                        <a href="<?= base_url('booking/exportExcel') ?>" class="topbar-dropdown-item">
-                            <i class="fas fa-file-excel"></i> Export Excel
+                        <a href="/admin/reports" class="topbar-dropdown-item">
+                            <i class="fas fa-chart-bar"></i> Kelola Laporan
                         </a>
                         <div class="topbar-dropdown-divider"></div>
                         <a href="/logout" class="topbar-dropdown-item topbar-dropdown-danger">
