@@ -374,11 +374,11 @@ class TripController extends BaseController
 
         if (!empty($includes)) {
             $includeData = [];
-            foreach ($includes as $title) {
-                if (!empty($title)) {
+            foreach ($includes as $name) {
+                if (!empty($name)) {
                     $includeData[] = [
                         'trip_id' => $tripId,
-                        'title'   => $title
+                        'name'    => $name
                     ];
                 }
             }

@@ -319,7 +319,7 @@ INSERT INTO `trips` (`trip_id`, `title`, `location`, `description`, `price`, `im
 CREATE TABLE `trip_includes` (
   `include_id` int(11) NOT NULL,
   `trip_id` int(11) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -327,7 +327,7 @@ CREATE TABLE `trip_includes` (
 -- Dumping data for table `trip_includes`
 --
 
-INSERT INTO `trip_includes` (`include_id`, `trip_id`, `title`, `updated_at`) VALUES
+INSERT INTO `trip_includes` (`include_id`, `trip_id`, `name`, `updated_at`) VALUES
 (5, 13, 'Makan Siang, Malam', NULL),
 (12, 25, 'Transport PP', '0000-00-00 00:00:00'),
 (13, 25, 'Transport PP', '0000-00-00 00:00:00'),

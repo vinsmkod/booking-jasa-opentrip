@@ -26,7 +26,7 @@
         right: -40px;
         width: 200px;
         height: 200px;
-        background: rgba(255,255,255,0.06);
+        background: rgba(255, 255, 255, 0.06);
         border-radius: 50%;
     }
 
@@ -37,7 +37,7 @@
         right: 80px;
         width: 160px;
         height: 160px;
-        background: rgba(255,255,255,0.04);
+        background: rgba(255, 255, 255, 0.04);
         border-radius: 50%;
     }
 
@@ -50,7 +50,7 @@
 
     .report-hero-left p {
         font-size: 13.5px;
-        color: rgba(255,255,255,0.75);
+        color: rgba(255, 255, 255, 0.75);
         margin: 0;
     }
 
@@ -107,7 +107,7 @@
     .filter-select:focus,
     .filter-input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(22,101,52,0.1);
+        box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.1);
     }
 
     .filter-actions {
@@ -182,9 +182,9 @@
 
     .btn-export-outline {
         padding: 9px 18px;
-        background: rgba(255,255,255,0.15);
+        background: rgba(255, 255, 255, 0.15);
         color: #fff;
-        border: 1.5px solid rgba(255,255,255,0.4);
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
         border-radius: 8px;
         font-size: 13px;
         font-weight: 600;
@@ -199,7 +199,7 @@
     }
 
     .btn-export-outline:hover {
-        background: rgba(255,255,255,0.25);
+        background: rgba(255, 255, 255, 0.25);
         color: #fff;
     }
 
@@ -234,10 +234,25 @@
         flex-shrink: 0;
     }
 
-    .stat-chip-icon.green  { background: #dcfce7; color: #166534; }
-    .stat-chip-icon.blue   { background: #dbeafe; color: #1d4ed8; }
-    .stat-chip-icon.amber  { background: #fef3c7; color: #92400e; }
-    .stat-chip-icon.red    { background: #fee2e2; color: #b91c1c; }
+    .stat-chip-icon.green {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .stat-chip-icon.blue {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .stat-chip-icon.amber {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .stat-chip-icon.red {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
 
     .stat-chip-label {
         font-size: 11px;
@@ -286,12 +301,12 @@
         padding: 11px 14px;
         font-size: 13px;
         color: var(--txt);
-        border-bottom: 1px solid rgba(0,0,0,0.04);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         vertical-align: middle;
     }
 
     .tbl-report tbody tr:hover {
-        background: rgba(22,101,52,0.03);
+        background: rgba(22, 101, 52, 0.03);
     }
 
     .tbl-report tbody tr:last-child td {
@@ -308,12 +323,35 @@
         font-weight: 600;
     }
 
-    .badge-confirmed { background: #dcfce7; color: #166534; }
-    .badge-pending   { background: #fef3c7; color: #92400e; }
-    .badge-cancelled { background: #fee2e2; color: #b91c1c; }
-    .badge-verified  { background: #dbeafe; color: #1e40af; }
-    .badge-rejected  { background: #fce7f3; color: #9d174d; }
-    .badge-gray      { background: var(--surface2); color: var(--txt3); }
+    .badge-confirmed {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .badge-pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-cancelled {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .badge-verified {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .badge-rejected {
+        background: #fce7f3;
+        color: #9d174d;
+    }
+
+    .badge-gray {
+        background: var(--surface2);
+        color: var(--txt3);
+    }
 
     .no-filter-state {
         display: flex;
@@ -337,15 +375,32 @@
 
     /* Print */
     @media print {
-        .sidebar, .topbar, .filter-card, .report-hero, .stat-row,
-        .btn-export, .btn-export-outline, .btn-filter, .btn-reset,
+
+        .sidebar,
+        .topbar,
+        .filter-card,
+        .report-hero,
+        .stat-row,
+        .btn-export,
+        .btn-export-outline,
+        .btn-filter,
+        .btn-reset,
         .no-print {
             display: none !important;
         }
 
-        .main-wrapper { margin: 0 !important; }
-        .main-content { padding: 0 !important; }
-        .panel { box-shadow: none; border: 1px solid #e5e7eb; }
+        .main-wrapper {
+            margin: 0 !important;
+        }
+
+        .main-content {
+            padding: 0 !important;
+        }
+
+        .panel {
+            box-shadow: none;
+            border: 1px solid #e5e7eb;
+        }
     }
 </style>
 <?= $this->endSection() ?>
@@ -592,12 +647,12 @@
     document.getElementById('tripSelect')?.addEventListener('change', function() {
         const val = this.value;
         const base = '<?= base_url('admin/reports/export') ?>';
-        const url  = val ? base + '?trip_id=' + val : base;
+        const url = val ? base + '?trip_id=' + val : base;
 
-        const heroBtn   = document.getElementById('btnExportHero');
+        const heroBtn = document.getElementById('btnExportHero');
         const filterBtn = document.getElementById('btnExportFilter');
 
-        if (heroBtn)   heroBtn.href = url;
+        if (heroBtn) heroBtn.href = url;
         if (filterBtn) filterBtn.href = url;
     });
 </script>

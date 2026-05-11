@@ -2,299 +2,305 @@
 <?= $this->section('content') ?>
 
 <style>
-.page-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid #e5e7eb;
-}
+    .page-header {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 2px solid #e5e7eb;
+    }
 
-.page-header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 4px;
-}
+    .page-header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
 
-.page-header p {
-    font-size: 14px;
-    color: #6b7280;
-}
+    .page-header p {
+        font-size: 14px;
+        color: #6b7280;
+    }
 
-.form-container {
-    max-width: 900px;
-}
+    .form-container {
+        max-width: 900px;
+    }
 
-.panel {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-}
+    .panel {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
 
-.panel-header {
-    background: linear-gradient(135deg, #f9fafb, #f3f4f6);
-    padding: 20px;
-    border-bottom: 1px solid #e5e7eb;
-}
+    .panel-header {
+        background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-.panel-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1f2937;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-}
+    .panel-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+    }
 
-.panel-title i {
-    color: #2d7d3a;
-    font-size: 18px;
-}
+    .panel-title i {
+        color: #2d7d3a;
+        font-size: 18px;
+    }
 
-.panel-body {
-    padding: 32px;
-}
+    .panel-body {
+        padding: 32px;
+    }
 
-.form-group {
-    margin-bottom: 24px;
-}
+    .form-group {
+        margin-bottom: 24px;
+    }
 
-.form-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 8px;
-    display: block;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+    .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 8px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-.form-control, .form-select {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 13px;
-    transition: all 0.2s ease;
-    background: white;
-    font-family: inherit;
-    box-sizing: border-box;
-}
+    .form-control,
+    .form-select {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 13px;
+        transition: all 0.2s ease;
+        background: white;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
 
-.form-control:focus, .form-select:focus {
-    border-color: #2d7d3a;
-    box-shadow: 0 0 0 3px rgba(45, 125, 58, 0.1);
-    outline: none;
-}
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2d7d3a;
+        box-shadow: 0 0 0 3px rgba(45, 125, 58, 0.1);
+        outline: none;
+    }
 
-.form-control::placeholder {
-    color: #9ca3af;
-}
+    .form-control::placeholder {
+        color: #9ca3af;
+    }
 
-textarea.form-control {
-    resize: vertical;
-    min-height: 120px;
-}
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
 
-.help-text {
-    font-size: 12px;
-    color: #6b7280;
-    margin-top: 6px;
-    display: block;
-}
+    .help-text {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 6px;
+        display: block;
+    }
 
-.form-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-}
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+    }
 
-.form-row.full {
-    grid-template-columns: 1fr;
-}
+    .form-row.full {
+        grid-template-columns: 1fr;
+    }
 
-.radio-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
-}
+    .radio-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-bottom: 24px;
+    }
 
-.radio-item {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+    .radio-item {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
 
-.radio-item:hover {
-    border-color: #2d7d3a;
-    background: #f9fafb;
-}
+    .radio-item:hover {
+        border-color: #2d7d3a;
+        background: #f9fafb;
+    }
 
-.radio-item input[type="radio"] {
-    margin-right: 8px;
-}
+    .radio-item input[type="radio"] {
+        margin-right: 8px;
+    }
 
-.radio-item input[type="radio"]:checked {
-    accent-color: #2d7d3a;
-}
+    .radio-item input[type="radio"]:checked {
+        accent-color: #2d7d3a;
+    }
 
-.radio-item input[type="radio"]:checked + label {
-    color: #2d7d3a;
-    font-weight: 700;
-}
+    .radio-item input[type="radio"]:checked+label {
+        color: #2d7d3a;
+        font-weight: 700;
+    }
 
-.image-preview-section {
-    background: #f9fafb;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 24px;
-    border: 1px solid #e5e7eb;
-}
+    .image-preview-section {
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb;
+    }
 
-.image-preview {
-    max-width: 250px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+    .image-preview {
+        max-width: 250px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-.image-preview img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+    .image-preview img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
 
-.no-image {
-    color: #9ca3af;
-    font-size: 14px;
-    text-align: center;
-    padding: 40px 20px;
-}
+    .no-image {
+        color: #9ca3af;
+        font-size: 14px;
+        text-align: center;
+        padding: 40px 20px;
+    }
 
-.meeting-points-section {
-    background: #f9fafb;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 24px;
-    border: 1px solid #e5e7eb;
-}
+    .meeting-points-section {
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb;
+    }
 
-.meeting-points-section .form-label {
-    margin-bottom: 16px;
-}
+    .meeting-points-section .form-label {
+        margin-bottom: 16px;
+    }
 
-.meeting-point-item, .include-item, .itinerary-item {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-    align-items: flex-end;
-}
+    .meeting-point-item,
+    .include-item,
+    .itinerary-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        align-items: flex-end;
+    }
 
-.meeting-point-item input, .include-item input, .itinerary-item input {
-    flex: 1;
-}
+    .meeting-point-item input,
+    .include-item input,
+    .itinerary-item input {
+        flex: 1;
+    }
 
-.itinerary-time {
-    flex: 0 0 120px !important;
-}
+    .itinerary-time {
+        flex: 0 0 120px !important;
+    }
 
-.btn-remove {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
-    padding: 10px 16px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
+    .btn-remove {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
 
-.btn-remove:hover {
-    background: #fecaca;
-    color: #7f1d1d;
-}
+    .btn-remove:hover {
+        background: #fecaca;
+        color: #7f1d1d;
+    }
 
-.btn-add-row {
-    background: #dbeafe;
-    color: #1d4ed8;
-    border: 1px solid #93c5fd;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-}
+    .btn-add-row {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border: 1px solid #93c5fd;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+    }
 
-.btn-add-row:hover {
-    background: #bfdbfe;
-    color: #1e40af;
-}
+    .btn-add-row:hover {
+        background: #bfdbfe;
+        color: #1e40af;
+    }
 
-.form-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #e5e7eb;
-    justify-content: flex-end;
-}
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+        justify-content: flex-end;
+    }
 
-.btn-submit {
-    background: linear-gradient(135deg, #2d7d3a, #1f5a29);
-    color: white;
-    padding: 10px 32px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
+    .btn-submit {
+        background: linear-gradient(135deg, #2d7d3a, #1f5a29);
+        color: white;
+        padding: 10px 32px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
 
-.btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 125, 58, 0.3);
-    color: white;
-}
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(45, 125, 58, 0.3);
+        color: white;
+    }
 
-.btn-cancel {
-    background: #f3f4f6;
-    color: #4b5563;
-    padding: 10px 32px;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #4b5563;
+        padding: 10px 32px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
 
-.btn-cancel:hover {
-    background: #e5e7eb;
-    color: #1f2937;
-}
+    .btn-cancel:hover {
+        background: #e5e7eb;
+        color: #1f2937;
+    }
 </style>
 
 <div class="page-header">
@@ -366,12 +372,12 @@ textarea.form-control {
                     <div>
                         <label class="form-label"><i class="fas fa-list" style="margin-right:6px;color:#2d7d3a;"></i>Kategori Trip</label>
                         <div class="radio-group">
-                            <?php $types = ['one_day_trip' => 'One Day Trip','open_trip' => 'Open Trip','private_trip' => 'Private Trip']; ?>
+                            <?php $types = ['one_day_trip' => 'One Day Trip', 'open_trip' => 'Open Trip', 'private_trip' => 'Private Trip']; ?>
                             <?php foreach ($types as $key => $label): ?>
-                            <label class="radio-item">
-                                <input type="radio" name="type" value="<?= $key ?>" <?= $trip['type'] == $key ? 'checked' : '' ?> required>
-                                <label style="margin:0;cursor:pointer;font-weight:500;"><?= $label ?></label>
-                            </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="type" value="<?= $key ?>" <?= $trip['type'] == $key ? 'checked' : '' ?> required>
+                                    <label style="margin:0;cursor:pointer;font-weight:500;"><?= $label ?></label>
+                                </label>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -427,17 +433,18 @@ textarea.form-control {
                 <div class="form-group form-row full">
                     <div class="meeting-points-section">
                         <label class="form-label"><i class="fas fa-map-pin" style="margin-right:6px;color:#2d7d3a;"></i>Meeting Points</label>
-                        
+
                         <div id="meetingPointsContainer">
                             <?php if (!empty($meetingPoints)): ?>
                                 <?php foreach ($meetingPoints as $i => $mp): ?>
-                                <div class="meeting-point-item">
-                                    <input type="hidden" name="meeting_point_id[]" value="<?= esc($mp['meeting_point_id'] ?? ''); ?>">
-                                    <input type="text" name="meeting_points[]" class="form-control" value="<?= esc($mp['name']); ?>" placeholder="Contoh: Stasiun Bandung" required>
-                                    <button type="button" class="btn-remove" onclick="removeMeetingPoint(this)">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </div>
+                                    <div class="meeting-point-item">
+                                        <input type="hidden" name="meeting_point_id[]" value="<?= esc($mp['meeting_point_id'] ?? ''); ?>">
+                                        <!-- FIX: safe fallback untuk key 'name' meeting point -->
+                                        <input type="text" name="meeting_points[]" class="form-control" value="<?= esc($mp['name'] ?? $mp['location'] ?? ''); ?>" placeholder="Contoh: Stasiun Bandung" required>
+                                        <button type="button" class="btn-remove" onclick="removeMeetingPoint(this)">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
@@ -453,16 +460,17 @@ textarea.form-control {
                 <div class="form-group form-row full">
                     <div class="meeting-points-section">
                         <label class="form-label"><i class="fas fa-box-open" style="margin-right:6px;color:#2d7d3a;"></i>Paket Include</label>
-                        
+
                         <div id="includesContainer">
                             <?php if (!empty($includes)): ?>
                                 <?php foreach ($includes as $inc): ?>
-                                <div class="include-item">
-                                    <input type="text" name="includes[]" class="form-control" value="<?= esc($inc['title']); ?>" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
-                                    <button type="button" class="btn-remove" onclick="removeRow(this)">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </div>
+                                    <div class="include-item">
+                                        <!-- FIX: safe fallback 'name' → 'title' untuk tabel_include -->
+                                        <input type="text" name="includes[]" class="form-control" value="<?= esc($inc['name'] ?? $inc['title'] ?? ''); ?>" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
+                                        <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
@@ -477,17 +485,18 @@ textarea.form-control {
                 <div class="form-group form-row full">
                     <div class="meeting-points-section">
                         <label class="form-label"><i class="fas fa-route" style="margin-right:6px;color:#2d7d3a;"></i>Itinerary / Jadwal Kegiatan</label>
-                        
+
                         <div id="itineraryContainer">
                             <?php if (!empty($itineraries)): ?>
                                 <?php foreach ($itineraries as $itn): ?>
-                                <div class="itinerary-item">
-                                    <input type="time" name="itinerary_time[]" class="form-control itinerary-time" value="<?= esc($itn['time']); ?>" required>
-                                    <input type="text" name="itinerary_activity[]" class="form-control" value="<?= esc($itn['activity']); ?>" placeholder="Contoh: Berkumpul di Meeting Point" required>
-                                    <button type="button" class="btn-remove" onclick="removeRow(this)">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </div>
+                                    <div class="itinerary-item">
+                                        <!-- FIX: safe fallback untuk key 'time' dan 'activity' itinerary -->
+                                        <input type="time" name="itinerary_time[]" class="form-control itinerary-time" value="<?= esc($itn['time'] ?? $itn['start_time'] ?? ''); ?>" required>
+                                        <input type="text" name="itinerary_activity[]" class="form-control" value="<?= esc($itn['activity'] ?? $itn['description'] ?? ''); ?>" placeholder="Contoh: Berkumpul di Meeting Point" required>
+                                        <button type="button" class="btn-remove" onclick="removeRow(this)">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
@@ -514,53 +523,54 @@ textarea.form-control {
 </div>
 
 <script>
-function addMeetingPoint() {
-    const container = document.getElementById('meetingPointsContainer');
-    const newItem = document.createElement('div');
-    newItem.className = 'meeting-point-item';
-    newItem.innerHTML = `
+    function addMeetingPoint() {
+        const container = document.getElementById('meetingPointsContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'meeting-point-item';
+        newItem.innerHTML = `
+        <input type="hidden" name="meeting_point_id[]" value="">
         <input type="text" name="meeting_points[]" class="form-control" placeholder="Contoh: Stasiun Bandung" required>
         <button type="button" class="btn-remove" onclick="removeMeetingPoint(this)">
             <i class="fas fa-trash"></i> Hapus
         </button>
     `;
-    container.appendChild(newItem);
-}
+        container.appendChild(newItem);
+    }
 
-function addInclude() {
-    const container = document.getElementById('includesContainer');
-    const newItem = document.createElement('div');
-    newItem.className = 'include-item';
-    newItem.innerHTML = `
+    function addInclude() {
+        const container = document.getElementById('includesContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'include-item';
+        newItem.innerHTML = `
         <input type="text" name="includes[]" class="form-control" placeholder="Contoh: Transportasi PP, Tiket Masuk, dll" required>
         <button type="button" class="btn-remove" onclick="removeRow(this)">
             <i class="fas fa-trash"></i> Hapus
         </button>
     `;
-    container.appendChild(newItem);
-}
+        container.appendChild(newItem);
+    }
 
-function addItinerary() {
-    const container = document.getElementById('itineraryContainer');
-    const newItem = document.createElement('div');
-    newItem.className = 'itinerary-item';
-    newItem.innerHTML = `
+    function addItinerary() {
+        const container = document.getElementById('itineraryContainer');
+        const newItem = document.createElement('div');
+        newItem.className = 'itinerary-item';
+        newItem.innerHTML = `
         <input type="time" name="itinerary_time[]" class="form-control itinerary-time" required>
         <input type="text" name="itinerary_activity[]" class="form-control" placeholder="Contoh: Berkumpul di Meeting Point" required>
         <button type="button" class="btn-remove" onclick="removeRow(this)">
             <i class="fas fa-trash"></i> Hapus
         </button>
     `;
-    container.appendChild(newItem);
-}
+        container.appendChild(newItem);
+    }
 
-function removeMeetingPoint(btn) {
-    btn.closest('.meeting-point-item').remove();
-}
+    function removeMeetingPoint(btn) {
+        btn.closest('.meeting-point-item').remove();
+    }
 
-function removeRow(btn) {
-    btn.parentElement.remove();
-}
+    function removeRow(btn) {
+        btn.parentElement.remove();
+    }
 </script>
 
 <?= $this->endSection() ?>
