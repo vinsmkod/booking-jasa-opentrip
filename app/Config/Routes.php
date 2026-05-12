@@ -270,11 +270,8 @@ $routes->group('admin', [
     |--------------------------------------------------------------------------
     */
 
-    $routes->get('reports',        '\App\Controllers\BookingController::reportsIndex');
-    $routes->get('reports/export', '\App\Controllers\BookingController::exportExcel');
-
-    // Alias lama (tetap kompatibel)
-    $routes->get('export/bookings', '\App\Controllers\BookingController::exportExcel');
+    $routes->get('reports',        '\App\Controllers\LaporanController::index');
+    $routes->get('reports/export', '\App\Controllers\LaporanController::exportExcel');
 
 
 
@@ -304,13 +301,7 @@ $routes->group('api', function ($routes) {
 $routes->post('payment/webhook', 'PaymentController::webhook');
 
 
-/*
-|--------------------------------------------------------------------------
-| EXPORT PUBLIC (legacy — tetap kompatibel)
-|--------------------------------------------------------------------------
-*/
 
-$routes->get('booking/exportExcel', 'BookingController::exportExcel');
 
 
 /*
