@@ -152,9 +152,10 @@ class AuthController extends BaseController
             return redirect()->to('/');
         }
     }
+
     /*
     |--------------------------------------------------------------------------
-    | FORGOT PASSWORD
+    | FORGOT PASSWORD (VIEW)
     |--------------------------------------------------------------------------
     */
     public function forgotPassword()
@@ -162,49 +163,78 @@ class AuthController extends BaseController
         return view('auth/forgot_password');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | PROCESS FORGOT PASSWORD (PERBAIKAN: KIRIM EMAIL NYATA, TANPA DEMO)
+    |--------------------------------------------------------------------------
+    */
     public function processForgotPassword()
     {
         $email = $this->request->getPost('email');
         $user  = $this->userModel->where('email', $email)->first();
 
-        if ($user) {
-            // Generate token
-            $token   = bin2hex(random_bytes(20));
-            $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
-
-            $this->userModel->update($user['user_id'], [
-                'reset_token'   => $token,
-                'reset_expires' => $expires
-            ]);
-
-            // Kirim email (Simulasi)
-            $resetLink = base_url("reset-password/{$token}");
-
-            // CodeIgniter Email Service
-            $emailService = \Config\Services::email();
-            $emailService->setTo($email);
-            $emailService->setSubject('Reset Password - BLNTRK OUTDOOR');
-            $emailService->setMessage("Halo {$user['name']},\n\nKlik link berikut untuk reset password Anda (berlaku 1 jam):\n\n{$resetLink}\n\nJika Anda tidak merasa meminta reset password, abaikan email ini.");
-
-            try {
-                if ($emailService->send()) {
-                    return redirect()->back()->with('success', 'Link reset password telah dikirim ke email Anda.');
-                } else {
-                    // Jika gagal kirim email (biasanya karena SMTP belum disetup di local)
-                    // Tampilkan link reset di flash message untuk mempermudah testing di XAMPP
-                    return redirect()->back()->with('success', 'Link reset password (DEMO): <a href="'.$resetLink.'">Klik di sini untuk reset</a>');
-                }
-            } catch (\Exception $e) {
-                return redirect()->back()->with('success', 'Link reset password (DEMO): <a href="'.$resetLink.'">Klik di sini untuk reset</a>');
-            }
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan.');
         }
 
-        return redirect()->back()->with('error', 'Email tidak ditemukan.');
+        // Generate token dan set kadaluarsa 1 jam
+        $token   = bin2hex(random_bytes(20));
+        $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        $this->userModel->update($user['user_id'], [
+            'reset_token'   => $token,
+            'reset_expires' => $expires
+        ]);
+
+        $resetLink = base_url("reset-password/{$token}");
+
+        // Siapkan email dengan template HTML
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject('Reset Password - BLNTRK OUTDOOR');
+
+        $message = "
+            <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .button { display: inline-block; background: #2d7d3a; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+                    .footer { margin-top: 20px; font-size: 12px; color: #777; }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <h3>Halo {$user['name']},</h3>
+                    <p>Kami menerima permintaan reset password untuk akun Anda.</p>
+                    <p>Klik tombol di bawah untuk membuat password baru (link berlaku 1 jam):</p>
+                    <p><a href='{$resetLink}' class='button'>Reset Password</a></p>
+                    <p>Atau salin link berikut ke browser Anda:<br>
+                    <a href='{$resetLink}'>{$resetLink}</a></p>
+                    <p>Jika Anda tidak merasa meminta reset password, abaikan email ini.</p>
+                    <div class='footer'>
+                        <p>Tim BLNTRK OUTDOOR</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        ";
+
+        $emailService->setMessage($message);
+
+        // Kirim email, jika gagal tampilkan pesan error (tidak menampilkan demo link)
+        if ($emailService->send()) {
+            return redirect()->back()->with('success', 'Link reset password telah dikirim ke email Anda. Cek inbox atau folder spam.');
+        } else {
+            // Catat error ke log untuk debugging (opsional)
+            log_message('error', 'Gagal kirim reset password ke ' . $email . ': ' . print_r($emailService->printDebugger(['headers']), true));
+            return redirect()->back()->with('error', 'Gagal mengirim email. Silakan coba lagi atau hubungi admin.');
+        }
     }
 
     /*
     |--------------------------------------------------------------------------
-    | RESET PASSWORD
+    | RESET PASSWORD (VIEW)
     |--------------------------------------------------------------------------
     */
     public function resetPassword($token)
@@ -220,6 +250,11 @@ class AuthController extends BaseController
         return view('auth/reset_password', ['token' => $token]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | PROCESS RESET PASSWORD
+    |--------------------------------------------------------------------------
+    */
     public function processResetPassword()
     {
         $token    = $this->request->getPost('token');

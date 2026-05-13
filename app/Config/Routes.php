@@ -131,7 +131,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     */
 
     $routes->post('comment/create', 'Comment::create');
-
 });
 
 
@@ -222,13 +221,11 @@ $routes->group('admin', [
     $routes->get('users/delete/(:num)', 'UsersController::delete/$1');
 
 
-
-
     /*
-|--------------------------------------------------------------------------
-| GALLERY MANAGEMENT (ADMIN)
-|--------------------------------------------------------------------------
-*/
+    |--------------------------------------------------------------------------
+    | GALLERY MANAGEMENT (ADMIN)
+    |--------------------------------------------------------------------------
+    */
 
     $routes->get('gallery', '\App\Controllers\GalleryController::adminIndex');
 
@@ -272,9 +269,6 @@ $routes->group('admin', [
 
     $routes->get('reports',        '\App\Controllers\LaporanController::index');
     $routes->get('reports/export', '\App\Controllers\LaporanController::exportExcel');
-
-
-
 });
 
 
@@ -299,9 +293,6 @@ $routes->group('api', function ($routes) {
 */
 
 $routes->post('payment/webhook', 'PaymentController::webhook');
-
-
-
 
 
 /*
