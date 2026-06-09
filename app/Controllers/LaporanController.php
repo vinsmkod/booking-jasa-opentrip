@@ -35,6 +35,34 @@ class LaporanController extends BaseController
             ->orderBy('title', 'ASC')
             ->findAll();
 
+        // 1. Get statistics and totals using the full query
+        $allBookings = $this->buildReportQuery($tripId)->findAll();
+        
+        $stats = [
+            'totalBookings' => count($allBookings),
+            'totalPeserta'  => array_sum(array_column($allBookings, 'participant')),
+            'confirmed'     => count(array_filter($allBookings, fn($b) => $b['status'] === 'confirmed')),
+            'pending'       => count(array_filter($allBookings, fn($b) => $b['status'] === 'pending')),
+            'cancelled'     => count(array_filter($allBookings, fn($b) => $b['status'] === 'cancelled')),
+            'totalPriceAll' => array_sum(array_column($allBookings, 'total_price')),
+        ];
+
+        // 2. Get paginated bookings for current page
+        $bookings = $this->buildReportQuery($tripId)->paginate(10, 'bookings');
+        $pager = $this->bookingModel->pager;
+
+        return view('admin/reports/index', [
+            'title'        => 'Kelola Laporan',
+            'trips'        => $trips,
+            'bookings'     => $bookings,
+            'selectedTrip' => $tripId,
+            'pager'        => $pager,
+            'stats'        => $stats,
+        ]);
+    }
+
+    private function buildReportQuery($tripId = null)
+    {
         $query = $this->bookingModel
             ->select('
                 bookings.*,
@@ -57,14 +85,7 @@ class LaporanController extends BaseController
             $query->where('trips.trip_id', (int)$tripId);
         }
 
-        $bookings = $query->findAll();
-
-        return view('admin/reports/index', [
-            'title'        => 'Kelola Laporan',
-            'trips'        => $trips,
-            'bookings'     => $bookings,
-            'selectedTrip' => $tripId,
-        ]);
+        return $query;
     }
 
     /**

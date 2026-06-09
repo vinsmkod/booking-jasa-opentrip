@@ -481,21 +481,19 @@
 
     <!-- STAT CHIPS -->
     <?php
-    $totalPeserta   = array_sum(array_column($bookings, 'participant'));
-    $confirmed      = count(array_filter($bookings, fn($b) => $b['status'] === 'confirmed'));
-    $pending        = count(array_filter($bookings, fn($b) => $b['status'] === 'pending'));
-    $cancelled      = count(array_filter($bookings, fn($b) => $b['status'] === 'cancelled'));
-    $totalRevenue   = array_sum(array_column(
-        array_filter($bookings, fn($b) => ($b['payment_status'] ?? '') === 'verified'),
-        'total_price'
-    ));
+    $totalPeserta   = $stats['totalPeserta'] ?? 0;
+    $confirmed      = $stats['confirmed'] ?? 0;
+    $pending        = $stats['pending'] ?? 0;
+    $cancelled      = $stats['cancelled'] ?? 0;
+    $totalBookings  = $stats['totalBookings'] ?? 0;
+    $totalPriceAll  = $stats['totalPriceAll'] ?? 0;
     ?>
     <div class="stat-row no-print">
         <div class="stat-chip">
             <div class="stat-chip-icon green"><i class="fas fa-ticket-alt"></i></div>
             <div>
                 <div class="stat-chip-label">Total Booking</div>
-                <div class="stat-chip-val"><?= count($bookings) ?></div>
+                <div class="stat-chip-val"><?= $totalBookings ?></div>
             </div>
         </div>
         <div class="stat-chip">
@@ -533,7 +531,7 @@
         <div class="panel-label">
             <i class="fas fa-table"></i>
             Data Booking<?= !empty($selectedTrip) ? ' — ' . esc($trips[array_search($selectedTrip, array_column($trips, 'trip_id'))]['title'] ?? '') : ' (Semua Trip)' ?>
-            <span style="margin-left:auto;font-size:11px;color:var(--txt3);font-weight:400;"><?= count($bookings) ?> entri</span>
+            <span style="margin-left:auto;font-size:11px;color:var(--txt3);font-weight:400;"><?= $totalBookings ?> entri</span>
         </div>
         <div class="table-wrap">
             <table class="tbl tbl-report">
@@ -552,9 +550,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($bookings as $i => $b): ?>
+                    <?php 
+                    $currentPage = isset($pager) ? $pager->getCurrentPage('bookings') : 1;
+                    $startNumber = ($currentPage - 1) * 10;
+                    foreach ($bookings as $i => $b): 
+                        $rowNumber = $startNumber + $i + 1;
+                    ?>
                         <tr>
-                            <td style="color:var(--txt3);font-size:12px;"><?= $i + 1 ?></td>
+                            <td style="color:var(--txt3);font-size:12px;"><?= $rowNumber ?></td>
                             <td>
                                 <span style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);">
                                     <?= esc($b['booking_code'] ?? '-') ?>
@@ -612,13 +615,18 @@
                         <td colspan="5" style="font-weight:700;font-size:12.5px;padding:10px 14px;color:var(--txt2);">TOTAL</td>
                         <td style="font-weight:700;text-align:center;font-family:var(--mono);"><?= $totalPeserta ?></td>
                         <td style="font-weight:700;font-family:var(--mono);font-size:12.5px;">
-                            Rp <?= number_format(array_sum(array_column($bookings, 'total_price')), 0, ',', '.') ?>
+                            Rp <?= number_format($totalPriceAll, 0, ',', '.') ?>
                         </td>
                         <td colspan="3"></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
+        <?php if (isset($pager) && $pager->getPageCount('bookings') > 1): ?>
+            <div class="d-flex justify-content-center py-4 no-print">
+                <?= $pager->links('bookings', 'default_full') ?>
+            </div>
+        <?php endif; ?>
     </div>
 
 <?php elseif (!empty($selectedTrip)): ?>
