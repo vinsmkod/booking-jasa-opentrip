@@ -574,7 +574,7 @@
                 <?php if (!empty($includes)): ?>
                     <ul class="include-list">
                         <?php foreach ($includes as $inc): ?>
-                            <li><i class="fas fa-check"></i> <?= esc($inc['title']) ?></li>
+                            <li><i class="fas fa-check"></i> <?= esc($inc['name']) ?></li>
                         <?php endforeach; ?>
                     </ul>
                 <?php else: ?>

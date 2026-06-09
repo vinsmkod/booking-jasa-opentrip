@@ -3,7 +3,7 @@
 <?= $this->section('styles') ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/about.css') ?>">
 <?= $this->endSection() ?>
- 
+
 <?= $this->section('content') ?>
 
 
@@ -11,9 +11,9 @@
 <section class="hero-about"
     style="background:url('<?= base_url('assets/images/gunung4.jpeg') ?>') center/cover no-repeat;">
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
+        <h1 class="display-4 fw-bold">About BLNTRK Outdoor</h1>
         <p class="lead mt-3">
-            Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah
+            BLNTRK Outdoor adalah penyedia layanan perjalanan wisata alam yang berfokus pada kegiatan pendakian gunung, camping, dan eksplorasi alam Indonesia.
         </p>
         <a href="<?= base_url('trips') ?>" class="btn btn-hero" data-aos="zoom-in" data-aos-delay="300">
             <i class="fas fa-mountain me-2"></i> Lihat Jadwal Trip

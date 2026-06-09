@@ -21,7 +21,6 @@ class AuthController extends BaseController
     */
     public function login()
     {
-        // Jika sudah login, redirect sesuai role
         if (session()->get('isLoggedIn')) {
             return $this->redirectByRole(session()->get('role'));
         }
@@ -44,8 +43,6 @@ class AuthController extends BaseController
 
         // Cek apakah user ada dan password cocok
         if ($user && password_verify($password, $user['password'])) {
-
-            // Set session
             session()->set([
                 'user_id'    => $user['user_id'],
                 'name'       => $user['name'],

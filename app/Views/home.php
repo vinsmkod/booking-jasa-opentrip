@@ -15,7 +15,7 @@
             <p class="lead fw-light mb-4 opacity-90 text-white">Jelajahi keindahan alam Indonesia bersama open trip pendakian profesional.</p>
             <div class="d-flex gap-3 flex-wrap">
                 <a href="#Trip" class="btn btn-success btn-lg fw-semibold px-4"><i class="fas fa-hiking me-2"></i>Lihat Trip</a>
-                <a href="#about" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
+                <a href="<?= base_url('about') ?>" class="btn btn-outline-light btn-lg fw-semibold px-4"><i class="fas fa-info-circle me-2"></i>Tentang Kami</a>
             </div> 
         </div>
     </div>
@@ -210,7 +210,7 @@ foreach ($steps as $s):
                         <?php if (!empty($keyword)): ?>
                             <p class="text-muted">Tidak ada trip dengan kata kunci "<strong><?= esc($keyword) ?>"</strong>"</p>
                             <a href="<?= base_url('/#Trip') ?>" class="btn btn-outline-success mt-3">
-                                <i class="fas fa-arrow-left me-2"></i>Lihat Semua Trip
+                                <i class="fas fa-arrow-left me-2"></i>Reset Pencarian
                             </a>
                         <?php else: ?>
                             <p class="text-muted">Belum ada trip tersedia.</p>
@@ -228,7 +228,7 @@ foreach ($steps as $s):
 <!-- ══════════════════════════════════════════
      GALLERY — full width 
 ══════════════════════════════════════════ -->
-<section class="py-5" style="background:var(--sand);">
+<section class="py-5 mx-3 mx-md-4" style="background:#f1f5f9; border-radius:20px;">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
@@ -238,7 +238,7 @@ foreach ($steps as $s):
         </div>
 
         <?php if (!empty($galleryPhotos)): ?>
-            <div id="carouselGallery" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselGallery" class="carousel slide" data-bs-ride="carousel" style="border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
                 <div class="carousel-indicators">
                     <?php foreach ($galleryPhotos as $index => $photo): ?>
                         <button type="button" data-bs-target="#carouselGallery" data-bs-slide-to="<?= $index ?>"

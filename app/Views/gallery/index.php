@@ -10,11 +10,13 @@
 ══════════════════════════════════════════ -->
 <section class="hero-gallery" style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat;">
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="display-4 fw-bold">Trip Pendakian Gunung</h1>
-        <p class="lead mt-3 opacity-95">Jelajahi keindahan alam Indonesia bersama komunitas pendaki dari berbagai daerah</p>
+        <h1 class="display-4 fw-bold">Galeri Petualangan BLNTRK Outdoor</h1>
+        <p class="lead mt-3 opacity-95">Jejak Petualangan di Setiap Langkah Pendakian</p>
+        <p class="lead mt-3 opacity-95">Temukan keindahan alam Indonesia melalui lensa komunitas pendaki BLNTRK Outdoor.</p>
+
         <a href="<?= base_url('trips') ?>" class="btn rounded-pill fw-semibold px-4 py-3 mt-4 text-white" style="background:linear-gradient(135deg,#2d7d3a,#1f5a29);border:none;transition:all .3s;" data-aos="zoom-in" data-aos-delay="300"
             onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 25px rgba(45,125,58,.3)'"
-            onmouseout="this.style.transform='';this.style.boxShadow=''">            
+            onmouseout="this.style.transform='';this.style.boxShadow=''">
             <i class="fas fa-mountain me-2"></i>Lihat Jadwal Trip
         </a>
     </div>
@@ -140,10 +142,15 @@
 
 
 <script>
-    let photos = [], current = 0;
+    let photos = [],
+        current = 0;
 
     document.querySelectorAll('.photo-card').forEach(card => {
-        photos.push({ src: card.dataset.src, title: card.dataset.title, album: card.dataset.album });
+        photos.push({
+            src: card.dataset.src,
+            title: card.dataset.title,
+            album: card.dataset.album
+        });
     });
 
     function openLightbox(card) {
@@ -175,8 +182,11 @@
     document.addEventListener('keydown', e => {
         const lb = document.getElementById('lightbox');
         if (!lb.classList.contains('open')) return;
-        if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; }
-        if (e.key === 'ArrowLeft')  shiftPhoto(-1);
+        if (e.key === 'Escape') {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        if (e.key === 'ArrowLeft') shiftPhoto(-1);
         if (e.key === 'ArrowRight') shiftPhoto(1);
     });
 
@@ -185,7 +195,10 @@
         c.style.opacity = 0;
         c.style.transform = 'translateY(20px)';
         c.style.transition = `opacity .5s ease ${i * 50}ms, transform .5s ease ${i * 50}ms`;
-        setTimeout(() => { c.style.opacity = 1; c.style.transform = 'translateY(0)'; }, 100);
+        setTimeout(() => {
+            c.style.opacity = 1;
+            c.style.transform = 'translateY(0)';
+        }, 100);
     });
 </script>
 

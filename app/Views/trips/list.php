@@ -6,14 +6,21 @@
 
 <?= $this->section('content') ?>
 
+<?php
+$typeNames = [
+    'one_day_trip' => 'One Day Trip',
+    'open_trip'    => 'Open Trip',
+    'private_trip' => 'Private Trip',
+];
+$displayTitle = $typeNames[$type] ?? 'Trip';
+?>
 
 <div class="container py-3 mt-3">
     <div class="text-center mb-5" data-aos="fade-up">
         <span class="badge rounded-pill fw-semibold text-uppercase px-3 py-2 mb-3"
-            style="font-size:11px;letter-spacing:.2em;background-color:rgba(196,96,58,.1);color:var(--rust);">EXPLORE</span>
-        <h2 class="fw-bold" style="font-family:'Playfair Display',serif;"><?= esc($type ?? 'Semua Trip') ?></h2>
+            style="font-size:11px;letter-spacing:.2em;background-color:rgba(45,125,58,.1);color:#2d7d3a;">EXPLORE</span>
+        <h2 class="fw-bold" style="font-family:'Playfair Display',serif;"><?= esc($displayTitle) ?></h2>
         <p class="text-muted">Temukan petualangan seru bersama BLNTRK OUTDOOR</p>
-
         <!-- Search Form -->
         <div class="row justify-content-center mt-4">
             <div class="col-md-8 col-lg-6 text-start">
@@ -174,8 +181,8 @@
                 <i class="fas fa-mountain fa-3x text-muted mb-3"></i>
                 <?php if (!empty($search)): ?>
                     <h4 class="text-muted">Tidak ada trip dengan kata kunci "<?= esc($search) ?>"</h4>
-                    <p class="text-muted">Coba gunakan kata kunci lain atau lihat semua trip kami.</p>
-                    <a href="<?= current_url() ?>" class="btn btn-outline-success mt-3 rounded-pill px-4">Lihat Semua Trip</a>
+                    <p class="text-muted">Coba gunakan kata kunci lain atau reset pencarian Anda.</p>
+                    <a href="<?= base_url('trips/' . $type) ?>" class="btn btn-outline-success mt-3 rounded-pill px-4">Reset Pencarian</a>
                 <?php else: ?>
                     <p class="text-muted">Tidak ada trip tersedia.</p>
                 <?php endif; ?>

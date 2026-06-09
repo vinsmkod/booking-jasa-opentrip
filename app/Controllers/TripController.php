@@ -35,46 +35,8 @@ class TripController extends BaseController
     public function index()
     {
         $search = $this->request->getGet('search');
-
-        $this->tripModel
-            ->where('status', 'active')
-            ->orderBy('trip_id', 'DESC');
-
-        if (!empty($search)) {
-            $this->tripModel->groupStart()
-                ->like('title', $search)
-                ->orLike('location', $search)
-                ->groupEnd();
-        }
-
-        $trips = $this->tripModel->findAll();
-
-        foreach ($trips as &$trip) {
-            $schedule = $this->scheduleModel
-                ->where('trip_id', $trip['trip_id'])
-                ->orderBy('departure_date', 'ASC')
-                ->first();
-
-            if ($schedule) {
-                $trip['schedule_id']    = $schedule['schedule_id'];
-                $trip['departure_date'] = $schedule['departure_date'];
-                $trip['quota']          = $schedule['quota'];
-                $trip['available']      = $schedule['available'];
-            } else {
-                $trip['schedule_id']    = null;
-                $trip['departure_date'] = null;
-                $trip['quota']          = null;
-                $trip['available']      = null;
-            }
-        }
-
-        $data = [
-            'trips'  => $trips,
-            'type'   => 'Semua Trip',
-            'search' => $search
-        ];
-
-        return view('trips/index', $data);
+        $queryString = !empty($search) ? '?search=' . urlencode($search) : '';
+        return redirect()->to('/trips/one_day_trip' . $queryString);
     }
 
     public function byType($type)
