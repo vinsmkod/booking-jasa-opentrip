@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2026 at 02:14 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- Waktu pembuatan: 10 Jun 2026 pada 08.36
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bookings`
+-- Struktur dari tabel `bookings`
 --
 
 CREATE TABLE `bookings` (
@@ -42,7 +42,7 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bookings`
+-- Dumping data untuk tabel `bookings`
 --
 
 INSERT INTO `bookings` (`booking_id`, `booking_code`, `user_id`, `schedule_id`, `participant`, `total_price`, `status`, `created_at`, `meeting_point_id`, `updated_at`, `document`) VALUES
@@ -56,20 +56,22 @@ INSERT INTO `bookings` (`booking_id`, `booking_code`, `user_id`, `schedule_id`, 
 (47, 'TRIP-20260328-40014', 1, 9, 1, 130000.00, 'confirmed', '2026-03-28 04:57:35', NULL, '2026-03-28 04:57:50', NULL),
 (48, 'TRIP-20260328-62BA2', 1, 9, 1, 130000.00, 'confirmed', '2026-03-28 05:01:43', NULL, '2026-03-28 05:01:58', NULL),
 (49, 'TRIP-20260328-19295', 1, 12, 1, 850000.00, 'confirmed', '2026-03-28 05:04:42', NULL, '2026-03-28 05:04:57', NULL),
-(50, 'TRIP-20260328-E464C', 1, 12, 1, 850000.00, 'confirmed', '2026-03-28 09:51:45', 13, '2026-03-28 09:52:04', NULL),
-(51, 'TRIP-20260330-0349C', 1, 12, 1, 850000.00, 'confirmed', '2026-03-30 03:09:18', 13, '2026-03-30 03:09:34', NULL),
+(50, 'TRIP-20260328-E464C', 1, 12, 1, 850000.00, 'confirmed', '2026-03-28 09:51:45', NULL, '2026-03-28 09:52:04', NULL),
+(51, 'TRIP-20260330-0349C', 1, 12, 1, 850000.00, 'confirmed', '2026-03-30 03:09:18', NULL, '2026-03-30 03:09:34', NULL),
 (52, 'TRIP-20260402-FEA6C', 1, 9, 1, 130000.00, 'cancelled', '2026-04-02 05:01:19', 14, '2026-04-02 05:15:08', NULL),
 (53, 'TRIP-20260406-958FF', 1, 9, 1, 130000.00, 'confirmed', '2026-04-06 08:08:30', 14, '2026-04-06 08:13:45', NULL),
-(54, 'TRIP-20260407-11175', 1, 12, 2, 1700000.00, 'confirmed', '2026-04-07 10:10:36', 13, '2026-04-08 06:54:10', NULL),
+(54, 'TRIP-20260407-11175', 1, 12, 2, 1700000.00, 'confirmed', '2026-04-07 10:10:36', NULL, '2026-04-08 06:54:10', NULL),
 (55, 'TRIP-20260408-EC6FD', 6, 9, 1, 130000.00, 'cancelled', '2026-04-08 07:58:33', 14, '2026-04-08 08:18:28', NULL),
 (56, 'TRIP-20260408-A61EB', 1, 9, 1, 130000.00, 'confirmed', '2026-04-08 08:17:59', 14, '2026-04-08 08:18:31', NULL),
 (57, 'TRIP-20260411-D05EA', 1, 9, 1, 130000.00, 'pending', '2026-04-11 00:20:54', 15, '2026-04-11 00:20:54', NULL),
-(58, 'TRIP-20260416-D2779', 1, 14, 2, 2400000.00, 'confirmed', '2026-04-16 05:58:57', 18, '2026-04-16 05:59:16', NULL);
+(58, 'TRIP-20260416-D2779', 1, 14, 2, 2400000.00, 'confirmed', '2026-04-16 05:58:57', 18, '2026-04-16 05:59:16', NULL),
+(59, 'TRIP-20260609-F2A4C', 1, 9, 1, 130000.00, 'confirmed', '2026-06-09 11:13:16', 14, '2026-06-09 11:13:34', NULL),
+(60, 'TRIP-20260609-D36B0', 1, 12, 1, 850000.00, 'confirmed', '2026-06-09 11:19:41', 22, '2026-06-09 11:20:05', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Struktur dari tabel `comments`
 --
 
 CREATE TABLE `comments` (
@@ -83,16 +85,17 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `comments`
+-- Dumping data untuk tabel `comments`
 --
 
 INSERT INTO `comments` (`comment_id`, `user_id`, `trip_id`, `comment`, `status`, `created_at`, `updated_at`) VALUES
-(8, 1, 14, 'Pengalaman yang sangat seru dengan teman trip dari berbagai daerah hahahaha', 'approved', '2026-03-30 03:11:10', NULL);
+(8, 1, 14, 'Pengalaman yang sangat seru dengan teman trip dari berbagai daerah hahahaha', 'approved', '2026-03-30 03:11:10', NULL),
+(16, 1, 13, 'Pengalaman yang seru', 'pending', '2026-06-09 11:59:24', '2026-06-09 11:59:24');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `documents`
+-- Struktur dari tabel `documents`
 --
 
 CREATE TABLE `documents` (
@@ -111,7 +114,7 @@ CREATE TABLE `documents` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `documents`
+-- Dumping data untuk tabel `documents`
 --
 
 INSERT INTO `documents` (`document_id`, `booking_id`, `type`, `file`, `status`, `updated_at`, `name`, `email`, `birthdate`, `gender`, `ktp`, `health`) VALUES
@@ -133,12 +136,14 @@ INSERT INTO `documents` (`document_id`, `booking_id`, `type`, `file`, `status`, 
 (62, 56, NULL, NULL, 'pending', NULL, 'Asep Suparman', 'sahargntg@gmail.com', '2021-11-11', 'Laki-laki', '1775636279_c43cd4be94d4a99d3e79.png', '1775636279_aca31ad4e21f6ff7e7ea.png'),
 (63, 57, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2002-01-10', 'Laki-laki', '1775866854_9deb5b7a7a7a8027ff71.png', '1775866854_1f4665ee56ede4982aa2.png'),
 (64, 58, NULL, NULL, 'pending', NULL, 'Messi', 'sahargntg@gmail.com', '2001-12-11', 'Laki-laki', '1776319137_1c15d225cd52b5ff6fdb.png', '1776319137_c88bb5a4d72a3994916b.png'),
-(65, 58, NULL, NULL, 'pending', NULL, 'Ronaldo', 'sahargntg@gmail.com', '1998-07-10', 'Laki-laki', '1776319137_e0e8ea8fae94e301fcdd.png', '1776319137_71906ec1013b12e542de.png');
+(65, 58, NULL, NULL, 'pending', NULL, 'Ronaldo', 'sahargntg@gmail.com', '1998-07-10', 'Laki-laki', '1776319137_e0e8ea8fae94e301fcdd.png', '1776319137_71906ec1013b12e542de.png'),
+(66, 59, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1781003596_34271f41c032da1a4ebd.webp', '1781003596_80d596d8d54b429737f8.jpeg'),
+(67, 60, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1781003981_e387666e46dc19481b77.jpg', '1781003981_f46ee56a61bcd3a3a0f4.jpeg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `galleries`
+-- Struktur dari tabel `galleries`
 --
 
 CREATE TABLE `galleries` (
@@ -152,24 +157,16 @@ CREATE TABLE `galleries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `galleries`
+-- Dumping data untuk tabel `galleries`
 --
 
 INSERT INTO `galleries` (`gallery_id`, `trip_id`, `title`, `album`, `image`, `created_at`, `updated_at`) VALUES
-(4, NULL, 'www', 'www', '1774765244_1b4693cf8adbf7fd03e6.jpg', '2026-03-29 13:20:44', '0000-00-00 00:00:00'),
-(7, NULL, 'urgyyryr', 'santos', '1775110855_92b177eb545136d51748.jpeg', '2026-04-02 13:20:55', '0000-00-00 00:00:00'),
-(8, NULL, 'sayang', 'www', '1775111099_53ac022722a59313e799.jpeg', '2026-04-02 13:24:59', '0000-00-00 00:00:00'),
-(9, NULL, 'yetey', 'sisp', '1775111148_59e91a8e00982bb7b97e.jpg', '2026-04-02 13:25:48', '0000-00-00 00:00:00'),
-(18, NULL, 'Gunung Rinjani', 'Gunung Rinjani', '1774840066_69c9e902798bd.jpg', '2026-03-30 03:07:46', NULL),
-(21, NULL, 'Gunung Merbabu', 'Gunung Merbabu', '1775956469_69daf1f5195e4.jpg', '2026-04-12 01:14:29', NULL),
-(22, NULL, 'Gunung Merbabu', 'Gunung Merbabu', '1775956488_69daf2087611b.jpg', '2026-04-12 01:14:48', NULL),
-(24, NULL, 'Gunung Rinjani', 'Gunung Rinjani', '1776055661_69dc756d1271d.jpg', '2026-04-13 04:47:41', NULL),
-(25, NULL, 'Gunung Merbabu', 'Gunung Merbabu', '1776055683_69dc75832c848.jpg', '2026-04-13 04:48:03', NULL);
+(25, NULL, 'Gunung Merbabu', 'Gunung Merbabu', '1781004120_6a27f758689ba.jpg', '2026-04-13 04:48:03', '2026-06-09 11:22:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invoices`
+-- Struktur dari tabel `invoices`
 --
 
 CREATE TABLE `invoices` (
@@ -185,7 +182,7 @@ CREATE TABLE `invoices` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meeting_points`
+-- Struktur dari tabel `meeting_points`
 --
 
 CREATE TABLE `meeting_points` (
@@ -198,22 +195,23 @@ CREATE TABLE `meeting_points` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `meeting_points`
+-- Dumping data untuk tabel `meeting_points`
 --
 
 INSERT INTO `meeting_points` (`meeting_point_id`, `trip_id`, `name`, `address`, `created_at`, `updated_at`) VALUES
 (12, 14, 'Alun-Alun Subang', '', '2026-03-28 05:32:29', NULL),
-(13, 13, 'Alun-Alun Subang', '', '2026-03-28 05:33:16', NULL),
 (14, 10, 'Alun-Alun Subang', '', '2026-03-28 05:34:50', NULL),
 (15, 10, 'Alun-Alun Jalancagak', '', '2026-03-28 05:34:50', NULL),
 (18, 15, 'Alun-Alun Subang', '', '2026-04-13 04:44:04', NULL),
 (19, 15, 'Alun-alun Bandung', '', '2026-04-13 04:44:04', NULL),
-(21, 25, 'Cibaduyut', '', '2026-04-10 22:49:54', '0000-00-00 00:00:00');
+(21, 25, 'Cibaduyut', '', '2026-04-10 22:49:54', '0000-00-00 00:00:00'),
+(22, 13, 'Alun-Alun Subang', '', '2026-06-09 11:16:40', NULL),
+(23, 13, 'Alun-Alun Bandung', '', '2026-06-09 11:16:40', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payments`
+-- Struktur dari tabel `payments`
 --
 
 CREATE TABLE `payments` (
@@ -228,7 +226,7 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `payments`
+-- Dumping data untuk tabel `payments`
 --
 
 INSERT INTO `payments` (`payment_id`, `booking_id`, `method`, `amount`, `proof`, `status`, `paid_at`, `updated_at`) VALUES
@@ -250,12 +248,14 @@ INSERT INTO `payments` (`payment_id`, `booking_id`, `method`, `amount`, `proof`,
 (50, 55, 'Transfer Bank', 130000.00, '1775635113_fc6ebfab4dc040257377.png', 'rejected', NULL, '2026-04-08 08:18:28'),
 (51, 56, 'Transfer Bank', 130000.00, '1775636279_fea70ba2558938c895bf.png', 'verified', '2026-04-08 15:18:31', '2026-04-08 08:18:31'),
 (52, 57, 'Transfer Bank', 130000.00, '1775866854_b7a685cdc52593828f1d.png', 'pending', NULL, '2026-04-11 00:20:54'),
-(53, 58, 'E-Wallet', 2400000.00, '1776319137_50a37dbd121464575d65.png', 'verified', '2026-04-16 12:59:16', '2026-04-16 05:59:16');
+(53, 58, 'E-Wallet', 2400000.00, '1776319137_50a37dbd121464575d65.png', 'verified', '2026-04-16 12:59:16', '2026-04-16 05:59:16'),
+(54, 59, 'Transfer Bank', 130000.00, '1781003596_b2d0d5e2c2531a4cdbca.jpeg', 'verified', '2026-06-09 18:13:34', '2026-06-09 11:13:34'),
+(55, 60, 'Transfer Bank', 850000.00, '1781003981_a2e8133deddcda2cb0a8.jpeg', 'verified', '2026-06-09 18:20:05', '2026-06-09 11:20:05');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedules`
+-- Struktur dari tabel `schedules`
 --
 
 CREATE TABLE `schedules` (
@@ -268,12 +268,12 @@ CREATE TABLE `schedules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `schedules`
+-- Dumping data untuk tabel `schedules`
 --
 
 INSERT INTO `schedules` (`schedule_id`, `trip_id`, `departure_date`, `quota`, `available`, `updated_at`) VALUES
-(9, 10, '2026-03-12', 15, 8, NULL),
-(12, 13, '2026-03-13', 20, 12, NULL),
+(9, 10, '2026-03-12', 15, 7, NULL),
+(12, 13, '2026-03-13', 20, 19, NULL),
 (13, 14, '2026-04-01', 15, 15, NULL),
 (14, 15, '2026-05-13', 10, 8, NULL),
 (24, 25, '2026-04-10', 10, 4, '0000-00-00 00:00:00');
@@ -281,7 +281,7 @@ INSERT INTO `schedules` (`schedule_id`, `trip_id`, `departure_date`, `quota`, `a
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trips`
+-- Struktur dari tabel `trips`
 --
 
 CREATE TABLE `trips` (
@@ -300,12 +300,12 @@ CREATE TABLE `trips` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `trips`
+-- Dumping data untuk tabel `trips`
 --
 
 INSERT INTO `trips` (`trip_id`, `title`, `location`, `description`, `price`, `image`, `status`, `type`, `created_at`, `quota`, `updated_at`, `whatsapp_group`) VALUES
 (10, 'Gunung Bongkok', 'Purwakarta', 'SAsaS', 130000.00, '1774676090_16f349c57f89b27bf464.png', 'active', 'one_day_trip', '2026-03-10 04:42:43', 15, NULL, 'https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w'),
-(13, 'Gunung Merbabu', 'Magelang', 'BShawdbh', 850000.00, '1774674231_eb22ea8f1220f7f5846e.jpg', 'active', 'open_trip', '2026-03-28 05:03:51', 20, NULL, 'https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w'),
+(13, 'Gunung Merbabu', 'Magelang', 'Gunung Merbabu adalah salah satu destinasi pendakian paling populer di Jawa Tengah yang terkenal dengan pemandangan savana luas, jalur trekking yang menantang namun bersahabat, serta panorama sunrise yang menakjubkan dari puncaknya.\r\n\r\nGunung ini memiliki ketinggian sekitar 3.145 mdpl dan menawarkan pengalaman pendakian yang lengkap—mulai dari hutan pinus yang sejuk, jalur berbatu, hingga hamparan padang savana yang sering disebut sebagai “negeri di atas awan”. Dari puncaknya, pendaki dapat menikmati pemandangan Gunung Merapi, Sindoro, Sumbing, hingga hamparan awan yang dramatis di pagi hari.\r\n\r\nCocok untuk pendaki pemula hingga menengah, Gunung Merbabu memiliki beberapa jalur populer seperti Selo, Wekas, dan Cuntel yang masing-masing menawarkan keindahan dan tantangan berbeda. Suasana alamnya yang masih asri menjadikannya tempat ideal untuk melepas penat dan menikmati petualangan alam terbuka.\r\n\r\nGunung Merbabu sangat direkomendasikan bagi kamu yang ingin merasakan pengalaman hiking yang indah, fotogenik, dan penuh momen tak terlupakan.', 850000.00, '1781003799_ee22c9b9c186e9d94481.jpg', 'active', 'open_trip', '2026-03-28 05:03:51', 20, NULL, 'https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w'),
 (14, 'Gunung Rinjani', 'Subang', 'Gunung Rinjani mantap', 1200000.00, '1774675949_81d2efe1cbe87c90bfb5.jpg', 'active', 'open_trip', '2026-03-28 05:32:29', 15, NULL, 'https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w'),
 (15, 'Gunung Semeru', 'Jepang', 'afef', 1200000.00, '1776055444_d2ec60db6c5db638cff6.jpg', 'active', 'open_trip', '2026-04-13 03:24:14', 10, NULL, 'https://chat.whatsapp.com/EeQereyvtuw355XX77vq7w'),
 (25, 'Gunung Capstone', 'unsub', 'Gunung yang diamana mempertemukan kita berdua', 2000000.00, '1775836194_5e780db63b33c0110be3.png', 'active', 'open_trip', '0000-00-00 00:00:00', 10, '0000-00-00 00:00:00', 'https://chat.whatsapp.com/IG3FSr9gHCl2jSueqFqvzt?mode=gi_t');
@@ -313,7 +313,7 @@ INSERT INTO `trips` (`trip_id`, `title`, `location`, `description`, `price`, `im
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trip_includes`
+-- Struktur dari tabel `trip_includes`
 --
 
 CREATE TABLE `trip_includes` (
@@ -324,19 +324,22 @@ CREATE TABLE `trip_includes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `trip_includes`
+-- Dumping data untuk tabel `trip_includes`
 --
 
 INSERT INTO `trip_includes` (`include_id`, `trip_id`, `name`, `updated_at`) VALUES
-(5, 13, 'Makan Siang, Malam', NULL),
 (12, 25, 'Transport PP', '0000-00-00 00:00:00'),
 (13, 25, 'Transport PP', '0000-00-00 00:00:00'),
-(14, 25, 'Transport PP', '0000-00-00 00:00:00');
+(14, 25, 'Transport PP', '0000-00-00 00:00:00'),
+(15, 13, 'Transport PP', NULL),
+(16, 13, 'Obat-obatan', NULL),
+(17, 13, 'Dokumentasi', NULL),
+(18, 13, 'Makan di perjalanan', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trip_itinerary`
+-- Struktur dari tabel `trip_itinerary`
 --
 
 CREATE TABLE `trip_itinerary` (
@@ -350,18 +353,18 @@ CREATE TABLE `trip_itinerary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `trip_itinerary`
+-- Dumping data untuk tabel `trip_itinerary`
 --
 
 INSERT INTO `trip_itinerary` (`itinerary_id`, `trip_id`, `time`, `activity`, `day`, `sort_order`, `updated_at`) VALUES
-(5, 13, '08:00', 'Kumpul di Alun-alun Subang', NULL, NULL, NULL),
 (11, 25, '05:00', 'Persiapan di Basecamp', NULL, 0, '0000-00-00 00:00:00'),
-(12, 25, '05:01', 'gak jadi males pengen beli truk', NULL, 0, '0000-00-00 00:00:00');
+(12, 25, '05:01', 'gak jadi males pengen beli truk', NULL, 0, '0000-00-00 00:00:00'),
+(13, 13, '08:00', 'Kumpul di Alun-alun Subang', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -380,11 +383,11 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `phone`, `password`, `reset_token`, `reset_expires`, `role`, `created_at`, `points`, `avatar`, `updated_at`) VALUES
-(1, 'Sahar Dwi Anugrah', 'sahargntg@gmail.com', '081324768193', '$2y$10$mIRfKOGaXdHQqbGzCvQXju9YhLfXK/R3SSaXqsY5KnuNk72wPHsBe', NULL, NULL, 'customer', '2026-03-03 06:23:19', 240, NULL, '2026-04-17 08:18:58'),
+(1, 'Sahar Dwi Anugrah', 'sahargntg@gmail.com', '081324768193', '$2y$10$CcAUTlkVuDBpEOsu4ZpDCe44N5kyIRpdk7wBD3kaVSDeHFXvYIavG', NULL, NULL, 'customer', '2026-03-03 06:23:19', 240, '1781004192_c898f797c8f7c4a1d76a.jpeg', '2026-06-09 11:23:12'),
 (2, 'Administrator BLNTRK', 'admin@gmail.com', NULL, '$2y$10$ZaK9qBFKUygwOZyGJ2MZselNu1BX9BE0jy0xEznPHI36oZI30mVYK', NULL, NULL, 'admin', '2026-03-03 07:09:27', 0, NULL, NULL),
 (4, 'admin', 'admin123@gmail.com', NULL, 'admin123', NULL, NULL, 'admin', '2026-03-03 07:10:51', 0, NULL, NULL),
 (6, 'SaharAdmin', 'admin1234@gmail.com', NULL, '$2y$10$MbXtpHWm7AfJcdAQn6rY2Og7vB6aFycXbH2nUmJlGr6FHOdX.Zml.', NULL, NULL, 'admin', '2026-03-12 02:39:49', 20, NULL, '2026-03-28 04:53:32'),
@@ -397,7 +400,7 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `phone`, `password`, `reset_tok
 --
 
 --
--- Indexes for table `bookings`
+-- Indeks untuk tabel `bookings`
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
@@ -406,7 +409,7 @@ ALTER TABLE `bookings`
   ADD KEY `fk_booking_meetingpoint` (`meeting_point_id`);
 
 --
--- Indexes for table `comments`
+-- Indeks untuk tabel `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`comment_id`),
@@ -414,156 +417,156 @@ ALTER TABLE `comments`
   ADD KEY `comments_ibfk_2` (`trip_id`);
 
 --
--- Indexes for table `documents`
+-- Indeks untuk tabel `documents`
 --
 ALTER TABLE `documents`
   ADD PRIMARY KEY (`document_id`),
   ADD KEY `fk_documents_booking` (`booking_id`);
 
 --
--- Indexes for table `galleries`
+-- Indeks untuk tabel `galleries`
 --
 ALTER TABLE `galleries`
   ADD PRIMARY KEY (`gallery_id`),
   ADD KEY `fk_gallery_trip` (`trip_id`);
 
 --
--- Indexes for table `invoices`
+-- Indeks untuk tabel `invoices`
 --
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`invoice_id`),
   ADD KEY `fk_invoices_booking` (`booking_id`);
 
 --
--- Indexes for table `meeting_points`
+-- Indeks untuk tabel `meeting_points`
 --
 ALTER TABLE `meeting_points`
   ADD PRIMARY KEY (`meeting_point_id`),
   ADD KEY `fk_meetingpoint_trip` (`trip_id`);
 
 --
--- Indexes for table `payments`
+-- Indeks untuk tabel `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payments_booking` (`booking_id`);
 
 --
--- Indexes for table `schedules`
+-- Indeks untuk tabel `schedules`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`schedule_id`),
   ADD KEY `schedules_ibfk_1` (`trip_id`);
 
 --
--- Indexes for table `trips`
+-- Indeks untuk tabel `trips`
 --
 ALTER TABLE `trips`
   ADD PRIMARY KEY (`trip_id`);
 
 --
--- Indexes for table `trip_includes`
+-- Indeks untuk tabel `trip_includes`
 --
 ALTER TABLE `trip_includes`
   ADD PRIMARY KEY (`include_id`),
   ADD KEY `trip_id` (`trip_id`);
 
 --
--- Indexes for table `trip_itinerary`
+-- Indeks untuk tabel `trip_itinerary`
 --
 ALTER TABLE `trip_itinerary`
   ADD PRIMARY KEY (`itinerary_id`),
   ADD KEY `trip_id` (`trip_id`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `bookings`
+-- AUTO_INCREMENT untuk tabel `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT untuk tabel `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `documents`
+-- AUTO_INCREMENT untuk tabel `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
--- AUTO_INCREMENT for table `galleries`
+-- AUTO_INCREMENT untuk tabel `galleries`
 --
 ALTER TABLE `galleries`
   MODIFY `gallery_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `invoices`
+-- AUTO_INCREMENT untuk tabel `invoices`
 --
 ALTER TABLE `invoices`
   MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `meeting_points`
+-- AUTO_INCREMENT untuk tabel `meeting_points`
 --
 ALTER TABLE `meeting_points`
-  MODIFY `meeting_point_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `meeting_point_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `payments`
+-- AUTO_INCREMENT untuk tabel `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
--- AUTO_INCREMENT for table `schedules`
+-- AUTO_INCREMENT untuk tabel `schedules`
 --
 ALTER TABLE `schedules`
   MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT for table `trips`
+-- AUTO_INCREMENT untuk tabel `trips`
 --
 ALTER TABLE `trips`
   MODIFY `trip_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `trip_includes`
+-- AUTO_INCREMENT untuk tabel `trip_includes`
 --
 ALTER TABLE `trip_includes`
-  MODIFY `include_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `include_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `trip_itinerary`
+-- AUTO_INCREMENT untuk tabel `trip_itinerary`
 --
 ALTER TABLE `trip_itinerary`
-  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `itinerary_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `bookings`
+-- Ketidakleluasaan untuk tabel `bookings`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `fk_booking_meetingpoint` FOREIGN KEY (`meeting_point_id`) REFERENCES `meeting_points` (`meeting_point_id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -571,56 +574,56 @@ ALTER TABLE `bookings`
   ADD CONSTRAINT `fk_booking_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `comments`
+-- Ketidakleluasaan untuk tabel `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `documents`
+-- Ketidakleluasaan untuk tabel `documents`
 --
 ALTER TABLE `documents`
   ADD CONSTRAINT `fk_documents_booking` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `galleries`
+-- Ketidakleluasaan untuk tabel `galleries`
 --
 ALTER TABLE `galleries`
   ADD CONSTRAINT `fk_gallery_trip` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `invoices`
+-- Ketidakleluasaan untuk tabel `invoices`
 --
 ALTER TABLE `invoices`
   ADD CONSTRAINT `fk_invoices_booking` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `meeting_points`
+-- Ketidakleluasaan untuk tabel `meeting_points`
 --
 ALTER TABLE `meeting_points`
   ADD CONSTRAINT `fk_meetingpoint_trip` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `payments`
+-- Ketidakleluasaan untuk tabel `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `fk_payments_booking` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `schedules`
+-- Ketidakleluasaan untuk tabel `schedules`
 --
 ALTER TABLE `schedules`
   ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `trip_includes`
+-- Ketidakleluasaan untuk tabel `trip_includes`
 --
 ALTER TABLE `trip_includes`
   ADD CONSTRAINT `trip_includes_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `trip_itinerary`
+-- Ketidakleluasaan untuk tabel `trip_itinerary`
 --
 ALTER TABLE `trip_itinerary`
   ADD CONSTRAINT `trip_itinerary_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`trip_id`) ON DELETE CASCADE;
