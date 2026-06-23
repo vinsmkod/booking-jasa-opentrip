@@ -62,8 +62,9 @@ class Home extends BaseController
             ->findAll();
 
         $comments = $this->commentModel
-            ->select('comments.*, users.name, users.avatar')
+            ->select('comments.*, users.name, users.avatar, trips.title AS trip_title')
             ->join('users', 'users.user_id = comments.user_id')
+            ->join('trips', 'trips.trip_id = comments.trip_id')
             ->where('comments.status', 'approved')
             ->orderBy('comments.created_at', 'DESC')
             ->limit(6)

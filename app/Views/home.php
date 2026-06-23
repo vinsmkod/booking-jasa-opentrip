@@ -312,6 +312,12 @@ foreach ($steps as $s):
                                     </div>
                                     <div>
                                         <h6 class="fw-bold mb-1 text-dark"><?= esc($c['name']) ?></h6>
+                                        <?php if (!empty($c['trip_title'])): ?>
+                                            <div class="d-flex align-items-center gap-1 mb-1">
+                                                <i class="fas fa-map-pin" style="font-size:10px;color:#2d7d3a;"></i>
+                                                <span class="small fw-semibold" style="color:#2d7d3a;font-size:11px;"><?= esc($c['trip_title']) ?></span>
+                                            </div>
+                                        <?php endif; ?>
                                         <small class="text-muted"><?= date('d M Y', strtotime($c['created_at'])) ?></small>
                                     </div>
                                 </div>

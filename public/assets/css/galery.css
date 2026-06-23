@@ -17,7 +17,7 @@
    /* ── HERO ── */
    .hero-gallery {
        position: relative;
-       padding: 90px;
+       padding: 80px 0 90px;
        border-radius: 10px 10px 50px 50px;
        margin-bottom: 50px;
        overflow: hidden;
@@ -27,19 +27,40 @@
        content: '';
        position: absolute;
        inset: 0;
-       background: linear-gradient(135deg, rgba(26, 158, 90, .54) 0%, rgba(0, 0, 0, .4) 100%);
+       background: linear-gradient(135deg, rgba(26, 158, 90, .60) 0%, rgba(0, 0, 0, .50) 100%);
    }
 
    .hero-gallery .container {
        position: relative;
        z-index: 2;
+       padding-left: 24px;
+       padding-right: 24px;
    }
 
    .hero-gallery h1 {
        color: white;
-       text-shadow: 2px 2px 4px rgba(0, 0, 0, .3);
+       text-shadow: 2px 2px 8px rgba(0, 0, 0, .4);
+       line-height: 1.2;
+       margin-bottom: 12px;
    }
 
+   .hero-gallery .hero-subtitle {
+       color: rgba(255, 255, 255, 0.95);
+       font-size: 1.15rem;
+       font-weight: 600;
+       letter-spacing: 0.02em;
+       margin-bottom: 0;
+   }
+
+   .hero-gallery .hero-desc {
+       color: rgba(255, 255, 255, 0.82);
+       font-size: 1rem;
+       line-height: 1.65;
+       max-width: 580px;
+       margin-bottom: 0;
+   }
+
+   /* keep old .lead support too */
    .hero-gallery .lead {
        color: white;
    }
@@ -121,20 +142,90 @@
 
    /* ── MASONRY GRID ── */
    .masonry-grid {
-       columns: 3 320px;
-       column-gap: 25px;
+       columns: 3 300px;
+       column-gap: 20px;
+   }
+
+   @media (max-width: 1200px) {
+       .masonry-grid {
+           columns: 3 260px;
+           column-gap: 18px;
+       }
    }
 
    @media (max-width: 992px) {
        .masonry-grid {
-           columns: 2 280px;
-           column-gap: 20px;
+           columns: 2 240px;
+           column-gap: 16px;
+       }
+
+       .hero-gallery {
+           padding: 70px 0 80px;
+           border-radius: 10px 10px 35px 35px;
+           margin-bottom: 35px;
+       }
+
+       .hero-gallery h1 {
+           font-size: 2rem;
+       }
+
+       .hero-gallery .hero-subtitle {
+           font-size: 1rem;
+       }
+
+       .hero-gallery .hero-desc {
+           font-size: 0.9rem;
        }
    }
 
-   @media (max-width: 576px) {
+   @media (max-width: 768px) {
        .masonry-grid {
-           columns: 1 280px;
+           columns: 2 180px;
+           column-gap: 12px;
+       }
+
+       .photo-card {
+           margin-bottom: 14px;
+       }
+
+       .hero-gallery {
+           padding: 55px 0 65px;
+           border-radius: 10px 10px 25px 25px;
+           margin-bottom: 25px;
+       }
+
+       .hero-gallery .container {
+           padding-left: 20px;
+           padding-right: 20px;
+       }
+
+       .hero-gallery h1 {
+           font-size: 1.7rem;
+           margin-bottom: 8px;
+       }
+
+       .hero-gallery .hero-subtitle {
+           font-size: 0.95rem;
+       }
+
+       .hero-gallery .hero-desc {
+           font-size: 0.85rem;
+           max-width: 100%;
+       }
+   }
+
+   @media (max-width: 480px) {
+       .masonry-grid {
+           columns: 1;
+           column-gap: 0;
+       }
+
+       .photo-card {
+           margin-bottom: 12px;
+       }
+
+       .hero-gallery h1 {
+           font-size: 1.45rem;
        }
    }
 

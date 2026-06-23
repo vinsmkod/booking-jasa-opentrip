@@ -224,6 +224,44 @@
         color: #94a3b8;
     }
 
+    /* Password Wrapper */
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-wrapper .form-control {
+        padding-right: 44px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: #94a3b8;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toggle-password:hover {
+        color: #2d7d3a;
+    }
+
+    .toggle-password:focus {
+        outline: none;
+        color: #2d7d3a;
+    }
+
     /* Button */
     .btn-submit {
         width: 100%;
@@ -392,13 +430,19 @@
 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        class="form-control" 
-                        placeholder="Masukkan password" 
-                        required
-                        autocomplete="current-password">
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="login-password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Masukkan password"
+                            required
+                            autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)" aria-label="Tampilkan password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                     <div class="text-end mt-2">
                         <a href="<?= base_url('forgot-password') ?>" class="text-decoration-none text-muted small hover-success" style="transition: color 0.2s;">Lupa password?</a>
                     </div>
@@ -408,6 +452,23 @@
                     <i class="fas fa-sign-in-alt"></i> Masuk
                 </button>
             </form>
+
+            <script>
+            function togglePassword(inputId, btn) {
+                const input = document.getElementById(inputId);
+                const icon  = btn.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    btn.setAttribute('aria-label', 'Sembunyikan password');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                    btn.setAttribute('aria-label', 'Tampilkan password');
+                }
+                input.focus();
+            }
+            </script>
 
             <div class="divider">
                 <span>atau</span>

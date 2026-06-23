@@ -11,8 +11,8 @@
 <section class="hero-gallery" style="background:url('<?= base_url('assets/images/gunung1.jpg') ?>') center/cover no-repeat;">
     <div class="container" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="display-4 fw-bold">Galeri Petualangan BLNTRK Outdoor</h1>
-        <p class="lead mt-3 opacity-95">Jejak Petualangan di Setiap Langkah Pendakian</p>
-        <p class="lead mt-3 opacity-95">Temukan keindahan alam Indonesia melalui lensa komunitas pendaki BLNTRK Outdoor.</p>
+        <p class="hero-subtitle mt-3">Jejak Petualangan di Setiap Langkah Pendakian</p>
+        <p class="hero-desc mt-2">Temukan keindahan alam Indonesia melalui lensa komunitas pendaki BLNTRK Outdoor.</p>
 
         <a href="<?= base_url('trips') ?>" class="btn rounded-pill fw-semibold px-4 py-3 mt-4 text-white" style="background:linear-gradient(135deg,#2d7d3a,#1f5a29);border:none;transition:all .3s;" data-aos="zoom-in" data-aos-delay="300"
             onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 25px rgba(45,125,58,.3)'"

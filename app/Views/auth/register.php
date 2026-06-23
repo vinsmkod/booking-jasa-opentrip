@@ -164,6 +164,44 @@
         color: #94a3b8;
     }
 
+    /* Password Wrapper */
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-wrapper .form-control {
+        padding-right: 44px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: #94a3b8;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toggle-password:hover {
+        color: #2d7d3a;
+    }
+
+    .toggle-password:focus {
+        outline: none;
+        color: #2d7d3a;
+    }
+
     /* Button */
     .btn-submit {
         width: 100%;
@@ -344,12 +382,18 @@
             <div class="form-group form-grid full">
                 <div>
                     <label class="form-label">Password</label>
-                    <input type="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Minimal 8 karakter"
-                        required
-                        autocomplete="new-password">
+                    <div class="password-wrapper">
+                        <input type="password"
+                            id="reg-password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Minimal 8 karakter"
+                            required
+                            autocomplete="new-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('reg-password', this)" aria-label="Tampilkan password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                     <div class="password-requirements">
                         <strong>Persyaratan password:</strong>
                         • Minimal 8 karakter<br>
@@ -363,12 +407,18 @@
             <div class="form-group form-grid full">
                 <div>
                     <label class="form-label">Konfirmasi Password</label>
-                    <input type="password"
-                        name="password_confirm"
-                        class="form-control"
-                        placeholder="Ulangi password"
-                        required
-                        autocomplete="new-password">
+                    <div class="password-wrapper">
+                        <input type="password"
+                            id="reg-password-confirm"
+                            name="password_confirm"
+                            class="form-control"
+                            placeholder="Ulangi password"
+                            required
+                            autocomplete="new-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('reg-password-confirm', this)" aria-label="Tampilkan konfirmasi password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -376,6 +426,23 @@
                 <i class="fas fa-user-plus"></i> Buat Akun
             </button>
         </form>
+
+        <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon  = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+                btn.setAttribute('aria-label', 'Sembunyikan password');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                btn.setAttribute('aria-label', 'Tampilkan password');
+            }
+            input.focus();
+        }
+        </script>
 
         <div class="divider">
             <span>atau</span>
