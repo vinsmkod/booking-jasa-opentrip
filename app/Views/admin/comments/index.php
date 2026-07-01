@@ -1,6 +1,5 @@
 <?= $this->extend('layouts/admin') ?>
-<?= $this->section('content') ?>
-
+<?= $this->section('styles') ?>
 <style>
 .tbl { min-width:800px; }
 .comment-text {
@@ -30,6 +29,53 @@
     text-overflow:ellipsis;
 }
 .tbl td { vertical-align:top; }
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+    gap: 5px;
+}
+
+.pagination li {
+    margin: 0;
+}
+
+.pagination li a, .pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--txt2);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    min-width: 32px;
+}
+
+.pagination li a:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--txt);
+}
+
+.pagination li.active a, .pagination li.active span {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.pagination li.disabled a, .pagination li.disabled span {
+    color: var(--txt3);
+    background-color: var(--surface2);
+    pointer-events: none;
+}
 </style>
 <?= $this->endSection() ?>
 
@@ -44,7 +90,7 @@
 <div class="panel">
     <div class="panel-header">
         <span class="panel-title"><i class="fas fa-comments"></i> Daftar Komentar</span>
-        <span style="font-size:12px;color:var(--txt3);font-family:var(--mono);"><?= count($comments ?? []) ?> total</span>
+        <span style="font-size:12px;color:var(--txt3);font-family:var(--mono);"><?= isset($pager) ? $pager->getTotal('comments') : count($comments ?? []) ?> total</span>
     </div>
     <div class="table-wrap">
         <table class="tbl">
@@ -60,7 +106,9 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($comments)): $no = 1;
+                <?php if (!empty($comments)):
+                    $currentPage = isset($pager) ? $pager->getCurrentPage('comments') : 1;
+                    $no = 1 + (5 * ($currentPage - 1));
                     foreach ($comments as $c): $s = $c['status'] ?? 'pending'; ?>
                 <tr>
                     <td class="td-no"><?= $no++ ?></td>
@@ -107,6 +155,12 @@ else: ?>
                 <?php endif; ?>
             </tbody>
         </table>
-    </div>
-</div>
+    </div></div>
+
+    <!-- Pager Links -->
+    <?php if (isset($pager)): ?>
+        <div style="margin-top:20px; display:flex; justify-content:center;">
+            <?= $pager->links('comments', 'default_full') ?>
+        </div>
+    <?php endif; ?>
 <?= $this->endSection() ?>

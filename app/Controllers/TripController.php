@@ -151,7 +151,7 @@ class TripController extends BaseController
                 ->groupEnd();
         }
 
-        $data['trips'] = $this->tripModel->paginate(10, 'trips');
+        $data['trips'] = $this->tripModel->paginate(5, 'trips');
         $data['pager'] = $this->tripModel->pager;
         $data['search'] = $search;
 

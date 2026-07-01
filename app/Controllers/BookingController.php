@@ -213,7 +213,7 @@ class BookingController extends BaseController
                 ->groupEnd();
         }
 
-        $bookings = $this->bookingModel->paginate(10, 'bookings');
+        $bookings = $this->bookingModel->paginate(5, 'bookings');
         $pager    = $this->bookingModel->pager;
 
         $documents      = [];

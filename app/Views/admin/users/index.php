@@ -13,6 +13,53 @@
 .pill { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
 .pill-admin { background: #eef2ff; color: #4338ca; }
 .pill-user  { background: #f0fdf4; color: #15803d; }
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+    gap: 5px;
+}
+
+.pagination li {
+    margin: 0;
+}
+
+.pagination li a, .pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--txt2);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    min-width: 32px;
+}
+
+.pagination li a:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--txt);
+}
+
+.pagination li.active a, .pagination li.active span {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.pagination li.disabled a, .pagination li.disabled span {
+    color: var(--txt3);
+    background-color: var(--surface2);
+    pointer-events: none;
+}
 </style>
 <?= $this->endSection() ?>
 
@@ -52,13 +99,14 @@
     <div class="panel-header">
         <span class="panel-title"><i class="fas fa-users"></i> Daftar Pengguna</span>
         <span style="font-size:12px;color:var(--txt3);font-family:var(--mono);">
-            <span id="user-count"><?= count($users ?? []) ?></span> user
+            <span id="user-count"><?= isset($pager) ? $pager->getTotal('users') : count($users ?? []) ?></span> user
         </span>
     </div>
     <div class="table-wrap">
         <table class="tbl" id="tbl-users">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Pengguna</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -68,9 +116,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($users)): ?>
-                    <?php foreach ($users as $u): ?>
+                <?php if (!empty($users)):
+                    $currentPage = isset($pager) ? $pager->getCurrentPage('users') : 1;
+                    $no = 1 + (5 * ($currentPage - 1));
+                    foreach ($users as $u): ?>
                     <tr>
+                        <td class="td-no"><?= $no++ ?></td>
                         <td>
                             <div style="display:flex;align-items:center;gap:9px;">
                                 <div class="avatar"><?= strtoupper(substr($u['name'] ?? 'U', 0, 1)) ?></div>
@@ -106,7 +157,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="empty-state">
                                 <i class="fas fa-users-slash"></i>
                                 <p>Belum ada data pengguna</p>
@@ -119,20 +170,17 @@
     </div>
 </div>
 
+    <!-- Pager Links -->
+    <?php if (isset($pager)): ?>
+        <div style="margin-top:20px; display:flex; justify-content:center;">
+            <?= $pager->links('users', 'default_full') ?>
+        </div>
+    <?php endif; ?>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script>
-function searchUsers(q) {
-    q = q.toLowerCase();
-    const rows = document.querySelectorAll('#tbl-users tbody tr');
-    let count = 0;
-    rows.forEach(row => {
-        const match = row.textContent.toLowerCase().includes(q);
-        row.style.display = match ? '' : 'none';
-        if (match) count++;
-    });
-    document.getElementById('user-count').textContent = count;
-}
+// Search disabled: pagination is now server-side
 </script>
 <?= $this->endSection() ?>

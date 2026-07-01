@@ -35,15 +35,18 @@ class Comment extends BaseController
 
     public function adminIndex()
     {
-        $comments = $this->commentModel
+        $this->commentModel
             ->select('comments.*, users.name, users.email, trips.title')
             ->join('users', 'users.user_id = comments.user_id')
             ->join('trips', 'trips.trip_id = comments.trip_id')
-            ->orderBy('comments.created_at', 'DESC')
-            ->findAll();
+            ->orderBy('comments.created_at', 'DESC');
+
+        $comments = $this->commentModel->paginate(5, 'comments');
+        $pager    = $this->commentModel->pager;
 
         return view('admin/comments/index', [
-            'comments' => $comments
+            'comments' => $comments,
+            'pager'    => $pager
         ]);
     }
 

@@ -101,7 +101,7 @@
                     <?php if (!empty($trips)): ?>
                         <?php
                             $currentPage = isset($pager) ? $pager->getCurrentPage('trips') : 1;
-                        $no = 1 + (10 * ($currentPage - 1));
+                        $no = 1 + (5 * ($currentPage - 1));
                         ?>
                         <?php foreach ($trips as $trip): ?>
                             <tr>

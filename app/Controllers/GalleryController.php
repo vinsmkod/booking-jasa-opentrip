@@ -165,7 +165,7 @@ class GalleryController extends BaseController
         }
 
         return view('admin/gallery/index', [
-            'galleries'   => $this->galleryModel->paginate(12),
+            'galleries'   => $this->galleryModel->paginate(5),
             'pager'       => $this->galleryModel->pager,
             'keyword'     => $keyword,
             'totalPhotos' => $totalPhotos,

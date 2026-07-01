@@ -16,7 +16,9 @@ class UsersController extends BaseController
 
     public function index()
     {
-        $data['users'] = $this->usersModel->orderBy('user_id', 'ASC')->findAll();
+        $this->usersModel->orderBy('user_id', 'ASC');
+        $data['users'] = $this->usersModel->paginate(5, 'users');
+        $data['pager'] = $this->usersModel->pager;
         return view('admin/users/index', $data);
     }
 

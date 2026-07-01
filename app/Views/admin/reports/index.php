@@ -599,7 +599,7 @@
                 <tbody>
                     <?php 
                     $currentPage = isset($pager) ? $pager->getCurrentPage('bookings') : 1;
-                    $startNumber = ($currentPage - 1) * 10;
+                    $startNumber = ($currentPage - 1) * 5;
                     foreach ($bookings as $i => $b): 
                         $rowNumber = $startNumber + $i + 1;
                     ?>

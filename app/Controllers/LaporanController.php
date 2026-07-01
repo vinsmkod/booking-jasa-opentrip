@@ -48,7 +48,7 @@ class LaporanController extends BaseController
         ];
 
         // 2. Get paginated bookings for current page
-        $bookings = $this->buildReportQuery($tripId)->paginate(10, 'bookings');
+        $bookings = $this->buildReportQuery($tripId)->paginate(5, 'bookings');
         $pager = $this->bookingModel->pager;
 
         return view('admin/reports/index', [

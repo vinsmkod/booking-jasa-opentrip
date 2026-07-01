@@ -287,7 +287,7 @@
             
             <!-- Pagination -->
             <?php if (isset($pager)): ?>
-            <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+            <div style="margin-top: 20px; display: flex; justify-content: center;">
                 <?= $pager->links('bookings', 'default_full') ?>
             </div>
             <?php endif; ?>

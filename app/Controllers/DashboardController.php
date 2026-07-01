@@ -84,7 +84,7 @@ class DashboardController extends BaseController
 
         $recentBookings = $bookingBuilder
             ->orderBy('bookings.created_at', 'DESC')
-            ->paginate(10, 'bookings');
+            ->paginate(5, 'bookings');
         $pager = $bookingModel->pager;
 
         // Trip terpopuler

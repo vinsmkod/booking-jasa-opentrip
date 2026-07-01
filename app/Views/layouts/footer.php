@@ -4,7 +4,7 @@
 
             <div class="col-md-4">
                 <h5 class="text-white">BLNTRK OUTDOOR</h5>
-                <p class="text-white">Platform trip pendakian gunung di Indonesia yang ada di kota Subang, Jawa Barat. Menyediakan layanan Open Trip, Private Trip, dan One Day Trip untuk menjelajahi keindahan alam Indonesia bersama komunitas pecinta alam.</p>
+                <p class="text-white">Platform trip pendakian gunung di Indonesia yang ada di kota Subang, Jawa Barat. Menyediakan layanan Open Trip, Private Trip, dan One Day. Trip untuk menjelajahi keindahan alam Indonesia bersama komunitas pecinta alam.</p>
             </div>
 
             <div class="col-md-4">
@@ -20,7 +20,7 @@
                 <h5 class="text-white">Follow Us</h5>
                 <p class="text-white">
                     <a href="https://www.instagram.com/blntrk.outdoor/" class="text-white"><i class="bi bi-instagram"></i> Instagram</a><br>
-                    <a href="#" class="text-white"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                    <a href="https://wa.me/6281310338393" class="text-white"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                 </p>
             </div>
 

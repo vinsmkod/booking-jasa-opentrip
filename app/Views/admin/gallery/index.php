@@ -246,7 +246,7 @@
                 <?php
                     if (!empty($galleries)):
                         $currentPage = isset($pager) ? $pager->getCurrentPage() : 1;
-                        $no = 1 + (12 * ($currentPage - 1));
+                        $no = 1 + (5 * ($currentPage - 1));
                         foreach ($galleries as $g):
                             ?>
                 <tr>
@@ -273,12 +273,11 @@
             </tbody>
         </table>
     </div>
-
-    <?php if (!empty($galleries) && isset($pager)): ?>
-    <div class="pagination-wrap">
-        <div class="pagination-info">Menampilkan <?= count($galleries) ?> dari <?= $pager->getTotal() ?> foto</div>
-        <div><?= $pager->links('default', 'default_full') ?></div>
-    </div>
-    <?php endif; ?>
 </div>
+
+<?php if (!empty($galleries) && isset($pager)): ?>
+    <div style="margin-top:20px; display:flex; justify-content:center;">
+        <?= $pager->links('default', 'default_full') ?>
+    </div>
+<?php endif; ?>
 <?= $this->endSection() ?>
