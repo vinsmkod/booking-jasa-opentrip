@@ -162,6 +162,12 @@
         background: #f0fdf4;
     }
 
+    .doc-btn.parent-permission {
+        border-color: #ddd6fe;
+        color: #6d28d9;
+        background: #f5f3ff;
+    }
+
     .doc-missing {
         font-size: 11px;
         color: var(--txt3);
@@ -314,6 +320,29 @@
         background-color: var(--surface2);
         pointer-events: none;
     }
+    
+    /* Cancel Modal Option Buttons */
+    .btn-cancel-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--txt);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        text-align: left;
+        width: 100%;
+    }
+    .btn-cancel-option:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-color: var(--accent);
+    }
 </style>
 <?= $this->endSection() ?>
 
@@ -446,9 +475,15 @@
                                                 onclick="return confirm('Confirm booking ini?')">
                                                 <i class="fas fa-check"></i> Confirm
                                             </a>
-                                            <a href="<?= base_url('admin/bookings/cancel/' . $b['booking_id']) ?>"
+                                            <a href="javascript:void(0)"
                                                 class="btn-sm btn-cancel"
-                                                onclick="return confirm('Cancel booking ini?')">
+                                                onclick="openCancelModal(
+                                                    '<?= $b['booking_id'] ?>',
+                                                    '<?= esc($b['user_phone'] ?? '', 'js') ?>',
+                                                    '<?= esc($b['booking_code'] ?? '', 'js') ?>',
+                                                    '<?= esc($b['trip_title'] ?? '', 'js') ?>',
+                                                    '<?= esc($b['username'] ?? '', 'js') ?>'
+                                                )">
                                                 <i class="fas fa-times"></i> Cancel
                                             </a>
                                         </div>
@@ -510,18 +545,46 @@
                                 <div class="doc-name"><?= esc($doc['name']) ?></div>
                                 <div class="doc-meta">
                                     <?= esc($doc['gender']) ?>
-                                    <?php if (!empty($doc['email'])): ?>&middot; <?= esc($doc['email']) ?><?php endif; ?>
+                                    <?php if (!empty($doc['wa_number'])): ?>&middot; WA: <?= esc($doc['wa_number']) ?><?php endif; ?>
                                     <?php if (!empty($doc['birthdate']) && $doc['birthdate'] !== '0000-00-00'): ?>&middot; <?= date('d M Y', strtotime($doc['birthdate'])) ?><?php endif; ?>
                                 </div>
                             </div>
                             <div class="doc-files">
-                                <?php if (!empty($doc['ktp'])): ?>
-                                    <button class="doc-btn ktp" onclick="openModal('<?= base_url('uploads/documents/' . $doc['ktp']) ?>', 'KTP — <?= esc($doc['name']) ?>')">
-                                        <i class="fas fa-id-card"></i> KTP
-                                    </button>
+                                <?php
+                                $isMinor = false;
+                                if (!empty($doc['birthdate']) && $doc['birthdate'] !== '0000-00-00') {
+                                    $birthdate = new \DateTime($doc['birthdate']);
+                                    $today = new \DateTime();
+                                    $age = $today->diff($birthdate)->y;
+                                    $isMinor = ($age < 18);
+                                }
+                                ?>
+                                <?php if ($isMinor): ?>
+                                    <?php if (!empty($doc['ktp'])): ?>
+                                        <button class="doc-btn ktp" onclick="openModal('<?= base_url('uploads/documents/' . $doc['ktp']) ?>', 'Kartu Pelajar — <?= esc($doc['name']) ?>')">
+                                            <i class="fas fa-id-card"></i> Kartu Pelajar
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="doc-missing">Kartu pelajar belum</span>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($doc['parent_permission'])): ?>
+                                        <button class="doc-btn parent-permission" onclick="openModal('<?= base_url('uploads/documents/' . $doc['parent_permission']) ?>', 'Surat Izin Orang Tua — <?= esc($doc['name']) ?>')">
+                                            <i class="fas fa-file-signature"></i> Surat Izin Orang Tua
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="doc-missing">Surat izin belum</span>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <span class="doc-missing">KTP belum</span>
+                                    <?php if (!empty($doc['ktp'])): ?>
+                                        <button class="doc-btn ktp" onclick="openModal('<?= base_url('uploads/documents/' . $doc['ktp']) ?>', 'KTP — <?= esc($doc['name']) ?>')">
+                                            <i class="fas fa-id-card"></i> KTP
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="doc-missing">KTP belum</span>
+                                    <?php endif; ?>
                                 <?php endif; ?>
+
                                 <?php if (!empty($doc['health'])): ?>
                                     <button class="doc-btn sehat" onclick="openModal('<?= base_url('uploads/documents/' . $doc['health']) ?>', 'Surat Sehat — <?= esc($doc['name']) ?>')">
                                         <i class="fas fa-file-medical"></i> Surat Sehat
@@ -573,7 +636,7 @@
                                     <div style="font-size:12.5px;font-weight:600;color:var(--txt);"><?= esc($p['name']) ?></div>
                                     <div style="font-size:11px;color:var(--txt3);">
                                         <?= esc($p['gender']) ?>
-                                        <?php if (!empty($p['email'])): ?>&middot; <?= esc($p['email']) ?><?php endif; ?>
+                                        <?php if (!empty($p['wa_number'])): ?>&middot; WA: <?= esc($p['wa_number']) ?><?php endif; ?>
                                         <?php if (!empty($p['birthdate']) && $p['birthdate'] !== '0000-00-00'): ?>&middot; <?= date('d M Y', strtotime($p['birthdate'])) ?><?php endif; ?>
                                     </div>
                                 </div>
@@ -601,14 +664,52 @@
     <div class="img-modal-box">
         <div class="img-modal-head">
             <span id="imgModalTitle">Dokumen</span>
-            <button class="img-modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <a id="imgModalDownload" href="#" target="_blank" class="btn-sm btn-view" style="font-size:11px;">
+                    <i class="fas fa-download"></i> Unduh
+                </a>
+                <button class="img-modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
         </div>
         <div class="img-modal-body">
             <img id="imgModalImg" src="" alt="Dokumen"
                 onerror="this.style.display='none';document.getElementById('imgModalErr').style.display='block'">
+            <iframe id="imgModalPdf" src="" style="display:none;width:100%;height:500px;border:none;"></iframe>
             <div id="imgModalErr" style="display:none;color:var(--txt3);font-size:13px;padding:40px;text-align:center;">
-                Gambar tidak dapat ditampilkan.
+                File tidak dapat ditampilkan. Gunakan tombol <strong>Unduh</strong> untuk membuka.
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Reason Modal -->
+<div class="img-modal" id="cancelModal" onclick="closeCancelModalOutside(event)">
+    <div class="img-modal-box" style="max-width: 450px;">
+        <div class="img-modal-head">
+            <span style="font-weight: 600; font-size: 16px;"><i class="fas fa-exclamation-triangle" style="color: #d97706; margin-right: 8px;"></i>Alasan Membatalkan Booking</span>
+            <button class="img-modal-close" onclick="closeCancelModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="font-size: 13.5px; color: var(--txt2); margin-bottom: 8px; line-height: 1.5;">
+            Pilih alasan pembatalan untuk booking <strong id="cancelBookingCode" style="color: var(--accent);"></strong>. Halaman akan memproses pembatalan dan membuka chat WhatsApp pelanggan.
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <button type="button" class="btn-cancel-option" onclick="handleCancelConfirm('dokumen')">
+                <i class="fas fa-file-excel" style="font-size: 18px; color: #ef4444; background: #fee2e2; padding: 10px; border-radius: 50%;"></i>
+                <div>
+                    <strong style="color: var(--txt); display: block; font-size: 14px;">Dokumen tidak sesuai</strong>
+                    <span style="font-size: 11px; color: var(--txt3); margin-top: 2px;">KTP, Surat Sehat, atau dokumen lainnya tidak valid.</span>
+                </div>
+            </button>
+            <button type="button" class="btn-cancel-option" onclick="handleCancelConfirm('kuota')">
+                <i class="fas fa-users-slash" style="font-size: 18px; color: #f59e0b; background: #fef3c7; padding: 10px; border-radius: 50%;"></i>
+                <div>
+                    <strong style="color: var(--txt); display: block; font-size: 14px;">Kuota telah habis</strong>
+                    <span style="font-size: 11px; color: var(--txt3); margin-top: 2px;">Kuota trip terlampaui atau tidak lagi tersedia.</span>
+                </div>
+            </button>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 12px;">
+            <button type="button" onclick="closeCancelModal()" style="padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface2); color: var(--txt2); cursor: pointer; font-size: 12px; font-weight: 500;">Batal</button>
         </div>
     </div>
 </div>
@@ -625,23 +726,100 @@
     }
 
     function openModal(src, title) {
-        document.getElementById('imgModalImg').style.display = 'block';
-        document.getElementById('imgModalErr').style.display = 'none';
-        document.getElementById('imgModalImg').src = src;
+        const img      = document.getElementById('imgModalImg');
+        const pdf      = document.getElementById('imgModalPdf');
+        const errEl    = document.getElementById('imgModalErr');
+        const download = document.getElementById('imgModalDownload');
+
+        // Reset semua
+        img.style.display  = 'none';
+        pdf.style.display  = 'none';
+        errEl.style.display = 'none';
+        img.src = '';
+        pdf.src = '';
+
         document.getElementById('imgModalTitle').textContent = title;
+        download.href = src;
+
+        const isPdf = src.toLowerCase().endsWith('.pdf');
+        if (isPdf) {
+            pdf.src = src;
+            pdf.style.display = 'block';
+        } else {
+            img.src = src;
+            img.style.display = 'block';
+        }
+
         document.getElementById('imgModal').classList.add('open');
     }
 
     function closeModal() {
         document.getElementById('imgModal').classList.remove('open');
         document.getElementById('imgModalImg').src = '';
+        document.getElementById('imgModalPdf').src = '';
     }
 
     function closeModalOutside(e) {
         if (e.target === document.getElementById('imgModal')) closeModal();
     }
+
+    // Cancel Modal variables & functions
+    let currentCancelBookingId = null;
+    let currentCancelUserPhone = "";
+    let currentCancelBookingCode = "";
+    let currentCancelTripTitle = "";
+    let currentCancelUserName = "";
+
+    function openCancelModal(bookingId, userPhone, bookingCode, tripTitle, userName) {
+        currentCancelBookingId = bookingId;
+        currentCancelUserPhone = userPhone || '';
+        currentCancelBookingCode = bookingCode || '';
+        currentCancelTripTitle = tripTitle || '';
+        currentCancelUserName = userName || '';
+        
+        document.getElementById('cancelBookingCode').textContent = bookingCode;
+        document.getElementById('cancelModal').classList.add('open');
+    }
+
+    function closeCancelModal() {
+        document.getElementById('cancelModal').classList.remove('open');
+    }
+
+    function closeCancelModalOutside(e) {
+        if (e.target === document.getElementById('cancelModal')) closeCancelModal();
+    }
+
+    function formatWaNumber(phone) {
+        if (!phone) return '';
+        phone = phone.replace(/[^0-9]/g, '');
+        if (phone.startsWith('0')) {
+            phone = '62' + phone.substring(1);
+        }
+        return phone;
+    }
+
+    function handleCancelConfirm(reason) {
+        let message = "";
+        if (reason === 'dokumen') {
+            message = `Halo ${currentCancelUserName}, kami dari Admin BLNTRKOUTDOOR. Booking Anda dengan kode ${currentCancelBookingCode} (${currentCancelTripTitle}) dibatalkan karena *Dokumen tidak sesuai*. Mohon membalas pesan ini untuk proses refund dana. Terima kasih.`;
+        } else {
+            message = `Halo ${currentCancelUserName}, kami dari Admin BLNTRKOUTDOOR. Booking Anda dengan kode ${currentCancelBookingCode} (${currentCancelTripTitle}) dibatalkan karena *Kuota telah habis*. Mohon membalas pesan ini untuk proses refund dana. Terima kasih.`;
+        }
+        
+        let waUrl = `https://wa.me/${formatWaNumber(currentCancelUserPhone)}?text=${encodeURIComponent(message)}`;
+        
+        // 1. Open WA in a new tab/window
+        window.open(waUrl, '_blank');
+        
+        // 2. Redirect back-end cancel route
+        window.location.href = `<?= base_url('admin/bookings/cancel') ?>` + '/' + currentCancelBookingId;
+    }
+
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') {
+            closeModal();
+            closeCancelModal();
+        }
     });
 </script>
 <?= $this->endSection() ?>

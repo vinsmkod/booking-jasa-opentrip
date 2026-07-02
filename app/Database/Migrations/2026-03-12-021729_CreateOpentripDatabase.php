@@ -258,7 +258,7 @@ class CreateOpentripDatabase extends Migration
                 'constraint' => 100,
                 'null' => true
             ],
-            'email' => [
+            'wa_number' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100,
                 'null' => true
@@ -278,6 +278,11 @@ class CreateOpentripDatabase extends Migration
                 'null' => true
             ],
             'health' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true
+            ],
+            'parent_permission' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'null' => true

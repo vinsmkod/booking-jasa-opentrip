@@ -19,14 +19,22 @@ use CodeIgniter\Config\BaseService;
  */
 class Services extends BaseService
 {
-    /*
-     * public static function example($getShared = true)
-     * {
-     *     if ($getShared) {
-     *         return static::getSharedInstance('example');
-     *     }
+    /**
+     * Override the default Response class with our custom one that fixes
+     * the PHP 8.1+ compatibility issue (str_replace on null body).
      *
-     *     return new \CodeIgniter\Example();
-     * }
+     * In CI4 + PHP 8.1/8.2, ResponseTrait::send() calls str_replace() on
+     * $this->body which may be null for redirect responses, causing a
+     * deprecation/TypeError. Our custom Response ensures body is always ''.
      */
+    public static function response(\Config\App $config = null, bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('response', $config);
+        }
+
+        $config ??= config('App');
+
+        return new \App\HTTP\Response($config);
+    }
 }

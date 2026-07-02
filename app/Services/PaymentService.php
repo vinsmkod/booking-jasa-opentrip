@@ -101,8 +101,24 @@ class PaymentService
 
     private function moveUploadedFile($file): ?string
     {
-        if (!$file || !$file->isValid() || $file->hasMoved()) {
+        if (!$file) {
             return null;
+        }
+
+        if (!$file->isValid()) {
+            if ($file->getError() === UPLOAD_ERR_NO_FILE) {
+                return null;
+            }
+            throw new \Exception("File bukti pembayaran tidak valid: " . $file->getErrorString());
+        }
+
+        if ($file->hasMoved()) {
+            return null;
+        }
+
+        $validationError = $this->validatePaymentFile($file);
+        if ($validationError) {
+            throw new \Exception("Gagal upload bukti pembayaran: " . $validationError);
         }
 
         $uploadPath = FCPATH . 'uploads/payments';

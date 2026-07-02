@@ -22,7 +22,7 @@ class DocumentService
     =====================================
     */
 
-    public function storeParticipantDocuments(int $booking_id, array $participants, array $ktpFiles, array $healthFiles): void
+    public function storeParticipantDocuments(int $booking_id, array $participants, array $ktpFiles, array $healthFiles, array $parentPermissionFiles = []): void
     {
         if (empty($participants) || !is_array($participants)) {
             return;
@@ -31,17 +31,19 @@ class DocumentService
         $this->ensureUploadDirExists();
 
         foreach ($participants as $i => $participant) {
-            $ktpName    = $this->moveParticipantFile($ktpFiles[$i] ?? null);
-            $healthName = $this->moveParticipantFile($healthFiles[$i] ?? null);
+            $ktpName    = $this->moveParticipantFile($ktpFiles[$i] ?? null, 'KTP/Kartu Pelajar');
+            $healthName = $this->moveParticipantFile($healthFiles[$i] ?? null, 'Surat Sehat');
+            $parentPermissionName = $this->moveParticipantFile($parentPermissionFiles[$i] ?? null, 'Surat Izin Orang Tua');
 
             $this->documentModel->insert([
                 'booking_id' => $booking_id,
                 'name'       => $participant['name'] ?? null,
-                'email'      => $participant['email'] ?? null,
+                'wa_number'  => $participant['wa_number'] ?? null,
                 'birthdate'  => $participant['birthdate'] ?? null,
                 'gender'     => $participant['gender'] ?? null,
                 'ktp'        => $ktpName,
                 'health'     => $healthName,
+                'parent_permission' => $parentPermissionName,
                 'status'     => 'pending'
             ]);
         }
@@ -123,10 +125,26 @@ class DocumentService
         }
     }
 
-    private function moveParticipantFile($file): ?string
+    private function moveParticipantFile($file, string $fieldName = 'Dokumen'): ?string
     {
-        if (!$file || !$file->isValid() || $file->hasMoved()) {
+        if (!$file) {
             return null;
+        }
+
+        if (!$file->isValid()) {
+            if ($file->getError() === UPLOAD_ERR_NO_FILE) {
+                return null;
+            }
+            throw new \Exception("File {$fieldName} tidak valid: " . $file->getErrorString());
+        }
+
+        if ($file->hasMoved()) {
+            return null;
+        }
+
+        $validationError = $this->validateDocumentFile($file);
+        if ($validationError) {
+            throw new \Exception("Gagal upload {$fieldName}: " . $validationError);
         }
 
         $fileName = $file->getRandomName();

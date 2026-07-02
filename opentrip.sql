@@ -106,39 +106,40 @@ CREATE TABLE `documents` (
   `status` varchar(50) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
+  `wa_number` varchar(100) DEFAULT NULL,
   `birthdate` date DEFAULT NULL,
   `gender` varchar(20) DEFAULT NULL,
   `ktp` varchar(255) DEFAULT NULL,
-  `health` varchar(255) DEFAULT NULL
+  `health` varchar(255) DEFAULT NULL,
+  `parent_permission` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `documents`
 --
 
-INSERT INTO `documents` (`document_id`, `booking_id`, `type`, `file`, `status`, `updated_at`, `name`, `email`, `birthdate`, `gender`, `ktp`, `health`) VALUES
-(1, 2, NULL, NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(35, 30, NULL, NULL, NULL, NULL, 'Asep Suparman', 'sahargntg@gmail.com', '2004-03-10', 'Laki-laki', '1774424617_7446ee4858548f51b6ad.png', '1774424617_9ff381ebd8996964cced.png'),
-(48, 43, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2004-03-10', 'Laki-laki', '1774672938_e8a4f79bff3ecd1ea932.png', '1774672938_c31151099ba7dac83841.png'),
-(49, 44, NULL, NULL, 'pending', NULL, 'Kipli', 'sahargntg@gmail.com', '2002-02-10', 'Laki-laki', '1774673136_f97025338233e5cb0536.jpeg', '1774673136_2060a07e6a96b5c32a9f.png'),
-(51, 46, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2001-02-10', 'Laki-laki', '1774673742_b59eef56e98b5bb98449.png', '1774673742_73699408088970d42bbc.png'),
-(52, 47, NULL, NULL, 'pending', NULL, 'Susan', 'sahargntg@gmail.com', '2001-02-10', 'Perempuan', '1774673855_80b97fd93f93c02bd9a6.png', '1774673855_9fc42f7a974174c48629.png'),
-(53, 48, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1774674103_5f2c18e3b73e941a701a.jpeg', '1774674103_eccff450e4dca8cd160a.jpeg'),
-(54, 49, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2002-03-10', 'Laki-laki', '1774674282_9e9b802201a863ac5ed2.png', '1774674282_b9d7f4317647c4f6bea9.png'),
-(55, 50, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1774691505_60a2703617f400244471.jpeg', '1774691505_49b864dce911357d1cdc.jpeg'),
-(56, 51, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2003-03-10', 'Laki-laki', '1774840158_e1c7e5d2f233014ae094.jpeg', '1774840158_5c3f5297c2487c34b369.jpeg'),
-(57, 52, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2003-03-10', 'Laki-laki', '1775106079_c2b6ebc8d3e1dc0c7e9a.png', '1775106079_f9fb3794e631cee9c437.png'),
-(58, 53, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2002-03-10', 'Laki-laki', '1775462910_378fa8f8f610ea05408b.png', '1775462910_5ce3ebf0d3210d65850e.png'),
-(59, 54, NULL, NULL, 'pending', NULL, 'Ronaldo', 'sahargntg@gmail.com', '2001-02-10', 'Laki-laki', '1775556637_5a876f815cfcef050b7f.png', '1775556637_275bb4c07a77abad2436.png'),
-(60, 54, NULL, NULL, 'pending', NULL, 'Messi', 'sahargntg@gmail.com', '2002-03-10', 'Laki-laki', '1775556637_212ba128c5143ad511ee.png', '1775556637_b957e8f2a9bfd02823a5.png'),
-(61, 55, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2026-04-08', 'Laki-laki', '1775635113_d78c71c713f7a276ca62.png', '1775635113_07ccd970f18d2c904f95.png'),
-(62, 56, NULL, NULL, 'pending', NULL, 'Asep Suparman', 'sahargntg@gmail.com', '2021-11-11', 'Laki-laki', '1775636279_c43cd4be94d4a99d3e79.png', '1775636279_aca31ad4e21f6ff7e7ea.png'),
-(63, 57, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2002-01-10', 'Laki-laki', '1775866854_9deb5b7a7a7a8027ff71.png', '1775866854_1f4665ee56ede4982aa2.png'),
-(64, 58, NULL, NULL, 'pending', NULL, 'Messi', 'sahargntg@gmail.com', '2001-12-11', 'Laki-laki', '1776319137_1c15d225cd52b5ff6fdb.png', '1776319137_c88bb5a4d72a3994916b.png'),
-(65, 58, NULL, NULL, 'pending', NULL, 'Ronaldo', 'sahargntg@gmail.com', '1998-07-10', 'Laki-laki', '1776319137_e0e8ea8fae94e301fcdd.png', '1776319137_71906ec1013b12e542de.png'),
-(66, 59, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1781003596_34271f41c032da1a4ebd.webp', '1781003596_80d596d8d54b429737f8.jpeg'),
-(67, 60, NULL, NULL, 'pending', NULL, 'Sahar', 'sahargntg@gmail.com', '2005-03-10', 'Laki-laki', '1781003981_e387666e46dc19481b77.jpg', '1781003981_f46ee56a61bcd3a3a0f4.jpeg');
+INSERT INTO `documents` (`document_id`, `booking_id`, `type`, `file`, `status`, `updated_at`, `name`, `wa_number`, `birthdate`, `gender`, `ktp`, `health`, `parent_permission`) VALUES
+(1, 2, NULL, NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(35, 30, NULL, NULL, NULL, NULL, 'Asep Suparman', '081234567890', '2004-03-10', 'Laki-laki', '1774424617_7446ee4858548f51b6ad.png', '1774424617_9ff381ebd8996964cced.png', NULL),
+(48, 43, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2004-03-10', 'Laki-laki', '1774672938_e8a4f79bff3ecd1ea932.png', '1774672938_c31151099ba7dac83841.png', NULL),
+(49, 44, NULL, NULL, 'pending', NULL, 'Kipli', '081234567890', '2002-02-10', 'Laki-laki', '1774673136_f97025338233e5cb0536.jpeg', '1774673136_2060a07e6a96b5c32a9f.png', NULL),
+(51, 46, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2001-02-10', 'Laki-laki', '1774673742_b59eef56e98b5bb98449.png', '1774673742_73699408088970d42bbc.png', NULL),
+(52, 47, NULL, NULL, 'pending', NULL, 'Susan', '081234567890', '2001-02-10', 'Perempuan', '1774673855_80b97fd93f93c02bd9a6.png', '1774673855_9fc42f7a974174c48629.png', NULL),
+(53, 48, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2005-03-10', 'Laki-laki', '1774674103_5f2c18e3b73e941a701a.jpeg', '1774674103_eccff450e4dca8cd160a.jpeg', NULL),
+(54, 49, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2002-03-10', 'Laki-laki', '1774674282_9e9b802201a863ac5ed2.png', '1774674282_b9d7f4317647c4f6bea9.png', NULL),
+(55, 50, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2005-03-10', 'Laki-laki', '1774691505_60a2703617f400244471.jpeg', '1774691505_49b864dce911357d1cdc.jpeg', NULL),
+(56, 51, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2003-03-10', 'Laki-laki', '1774840158_e1c7e5d2f233014ae094.jpeg', '1774840158_5c3f5297c2487c34b369.jpeg', NULL),
+(57, 52, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2003-03-10', 'Laki-laki', '1775106079_c2b6ebc8d3e1dc0c7e9a.png', '1775106079_f9fb3794e631cee9c437.png', NULL),
+(58, 53, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2002-03-10', 'Laki-laki', '1775462910_378fa8f8f610ea05408b.png', '1775462910_5ce3ebf0d3210d65850e.png', NULL),
+(59, 54, NULL, NULL, 'pending', NULL, 'Ronaldo', '081234567890', '2001-02-10', 'Laki-laki', '1775556637_5a876f815cfcef050b7f.png', '1775556637_275bb4c07a77abad2436.png', NULL),
+(60, 54, NULL, NULL, 'pending', NULL, 'Messi', '081234567890', '2002-03-10', 'Laki-laki', '1775556637_212ba128c5143ad511ee.png', '1775556637_b957e8f2a9bfd02823a5.png', NULL),
+(61, 55, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2026-04-08', 'Laki-laki', '1775635113_d78c71c713f7a276ca62.png', '1775635113_07ccd970f18d2c904f95.png', NULL),
+(62, 56, NULL, NULL, 'pending', NULL, 'Asep Suparman', '081234567890', '2021-11-11', 'Laki-laki', '1775636279_c43cd4be94d4a99d3e79.png', '1775636279_aca31ad4e21f6ff7e7ea.png', NULL),
+(63, 57, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2002-01-10', 'Laki-laki', '1775866854_9deb5b7a7a7a8027ff71.png', '1775866854_1f4665ee56ede4982aa2.png', NULL),
+(64, 58, NULL, NULL, 'pending', NULL, 'Messi', '081234567890', '2001-12-11', 'Laki-laki', '1776319137_1c15d225cd52b5ff6fdb.png', '1776319137_c88bb5a4d72a3994916b.png', NULL),
+(65, 58, NULL, NULL, 'pending', NULL, 'Ronaldo', '081234567890', '1998-07-10', 'Laki-laki', '1776319137_e0e8ea8fae94e301fcdd.png', '1776319137_71906ec1013b12e542de.png', NULL),
+(66, 59, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2005-03-10', 'Laki-laki', '1781003596_34271f41c032da1a4ebd.webp', '1781003596_80d596d8d54b429737f8.jpeg', NULL),
+(67, 60, NULL, NULL, 'pending', NULL, 'Sahar', '081234567890', '2005-03-10', 'Laki-laki', '1781003981_e387666e46dc19481b77.jpg', '1781003981_f46ee56a61bcd3a3a0f4.jpeg', NULL);
 
 -- --------------------------------------------------------
 

@@ -54,11 +54,13 @@ class TripModel extends Model
                 schedules.quota,
                 schedules.available as schedule_quota
             ')
+            ->where('schedules.departure_date >=', date('Y-m-d'))
             ->getCompiledSelect();
 
         // Subquery untuk mendapatkan schedule tercepat per trip (departure_date terkecil)
         $firstSchedule = $db->table('schedules')
             ->select('trip_id, MIN(schedule_id) as schedule_id')
+            ->where('departure_date >=', date('Y-m-d'))
             ->groupBy('trip_id')
             ->getCompiledSelect();
 

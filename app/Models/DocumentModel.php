@@ -13,11 +13,12 @@ class DocumentModel extends Model
     protected $allowedFields = [
         'booking_id',
         'name',
-        'email',
+        'wa_number',
         'birthdate',
         'gender',
         'ktp',
         'health',
+        'parent_permission',
         'type',
         'file',
         'status'

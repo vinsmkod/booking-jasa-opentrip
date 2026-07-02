@@ -160,13 +160,9 @@ $displayTitle = $typeNames[$type] ?? 'Trip';
                                     <button class="btn btn-secondary w-100" disabled>
                                         <i class="fas fa-ban me-2"></i>Trip Full
                                     </button>
-                                <?php elseif (session()->get('isLoggedIn')): ?>
+                                <?php else: ?>
                                     <a href="<?= base_url('trips/detail/' . $trip['schedule_id']) ?>" class="btn btn-success w-100">
                                         <i class="fas fa-eye me-2"></i>Lihat Detail
-                                    </a>
-                                <?php else: ?>
-                                    <a href="<?= base_url('login') ?>" class="btn btn-success w-100">
-                                        <i class="fas fa-sign-in-alt me-2"></i>Login untuk Booking
                                     </a>
                                 <?php endif; ?>
                             </div>

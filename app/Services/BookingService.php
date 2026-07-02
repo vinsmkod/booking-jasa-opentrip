@@ -120,7 +120,8 @@ class BookingService
                 $booking_id,
                 $post['participants'] ?? [],
                 $files['ktp'] ?? [],
-                $files['health'] ?? []
+                $files['health'] ?? [],
+                $files['parent_permission'] ?? []
             );
 
             $this->paymentService->createPaymentRecord(

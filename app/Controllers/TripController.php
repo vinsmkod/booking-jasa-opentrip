@@ -55,10 +55,12 @@ class TripController extends BaseController
         }
 
         $trips = $this->tripModel->findAll();
+        $filteredTrips = [];
 
-        foreach ($trips as &$trip) {
+        foreach ($trips as $trip) {
             $schedule = $this->scheduleModel
                 ->where('trip_id', $trip['trip_id'])
+                ->where('departure_date >=', date('Y-m-d'))
                 ->orderBy('departure_date', 'ASC')
                 ->first();
 
@@ -67,16 +69,12 @@ class TripController extends BaseController
                 $trip['departure_date'] = $schedule['departure_date'];
                 $trip['quota']          = $schedule['quota'];
                 $trip['available']      = $schedule['available'];
-            } else {
-                $trip['schedule_id']    = null;
-                $trip['departure_date'] = null;
-                $trip['quota']          = null;
-                $trip['available']      = null;
+                $filteredTrips[] = $trip;
             }
         }
 
         $data = [
-            'trips'  => $trips,
+            'trips'  => $filteredTrips,
             'type'   => $type,
             'search' => $search
         ];

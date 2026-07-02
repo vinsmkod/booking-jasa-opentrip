@@ -54,8 +54,12 @@ class AuthController extends BaseController
                 'isLoggedIn' => true
             ]);
 
+            // Cek apakah ada redirect URL tersimpan (misal dari halaman booking)
+            $redirectUrl = session()->get('redirect_url');
+            session()->remove('redirect_url');
+
             // Redirect sesuai role
-            return $this->redirectByRole($user['role']);
+            return $this->redirectByRole($user['role'], $redirectUrl);
         }
 
         return redirect()->back()->with('error', 'Login gagal, email atau password salah');
@@ -139,11 +143,15 @@ class AuthController extends BaseController
     | REDIRECT BY ROLE (FIX 404 ADMIN)
     |--------------------------------------------------------------------------
     */
-    private function redirectByRole($role)
+    private function redirectByRole($role, $redirectUrl = null)
     {
         if ($role === 'admin') {
             return redirect()->to('/admin/dashboard');
         } elseif ($role === 'customer') {
+            // Jika ada URL yang disimpan sebelum login (misal halaman booking), arahkan ke sana
+            if (!empty($redirectUrl)) {
+                return redirect()->to($redirectUrl);
+            }
             return redirect()->to('/');
         } else {
             return redirect()->to('/');

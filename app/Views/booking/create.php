@@ -86,6 +86,7 @@
                         <label class="form-label"><i class="fas fa-receipt"></i> Upload Bukti Pembayaran</label>
                         <input type="file" name="payment_proof" id="paymentProof" class="form-control" accept="image/*,application/pdf">
                         <div class="text-muted small mt-1">📎 Format: JPG, PNG, PDF (Max 5MB)</div>
+                        <div class="text-danger small mt-1" id="paymentProofError" style="display:none;"></div>
                     </div>
 
                     <button type="submit" class="btn-submit">
@@ -160,8 +161,8 @@
                 <input type="text" class="form-control name-input" placeholder="Masukkan nama lengkap" required>
             </div>
             <div>
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control email-input" placeholder="email@contoh.com" required>
+                <label class="form-label">No. WA Aktif</label>
+                <input type="tel" class="form-control email-input" placeholder="08xxxxxxxxxx" required>
             </div>
             <div>
                 <label class="form-label">Tanggal Lahir</label>
@@ -176,14 +177,22 @@
                 </select>
             </div>
             <div>
-                <label class="form-label"><i class="fas fa-id-card"></i> Upload KTP</label>
+                <label class="form-label label-ktp"><i class="fas fa-id-card"></i> Upload KTP</label>
                 <input type="file" class="form-control ktp-input" accept="image/*,application/pdf" required>
                 <div class="text-muted small mt-1">JPG, PNG, atau PDF</div>
+                <div class="text-danger small mt-1 ktp-error" style="display:none;"></div>
+            </div>
+            <div class="parent-permission-container d-none">
+                <label class="form-label"><i class="fas fa-file-signature"></i> Upload Surat Izin Orang Tua</label>
+                <input type="file" class="form-control parent-permission-input" accept="image/*,application/pdf">
+                <div class="text-muted small mt-1">JPG, PNG, atau PDF</div>
+                <div class="text-danger small mt-1 parent-permission-error" style="display:none;"></div>
             </div>
             <div>
                 <label class="form-label"><i class="fas fa-certificate"></i> Upload Surat Sehat</label>
                 <input type="file" class="form-control health-input" accept="image/*,application/pdf" required>
                 <div class="text-muted small mt-1">JPG, PNG, atau PDF</div>
+                <div class="text-danger small mt-1 health-error" style="display:none;"></div>
             </div>
         </div>
     </div>
@@ -206,17 +215,94 @@
         return "Rp " + number.toLocaleString("id-ID");
     }
 
+    function setupFileValidation(inputEl, errorEl, maxMb = 2) {
+        inputEl.addEventListener("change", function() {
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                if (!allowedExtensions.exec(file.name)) {
+                    errorEl.textContent = "Format file tidak valid. Harap upload file JPG, JPEG, PNG, atau PDF.";
+                    errorEl.style.display = "block";
+                    this.value = ""; // clear selected file
+                    return;
+                }
+                if (file.size > maxMb * 1024 * 1024) {
+                    errorEl.textContent = `Ukuran file terlalu besar. Maksimal ${maxMb}MB.`;
+                    errorEl.style.display = "block";
+                    this.value = ""; // clear selected file
+                    return;
+                }
+            }
+            errorEl.style.display = "none";
+            errorEl.textContent = "";
+        });
+    }
+
     function generateForms(count) {
         container.innerHTML = "";
         for (let i = 0; i < count; i++) {
             const clone = template.content.cloneNode(true);
             clone.querySelector(".peserta-title").innerText = "👤 Peserta " + (i + 1);
             clone.querySelector(".name-input").setAttribute("name", `participants[${i}][name]`);
-            clone.querySelector(".email-input").setAttribute("name", `participants[${i}][email]`);
-            clone.querySelector(".birthdate-input").setAttribute("name", `participants[${i}][birthdate]`);
+            clone.querySelector(".email-input").setAttribute("name", `participants[${i}][wa_number]`);
+            
+            const birthdateInput = clone.querySelector(".birthdate-input");
+            birthdateInput.setAttribute("name", `participants[${i}][birthdate]`);
+            
             clone.querySelector(".gender-input").setAttribute("name", `participants[${i}][gender]`);
-            clone.querySelector(".ktp-input").setAttribute("name", "ktp[]");
-            clone.querySelector(".health-input").setAttribute("name", "health[]");
+            clone.querySelector(".ktp-input").setAttribute("name", `ktp[${i}]`);
+            clone.querySelector(".health-input").setAttribute("name", `health[${i}]`);
+            clone.querySelector(".parent-permission-input").setAttribute("name", `parent_permission[${i}]`);
+
+            // Setup file inputs validation
+            const ktpInput = clone.querySelector(".ktp-input");
+            const healthInput = clone.querySelector(".health-input");
+            const parentInput = clone.querySelector(".parent-permission-input");
+
+            const ktpError = clone.querySelector(".ktp-error");
+            const healthError = clone.querySelector(".health-error");
+            const parentError = clone.querySelector(".parent-permission-error");
+
+            setupFileValidation(ktpInput, ktpError, 2);
+            setupFileValidation(healthInput, healthError, 2);
+            setupFileValidation(parentInput, parentError, 2);
+
+            // Dynamically manage fields based on birthdate
+            const ktpLabel = clone.querySelector(".label-ktp");
+            const parentContainer = clone.querySelector(".parent-permission-container");
+
+            birthdateInput.addEventListener("change", function() {
+                if (!this.value) {
+                    ktpLabel.innerHTML = '<i class="fas fa-id-card"></i> Upload KTP';
+                    parentContainer.classList.add("d-none");
+                    parentInput.required = false;
+                    parentInput.value = "";
+                    parentError.style.display = "none";
+                    parentError.textContent = "";
+                    return;
+                }
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                if (age < 18) {
+                    ktpLabel.innerHTML = '<i class="fas fa-id-card"></i> Upload Kartu Pelajar';
+                    parentContainer.classList.remove("d-none");
+                    parentInput.required = true;
+                } else {
+                    ktpLabel.innerHTML = '<i class="fas fa-id-card"></i> Upload KTP';
+                    parentContainer.classList.add("d-none");
+                    parentInput.required = false;
+                    parentInput.value = "";
+                    parentError.style.display = "none";
+                    parentError.textContent = "";
+                }
+            });
+
             container.appendChild(clone);
         }
         updatePrice();
@@ -232,8 +318,28 @@
         finalPriceInput.value = total;
     }
 
-    participantInput.addEventListener("input", function() {
-        generateForms(this.value);
+    const paymentProof = document.getElementById("paymentProof");
+    const paymentProofError = document.getElementById("paymentProofError");
+
+    paymentProof.addEventListener("change", function() {
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+        if (this.files.length > 0) {
+            const file = this.files[0];
+            if (!allowedExtensions.exec(file.name)) {
+                paymentProofError.textContent = "Format file tidak valid. Harap upload file JPG, JPEG, PNG, atau PDF.";
+                paymentProofError.style.display = "block";
+                this.value = "";
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                paymentProofError.textContent = "Ukuran file terlalu besar. Maksimal 5MB.";
+                paymentProofError.style.display = "block";
+                this.value = "";
+                return;
+            }
+        }
+        paymentProofError.style.display = "none";
+        paymentProofError.textContent = "";
     });
 
     paymentSelect.addEventListener("change", function() {
@@ -243,15 +349,15 @@
             paymentDetail.innerHTML = '<i class="fas fa-university"></i> <strong>Transfer Bank BCA</strong><br>Nomor: 1234567890 a.n OpenTrip Indonesia<br><small>Setelah transfer, upload bukti di bawah</small>';
             paymentDetail.classList.remove("d-none");
             proofUpload.classList.remove("d-none");
-            document.getElementById("paymentProof").required = true;
+            paymentProof.required = true;
         } else if (this.value === "E-Wallet") {
             paymentDetail.innerHTML = '<i class="fas fa-mobile-alt"></i> <strong>E-Wallet</strong><br>DANA / OVO / GoPay ke 081234567890<br><small>Setelah pembayaran, upload bukti di bawah</small>';
             paymentDetail.classList.remove("d-none");
             proofUpload.classList.remove("d-none");
-            document.getElementById("paymentProof").required = true;
+            paymentProof.required = true;
         } else {
             paymentDetail.classList.add("d-none");
-            document.getElementById("paymentProof").required = false;
+            paymentProof.required = false;
         }
     });
 

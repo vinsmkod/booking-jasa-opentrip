@@ -69,10 +69,19 @@ class BookingController extends BaseController
             return redirect()->to('/login');
         }
 
+        // Gunakan getFileMultiple() untuk input file array (ktp[0], ktp[1], dst)
+        // agar CI4 mengembalikan indexed array [0 => FileObject, 1 => FileObject, ...]
+        $files = [
+            'ktp'              => $this->request->getFileMultiple('ktp')              ?? [],
+            'health'           => $this->request->getFileMultiple('health')           ?? [],
+            'parent_permission'=> $this->request->getFileMultiple('parent_permission') ?? [],
+            'payment_proof'    => $this->request->getFile('payment_proof'),
+        ];
+
         $result = $this->bookingService->createBooking(
             $user_id,
             $this->request->getPost(),
-            $this->request->getFiles()
+            $files
         );
 
         if (!$result['success']) {
@@ -189,6 +198,7 @@ class BookingController extends BaseController
                 bookings.*,
                 users.name as username,
                 users.email as user_email,
+                users.phone as user_phone,
                 trips.title as trip_title,
                 trips.location as trip_location,
                 schedules.departure_date,
@@ -262,7 +272,7 @@ class BookingController extends BaseController
                 $bookingPeserta[$bid]['peserta'][] = [
                     'name'      => $doc['name'],
                     'gender'    => $doc['gender'],
-                    'email'     => $doc['email'],
+                    'wa_number' => $doc['wa_number'],
                     'birthdate' => $doc['birthdate']
                 ];
             }

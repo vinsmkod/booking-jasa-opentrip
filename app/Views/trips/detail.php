@@ -645,11 +645,11 @@
                 <?php if ($schedule['available'] > 0): ?>
                     <?php if (session()->get('isLoggedIn')): ?>
                         <a href="<?= base_url('booking/create/' . $schedule['schedule_id']) ?>" class="btn-book">
-                            <i class="fas fa-ticket-alt"></i> Pesan Sekarang
+                            <i class="fas fa-ticket-alt"></i> Booking Sekarang
                         </a>
                     <?php else: ?>
-                        <a href="<?= base_url('login') ?>" class="btn-book">
-                            <i class="fas fa-sign-in-alt"></i> Login untuk Pesan
+                        <a href="<?= base_url('booking/create/' . $schedule['schedule_id']) ?>" class="btn-book">
+                            <i class="fas fa-sign-in-alt"></i> Login untuk Booking
                         </a>
                     <?php endif; ?>
                 <?php else: ?>
