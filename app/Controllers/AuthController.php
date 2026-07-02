@@ -38,10 +38,8 @@ class AuthController extends BaseController
         $email    = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        // Ambil user berdasarkan email
         $user = $this->userModel->where('email', $email)->first();
 
-        // Cek apakah user ada dan password cocok
         if ($user && password_verify($password, $user['password'])) {
             session()->set([
                 'user_id'    => $user['user_id'],
@@ -54,11 +52,9 @@ class AuthController extends BaseController
                 'isLoggedIn' => true
             ]);
 
-            // Cek apakah ada redirect URL tersimpan (misal dari halaman booking)
             $redirectUrl = session()->get('redirect_url');
             session()->remove('redirect_url');
 
-            // Redirect sesuai role
             return $this->redirectByRole($user['role'], $redirectUrl);
         }
 
@@ -138,17 +134,12 @@ class AuthController extends BaseController
         return redirect()->to('/login');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | REDIRECT BY ROLE (FIX 404 ADMIN)
-    |--------------------------------------------------------------------------
-    */
     private function redirectByRole($role, $redirectUrl = null)
     {
         if ($role === 'admin') {
             return redirect()->to('/admin/dashboard');
         } elseif ($role === 'customer') {
-            // Jika ada URL yang disimpan sebelum login (misal halaman booking), arahkan ke sana
+        
             if (!empty($redirectUrl)) {
                 return redirect()->to($redirectUrl);
             }
@@ -182,7 +173,6 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', 'Email tidak ditemukan.');
         }
 
-        // Generate token dan set kadaluarsa 1 jam
         $token   = bin2hex(random_bytes(20));
         $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
@@ -193,7 +183,6 @@ class AuthController extends BaseController
 
         $resetLink = base_url("reset-password/{$token}");
 
-        // Siapkan email dengan template HTML
         $emailService = \Config\Services::email();
         $emailService->setTo($email);
         $emailService->setSubject('Reset Password - BLNTRK OUTDOOR');
@@ -227,11 +216,10 @@ class AuthController extends BaseController
 
         $emailService->setMessage($message);
 
-        // Kirim email, jika gagal tampilkan pesan error (tidak menampilkan demo link)
         if ($emailService->send()) {
             return redirect()->back()->with('success', 'Link reset password telah dikirim ke email Anda. Cek inbox atau folder spam.');
         } else {
-            // Catat error ke log untuk debugging (opsional)
+       
             log_message('error', 'Gagal kirim reset password ke ' . $email . ': ' . print_r($emailService->printDebugger(['headers']), true));
             return redirect()->back()->with('error', 'Gagal mengirim email. Silakan coba lagi atau hubungi admin.');
         }

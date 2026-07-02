@@ -16,11 +16,7 @@ class DocumentService
         $this->documentModel = new DocumentModel();
     }
 
-    /*
-    =====================================
-    STORE PARTICIPANT DOCUMENTS (bulk, saat booking dibuat)
-    =====================================
-    */
+
 
     public function storeParticipantDocuments(int $booking_id, array $participants, array $ktpFiles, array $healthFiles, array $parentPermissionFiles = []): void
     {
@@ -49,11 +45,7 @@ class DocumentService
         }
     }
 
-    /*
-    =====================================
-    UPLOAD SINGLE DOCUMENT (dari form upload terpisah)
-    =====================================
-    */
+
 
     public function uploadSingleDocument(int $booking_id, $file, string $type = 'ktp'): array
     {
@@ -76,11 +68,7 @@ class DocumentService
         return ['success' => true];
     }
 
-    /*
-    =====================================
-    PRIVATE HELPERS
-    =====================================
-    */
+
 
     private function validateDocumentFile($file): ?string
     {

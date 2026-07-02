@@ -19,9 +19,7 @@ class LaporanController extends BaseController
         $this->documentModel = new DocumentModel();
     }
 
-    // =========================================================
-    // ADMIN — Halaman Kelola Laporan
-    // =========================================================
+
 
     /**
      * Tampilkan halaman laporan dengan filter trip

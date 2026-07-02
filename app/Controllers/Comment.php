@@ -13,9 +13,7 @@ class Comment extends BaseController
         $this->commentModel = new CommentModel();
     }
 
-    // =========================================================
-    // PUBLIK — Untuk Pelanggan
-    // =========================================================
+
 
     public function create()
     {
@@ -29,9 +27,7 @@ class Comment extends BaseController
         return redirect()->to('/')->with('success', 'Komentar berhasil dikirim dan menunggu persetujuan admin');
     }
 
-    // =========================================================
-    // ADMIN — Manajemen Komentar
-    // =========================================================
+
 
     public function adminIndex()
     {

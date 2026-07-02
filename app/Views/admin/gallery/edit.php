@@ -559,9 +559,7 @@
 <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
 
 <script>
-// ===============================================================
-// GALLERY EDIT - Image Crop Handler
-// ===============================================================
+
 
 let cropper = null;
 const fileInput = document.getElementById('imageInput');

@@ -229,9 +229,7 @@
             });
         }
 
-        // =========================================
-        // COUNTER ANIMATION FOR STATISTICS
-        // =========================================
+
 
         // Fungsi untuk animasi counter
         function animateCounter(element, target, suffix, duration = 2000) {

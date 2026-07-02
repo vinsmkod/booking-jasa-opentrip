@@ -40,13 +40,7 @@ class BookingController extends BaseController
         );
     }
 
-    // =========================================================
-    // CUSTOMER — Booking untuk Pelanggan
-    // =========================================================
 
-    /**
-     * Tampilkan form buat booking baru
-     */
     public function create($schedule_id)
     {
         $data = $this->bookingService->getCreateFormData($schedule_id);
@@ -58,9 +52,7 @@ class BookingController extends BaseController
         return view('booking/create', $data);
     }
 
-    /**
-     * Simpan booking baru
-     */
+
     public function store()
     {
         $user_id = session()->get('user_id');
@@ -69,8 +61,6 @@ class BookingController extends BaseController
             return redirect()->to('/login');
         }
 
-        // Gunakan getFileMultiple() untuk input file array (ktp[0], ktp[1], dst)
-        // agar CI4 mengembalikan indexed array [0 => FileObject, 1 => FileObject, ...]
         $files = [
             'ktp'              => $this->request->getFileMultiple('ktp')              ?? [],
             'health'           => $this->request->getFileMultiple('health')           ?? [],
@@ -94,9 +84,7 @@ class BookingController extends BaseController
             ->with('success', 'Booking berhasil dibuat! Silakan upload bukti pembayaran untuk verifikasi.');
     }
 
-    /**
-     * Detail booking untuk customer
-     */
+
     public function detail($booking_id)
     {
         $user_id = session()->get('user_id');
@@ -114,9 +102,7 @@ class BookingController extends BaseController
         return view('booking/detail', $data);
     }
 
-    /**
-     * Upload bukti pembayaran
-     */
+
     public function uploadPayment($booking_id)
     {
         $user_id = session()->get('user_id');
@@ -136,9 +122,7 @@ class BookingController extends BaseController
             ->with('success', 'Bukti pembayaran berhasil diupload! Menunggu verifikasi admin.');
     }
 
-    /**
-     * Riwayat booking customer
-     */
+
     public function history()
     {
         $user_id  = session()->get('user_id');
@@ -149,9 +133,7 @@ class BookingController extends BaseController
         ]);
     }
 
-    /**
-     * Upload dokumen peserta
-     */
+
     public function uploadDocument($bookingId)
     {
         $user_id = session()->get('user_id');
@@ -182,13 +164,7 @@ class BookingController extends BaseController
         return redirect()->back()->with('success', 'Dokumen berhasil diupload');
     }
 
-    // =========================================================
-    // ADMIN — Manajemen Booking
-    // =========================================================
 
-    /**
-     * Daftar semua booking (admin)
-     */
     public function adminIndex()
     {
         $search = $this->request->getGet('search');
@@ -288,9 +264,7 @@ class BookingController extends BaseController
         ]);
     }
 
-    /**
-     * Konfirmasi booking (admin)
-     */
+
     public function confirm($id)
     {
         $db = \Config\Database::connect();
@@ -365,9 +339,7 @@ class BookingController extends BaseController
         }
     }
 
-    /**
-     * Batalkan booking (admin)
-     */
+
     public function cancel($id)
     {
         $db = \Config\Database::connect();
@@ -398,7 +370,7 @@ class BookingController extends BaseController
                 ]);
             }
 
-            // Restore quota jika booking sebelumnya confirmed
+
             if ($booking['status'] === 'confirmed') {
                 $schedule = $this->scheduleModel->find($booking['schedule_id']);
 

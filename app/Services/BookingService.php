@@ -39,11 +39,7 @@ class BookingService
         $this->documentService   = $documentService ?? new DocumentService();
     }
 
-    /*
-    =====================================
-    GET DATA UNTUK FORM CREATE BOOKING
-    =====================================
-    */
+
 
     public function getCreateFormData(int $schedule_id): ?array
     {
@@ -67,11 +63,7 @@ class BookingService
         ];
     }
 
-    /*
-    =====================================
-    CREATE BOOKING (Main Orchestrator)
-    =====================================
-    */
+
 
     public function createBooking(int $user_id, array $post, array $files): array
     {
@@ -131,8 +123,7 @@ class BookingService
                 $files['payment_proof'] ?? null
             );
 
-            // Quota reduction moved to Admin confirmation stage
-            // $this->reduceScheduleQuota($schedule, $schedule_id, $participant);
+
 
             if ($redeem_point > 0) {
                 $this->deductUserPoints($user_id, $redeem_point);
@@ -147,15 +138,10 @@ class BookingService
         }
     }
 
-    /*
-    =====================================
-    GET BOOKING DETAIL (siap pakai untuk view)
-    =====================================
-    */
+
 
     public function getBookingDetail(int $booking_id, int $user_id): ?array
     {
-        // 1 query JOIN — sudah include schedule, trip, meeting_point
         $booking = $this->bookingModel->getBookingWithDetail($booking_id, $user_id);
 
         if (!$booking) {
@@ -169,11 +155,7 @@ class BookingService
         ];
     }
 
-    /*
-    =====================================
-    GET BOOKING HISTORY
-    =====================================
-    */
+
 
     public function getBookingHistory(int $user_id): array
     {
@@ -193,11 +175,7 @@ class BookingService
             ->findAll();
     }
 
-    /*
-    =====================================
-    PRIVATE HELPERS
-    =====================================
-    */
+
 
     private function generateBookingCode(): string
     {

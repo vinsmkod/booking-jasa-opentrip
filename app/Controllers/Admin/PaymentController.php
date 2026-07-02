@@ -26,9 +26,7 @@ class PaymentController extends BaseController
         $this->userModel     = new UserModel();
     }
 
-    /**
-     * List all payments
-     */
+
     public function index()
     {
         $payments = $this->paymentModel
@@ -49,9 +47,7 @@ class PaymentController extends BaseController
         return view('admin/payments/index', ['payments' => $payments]);
     }
 
-    /**
-     * Approve payment and confirm booking
-     */
+   
     public function approve($payment_id)
     {
         $db = \Config\Database::connect();
@@ -64,7 +60,7 @@ class PaymentController extends BaseController
                 throw new \Exception('Payment tidak ditemukan');
             }
 
-            // Check if already approved
+           
             if ($payment['status'] == 'verified') {
                 throw new \Exception('Pembayaran sudah diverifikasi');
             }
@@ -75,7 +71,7 @@ class PaymentController extends BaseController
                 throw new \Exception('Booking tidak ditemukan');
             }
 
-            // Check if booking already confirmed
+           
             if ($booking['status'] == 'confirmed') {
                 throw new \Exception('Booking sudah dikonfirmasi');
             }
@@ -86,26 +82,20 @@ class PaymentController extends BaseController
                 throw new \Exception('Schedule tidak ditemukan');
             }
 
-            // ======================
-            // UPDATE PAYMENT
-            // ======================
+
             $this->paymentModel->update($payment_id, [
                 'status' => 'verified',
                 'paid_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            // ======================
-            // UPDATE BOOKING
-            // ======================
+
             $this->bookingModel->update($booking['booking_id'], [
                 'status' => 'confirmed',
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            // ======================
-            // UPDATE KUOTA SCHEDULE
-            // ======================
+
             $newAvailable = $schedule['available'] - $booking['participant'];
 
             if ($newAvailable < 0) {
@@ -117,7 +107,7 @@ class PaymentController extends BaseController
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            // Jika kuota habis, set trip status jadi full
+        
             if ($newAvailable == 0) {
                 $this->tripModel->update($schedule['trip_id'], [
                     'status' => 'full'

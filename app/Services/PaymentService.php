@@ -16,11 +16,6 @@ class PaymentService
         $this->bookingModel = new BookingModel();
     }
 
-    /*
-    =====================================
-    CREATE PAYMENT RECORD (saat booking dibuat)
-    =====================================
-    */
 
     public function createPaymentRecord(int $booking_id, string $method, float $amount, $paymentFile = null): void
     {
@@ -41,11 +36,6 @@ class PaymentService
         $this->paymentModel->insert($data);
     }
 
-    /*
-    =====================================
-    UPLOAD PROOF (dari form upload terpisah)
-    =====================================
-    */
 
     public function uploadProof(int $booking_id, int $user_id, $paymentFile, ?string $payment_method): array
     {
@@ -78,11 +68,6 @@ class PaymentService
         return ['success' => true];
     }
 
-    /*
-    =====================================
-    PRIVATE HELPERS
-    =====================================
-    */
 
     private function validatePaymentFile($file): ?string
     {

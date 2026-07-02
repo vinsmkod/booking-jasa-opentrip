@@ -16,9 +16,7 @@ class GalleryController extends BaseController
         $this->tripModel = new TripModel();
     }
 
-    // =========================================================
-    // PUBLIK — Untuk Pelanggan
-    // =========================================================
+
 
     /**
      * Public gallery page
@@ -138,9 +136,7 @@ class GalleryController extends BaseController
         return view('gallery/index', $data);
     }
 
-    // =========================================================
-    // ADMIN — Manajemen Galeri
-    // =========================================================
+
 
     public function adminIndex()
     {

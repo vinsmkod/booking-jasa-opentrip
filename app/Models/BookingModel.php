@@ -25,11 +25,6 @@ class BookingModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-    /*
-    =====================================
-    GET BOOKING + SEMUA RELASI
-    =====================================
-    */
 
     public function getBookingWithDetail($booking_id, $user_id)
     {
@@ -54,11 +49,6 @@ class BookingModel extends Model
             ->first();
     }
 
-    /*
-    =====================================
-    METHOD LAMA
-    =====================================
-    */
 
     public function getBookingWithMeetingPoint($booking_id, $user_id)
     {

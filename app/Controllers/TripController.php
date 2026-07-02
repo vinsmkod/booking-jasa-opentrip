@@ -28,9 +28,7 @@ class TripController extends BaseController
         $this->itineraryModel    = new ItineraryModel();
     }
 
-    // =========================================================
-    // PUBLIK — Untuk Pelanggan
-    // =========================================================
+
 
     public function index()
     {
@@ -131,9 +129,7 @@ class TripController extends BaseController
         return view('trips/detail', $data);
     }
 
-    // =========================================================
-    // ADMIN — Manajemen Trip
-    // =========================================================
+
 
     public function adminIndex()
     {
@@ -161,11 +157,6 @@ class TripController extends BaseController
         return view('admin/trips/create');
     }
 
-    /*
-    =====================================
-    STORE TRIP
-    =====================================
-    */
 
     public function store()
     {
@@ -211,11 +202,6 @@ class TripController extends BaseController
             ->with('success', 'Trip, schedule, meeting points, includes & itinerary berhasil ditambahkan');
     }
 
-    /*
-    =====================================
-    EDIT TRIP
-    =====================================
-    */
 
     public function edit($id)
     {
@@ -239,11 +225,6 @@ class TripController extends BaseController
         ]);
     }
 
-    /*
-    =====================================
-    UPDATE TRIP
-    =====================================
-    */
 
     public function update($id)
     {
@@ -288,11 +269,6 @@ class TripController extends BaseController
             ->with('success', 'Trip berhasil diperbarui beserta meeting points, includes & itinerary');
     }
 
-    /*
-    =====================================
-    DELETE TRIP
-    =====================================
-    */
 
     public function delete($id)
     {
@@ -302,11 +278,6 @@ class TripController extends BaseController
             ->with('success', 'Trip berhasil dihapus beserta schedule & meeting points');
     }
 
-    /*
-    =====================================
-    HELPER METHODS UNTUK RELASI
-    =====================================
-    */
 
     protected function handleMeetingPoints($tripId)
     {

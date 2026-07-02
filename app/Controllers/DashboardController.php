@@ -9,9 +9,7 @@ use App\Models\TripModel;
 
 class DashboardController extends BaseController
 {
-    // =========================================================
-    // PUBLIK — Dashboard Pelanggan
-    // =========================================================
+
 
     public function index()
     {
@@ -35,9 +33,7 @@ class DashboardController extends BaseController
         ]);
     }
 
-    // =========================================================
-    // ADMIN — Dashboard Admin
-    // =========================================================
+
 
     public function adminIndex()
     {
